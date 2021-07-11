@@ -7,7 +7,7 @@ A tiny persistent store for [Nano Stores](https://github.com/nanostores/nanostor
 state manager. It stores data in `localStorage` and synchronize changes between
 browser tabs.
 
-* **Small.** 221 bytes (minified and gzipped).
+* **Small.** from 171 to 220 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript** support.
 * Framework agnostic. Can be used for **React**, **Preact**, **Vue**,

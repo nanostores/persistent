@@ -75,6 +75,26 @@ describe('map', () => {
     expect(getValue(map)).toEqual({ one: '1' })
   })
 
+  it('ignores other tabs on requets', () => {
+    map = createPersistentMap('c2:', {}, { listen: false })
+
+    let events: object[] = []
+    map.listen(value => {
+      events.push(clone(value))
+    })
+
+    localStorage['c2:one'] = '1'
+    window.dispatchEvent(
+      new StorageEvent('storage', {
+        key: 'c2:one',
+        newValue: '1'
+      })
+    )
+
+    expect(events).toEqual([])
+    expect(getValue(map)).toEqual({})
+  })
+
   it('saves to localStorage in disabled state', () => {
     map = createPersistentMap('d:', {})
 
@@ -129,6 +149,26 @@ describe('store', () => {
 
     expect(events).toEqual(['1'])
     expect(getValue(store)).toEqual('1')
+  })
+
+  it('ignores other tabs on requets', () => {
+    store = createPersistentStore('c2', undefined, { listen: false })
+
+    let events: (string | undefined)[] = []
+    store.listen(value => {
+      events.push(value)
+    })
+
+    localStorage.c2 = '1'
+    window.dispatchEvent(
+      new StorageEvent('storage', {
+        key: 'c2',
+        newValue: '1'
+      })
+    )
+
+    expect(events).toEqual([])
+    expect(getValue(map)).toEqual({})
   })
 
   it('saves to localStorage in disabled state', () => {

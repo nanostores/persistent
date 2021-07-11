@@ -1,6 +1,6 @@
 import { createMap, createStore } from 'nanostores'
 
-export function createPersistentStore(name, initial = {}) {
+export function createPersistentStore(name, initial = {}, opts = {}) {
   function listener(e) {
     if (e.key === name) {
       store.set(e.newValue)
@@ -13,9 +13,11 @@ export function createPersistentStore(name, initial = {}) {
       data = localStorage[name]
     }
     set(data)
-    window.addEventListener('storage', listener)
-    return () => {
-      window.removeEventListener('storage', listener)
+    if (opts.listen !== false) {
+      window.addEventListener('storage', listener)
+      return () => {
+        window.removeEventListener('storage', listener)
+      }
     }
   })
 
@@ -32,7 +34,7 @@ export function createPersistentStore(name, initial = {}) {
   return store
 }
 
-export function createPersistentMap(prefix, initial = {}) {
+export function createPersistentMap(prefix, initial = {}, opts = {}) {
   function listener(e) {
     if (e.key.startsWith(prefix)) {
       store.setKey(e.key.slice(prefix.length), e.newValue)
@@ -49,9 +51,11 @@ export function createPersistentMap(prefix, initial = {}) {
       }
     }
     store.set(data)
-    window.addEventListener('storage', listener)
-    return () => {
-      window.removeEventListener('storage', listener)
+    if (opts.listen !== false) {
+      window.addEventListener('storage', listener)
+      return () => {
+        window.removeEventListener('storage', listener)
+      }
     }
   })
 
