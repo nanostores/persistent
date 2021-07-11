@@ -1,9 +1,9 @@
-import { createPersistent } from '../index.js'
+import { createPersistentMap } from '../index.js'
 
-let settings = createPersistent<{
+let settings = createPersistentMap<{
   favorite?: string
   theme: 'light' | 'dark'
-}>({
+}>('settings:', {
   theme: 'light'
 })
 

@@ -123,9 +123,9 @@
   "size-limit": [
     {
       "import": {
-        "./index.js": "{ createPersistent }"
+        "./index.js": "{ createPersistentMap }"
       },
-      "limit": "211 B"
+      "limit": "207 B"
     }
   ],
   "yaspeller": {

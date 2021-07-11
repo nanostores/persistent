@@ -1,6 +1,38 @@
-import { createMap } from 'nanostores'
+import { createMap, createStore } from 'nanostores'
 
-export function createPersistent(initial = {}, prefix = '') {
+export function createPersistentStore(name, initial = {}) {
+  function listener(e) {
+    if (e.key === name) {
+      store.set(e.newValue)
+    }
+  }
+
+  let store = createStore(() => {
+    let data = initial
+    if (localStorage) {
+      data = localStorage[name]
+    }
+    set(data)
+    window.addEventListener('storage', listener)
+    return () => {
+      window.removeEventListener('storage', listener)
+    }
+  })
+
+  let set = store.set
+  store.set = newValue => {
+    if (typeof newValue === 'undefined') {
+      localStorage.removeItem(name)
+    } else {
+      localStorage.setItem(name, newValue)
+    }
+    set(newValue)
+  }
+
+  return store
+}
+
+export function createPersistentMap(prefix, initial = {}) {
   function listener(e) {
     if (e.key.startsWith(prefix)) {
       store.setKey(e.key.slice(prefix.length), e.newValue)

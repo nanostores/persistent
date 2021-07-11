@@ -1,19 +1,40 @@
-import { MapStore } from 'nanostores'
+import { MapStore, WritableStore } from 'nanostores'
 
 /**
  * Keep key-value data in localStorage.
  *
- * ```js
- * import { createPersistent } from 'nanostores'
+ * ```ts
+ * import { createPersistentMap } from '@nanostores/persistent'
  *
- * export const settings = createPersistent<{
+ * export const settings = createPersistentMap<{
  *   theme: 'dark' | 'light'
  *   favorite: string
- * }>({ theme: 'light' }, 'settings:')
+ * }>('settings:', { theme: 'light' })
  * ```
  *
+ * @param initial Initial value on missed data in localStorage.
  * @param prefix Optional key prefix in localStorage.
+ * @return The store.
  */
-export function createPersistent<
+export function createPersistentMap<
   Value extends Record<string, string | undefined>
->(initial?: Value, prefix?: string): MapStore<Value>
+>(prefix: string, initial?: Value): MapStore<Value>
+
+/**
+ * Store a value in localStorage.
+ *
+ * For key-value objects use {@link createPersistentMap}.
+ *
+ * ```ts
+ * import { createPersistentStore } from '@nanostores/persistent'
+ *
+ * export const locale = createPersistentStore<string>('locale', 'en')
+ * ```
+ *
+ * @param name
+ * @param initial
+ */
+export function createPersistentStore<Value>(
+  name: string,
+  initial?: Value
+): WritableStore<Value>

@@ -14,13 +14,13 @@ browser tabs.
   **Svelte**, and vanilla JS.
 
 ```ts
-import { createPersistent } from 'nanostores'
+import { createPersistentMap } from 'nanostores'
 
 export interface CartValue {
   list: string[]
 }
 
-export const shoppingCart = createPersistent<CartValue>({ list: [] }, 'cart')
+export const shoppingCart = createPersistentMap<CartValue>({ list: [] }, 'cart')
 ```
 
 <a href="https://evilmartians.com/?utm_source=logux-client">
