@@ -1,5 +1,32 @@
 import { MapStore, WritableStore } from 'nanostores'
 
+export type PersistentStore = Record<string, string>
+
+export interface PersistentEvent {
+  key: string
+  newValue: string
+}
+
+export interface PersistentListener {
+  (e: PersistentEvent): void
+}
+
+export interface PersistentEvents {
+  addEventListener(event: string, callback: PersistentListener): void
+  removeEventListener(event: string, callback: PersistentListener): void
+}
+
+/**
+ * Replace localStorage to keep persistent data.
+ *
+ * @param storage An object with localStorage API.
+ * @param events An object with `addEventListener` and `removeEventListener`.
+ */
+export function setPersistentEngine(
+  storage: PersistentStore,
+  events: PersistentEvents
+): void
+
 export interface PersistentOptions {
   /**
    * Does not synchronize changes from other browser tabs.

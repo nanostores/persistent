@@ -1,11 +1,13 @@
 import { cleanStores, MapStore, getValue, WritableStore } from 'nanostores'
 
-import { createPersistentMap, createPersistentStore } from '../index.js'
+import {
+  createPersistentStore,
+  createPersistentMap,
+  PersistentListener,
+  setPersistentEngine
+} from '../index.js'
 
-let map: MapStore<{ one?: string; two?: string }>
-let store: WritableStore<string | undefined>
 afterEach(() => {
-  cleanStores(map, store)
   localStorage.clear()
 })
 
@@ -14,6 +16,12 @@ function clone(data: object): object {
 }
 
 describe('map', () => {
+  let map: MapStore<{ one?: string; two?: string }>
+
+  afterEach(() => {
+    cleanStores(map)
+  })
+
   it('loads data from localStorage', () => {
     localStorage.setItem('a:one', '1')
     map = createPersistentMap<{ one?: string; two?: string }>('a:', {
@@ -107,6 +115,12 @@ describe('map', () => {
 })
 
 describe('store', () => {
+  let store: WritableStore<string | undefined>
+
+  afterEach(() => {
+    cleanStores(store)
+  })
+
   it('loads data from localStorage', () => {
     localStorage.setItem('a', '1')
     store = createPersistentStore('a', '2')
@@ -115,12 +129,12 @@ describe('store', () => {
 
   it('saves to localStorage', () => {
     store = createPersistentStore<string | undefined>('b')
-    expect(getValue(store)).toBeUndefined()
 
     let events: (string | undefined)[] = []
     store.listen(value => {
       events.push(value)
     })
+    expect(getValue(store)).toBeUndefined()
 
     store.set('1')
     expect(localStorage.__STORE__).toEqual({ b: '1' })
@@ -168,7 +182,7 @@ describe('store', () => {
     )
 
     expect(events).toEqual([])
-    expect(getValue(map)).toEqual({})
+    expect(getValue(store)).toBeUndefined()
   })
 
   it('saves to localStorage in disabled state', () => {
@@ -179,5 +193,55 @@ describe('store', () => {
 
     store.set(undefined)
     expect(localStorage.d).toBeUndefined()
+  })
+})
+
+describe('engine', () => {
+  let map: MapStore<{ one?: string; two?: string }>
+  let store: WritableStore<string | undefined>
+
+  afterEach(() => {
+    cleanStores(map, store)
+    setPersistentEngine(localStorage, window)
+  })
+
+  it('changes engine', () => {
+    let storage: Record<string, string> = {}
+    let listeners: PersistentListener[] = []
+    let events = {
+      addEventListener(name: 'storage', callback: PersistentListener) {
+        listeners.push(callback)
+      },
+      removeEventListener(name: 'storage', callback: PersistentListener) {
+        listeners = listeners.filter(i => i !== callback)
+      }
+    }
+    setPersistentEngine(storage, events)
+
+    store = createPersistentStore('z')
+    store.listen(() => {})
+    store.set('1')
+
+    map = createPersistentMap('z:')
+    map.listen(() => {})
+    map.setKey('one', '2')
+
+    expect(listeners).toHaveLength(2)
+    expect(storage).toEqual({
+      'z': '1',
+      'z:one': '2'
+    })
+
+    storage.z = '1a'
+    for (let i of listeners) i({ key: 'z', newValue: '1a' })
+    storage['z:one'] = '2b'
+    for (let i of listeners) i({ key: 'z:one', newValue: '2b' })
+
+    expect(getValue(store)).toEqual('1a')
+    expect(getValue(map)).toEqual({ one: '2b' })
+
+    store.set(undefined)
+    map.set({})
+    expect(storage).toEqual({})
   })
 })

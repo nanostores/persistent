@@ -1,6 +1,18 @@
 import { createMap, createStore } from 'nanostores'
 
-export function createPersistentStore(name, initial = {}, opts = {}) {
+let storageEngine = {}
+let eventsEngine = { addEventListener() {}, removeEventListener() {} }
+if (localStorage) {
+  storageEngine = localStorage
+  eventsEngine = window
+}
+
+export function setPersistentEngine(storage, events) {
+  storageEngine = storage
+  eventsEngine = events
+}
+
+export function createPersistentStore(name, initial = undefined, opts = {}) {
   function listener(e) {
     if (e.key === name) {
       store.set(e.newValue)
@@ -8,15 +20,11 @@ export function createPersistentStore(name, initial = {}, opts = {}) {
   }
 
   let store = createStore(() => {
-    let data = initial
-    if (localStorage) {
-      data = localStorage[name]
-    }
-    set(data)
+    set(storageEngine[name] || initial)
     if (opts.listen !== false) {
-      window.addEventListener('storage', listener)
+      eventsEngine.addEventListener('storage', listener)
       return () => {
-        window.removeEventListener('storage', listener)
+        eventsEngine.removeEventListener('storage', listener)
       }
     }
   })
@@ -24,9 +32,9 @@ export function createPersistentStore(name, initial = {}, opts = {}) {
   let set = store.set
   store.set = newValue => {
     if (typeof newValue === 'undefined') {
-      localStorage.removeItem(name)
+      delete storageEngine[name]
     } else {
-      localStorage.setItem(name, newValue)
+      storageEngine[name] = newValue
     }
     set(newValue)
   }
@@ -43,18 +51,16 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
 
   let store = createMap(() => {
     let data = { ...initial }
-    if (localStorage) {
-      for (let key in localStorage) {
-        if (key.startsWith(prefix)) {
-          data[key.slice(prefix.length)] = localStorage[key]
-        }
+    for (let key in storageEngine) {
+      if (key.startsWith(prefix)) {
+        data[key.slice(prefix.length)] = storageEngine[key]
       }
     }
     store.set(data)
     if (opts.listen !== false) {
-      window.addEventListener('storage', listener)
+      eventsEngine.addEventListener('storage', listener)
       return () => {
-        window.removeEventListener('storage', listener)
+        eventsEngine.removeEventListener('storage', listener)
       }
     }
   })
@@ -62,9 +68,9 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
   let setKey = store.setKey
   store.setKey = (key, newValue) => {
     if (typeof newValue === 'undefined') {
-      localStorage.removeItem(prefix + key)
+      delete storageEngine[prefix + key]
     } else {
-      localStorage.setItem(prefix + key, newValue)
+      storageEngine[prefix + key] = newValue
     }
     setKey(key, newValue)
   }

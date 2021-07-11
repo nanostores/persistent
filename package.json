@@ -1,7 +1,7 @@
 {
   "name": "@nanostores/persistent",
   "version": "0.0.0",
-  "description": "A tiny (171 bytes) persistent store for Nano Stores state manager",
+  "description": "A tiny (181 bytes) persistent store for Nano Stores state manager",
   "keywords": [
     "nano",
     "persistent",
@@ -126,14 +126,14 @@
       "import": {
         "./index.js": "{ createPersistentStore }"
       },
-      "limit": "171 B"
+      "limit": "181 B"
     },
     {
       "name": "Map",
       "import": {
         "./index.js": "{ createPersistentMap }"
       },
-      "limit": "220 B"
+      "limit": "238 B"
     }
   ],
   "yaspeller": {
