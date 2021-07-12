@@ -36,7 +36,7 @@ npm install nanostores @nanostores/persistent
 
 ## Usage
 
-See [nano Stores docs](https://github.com/nanostores/nanostores#guide)
+See [Nano Stores docs](https://github.com/nanostores/nanostores#guide)
 about using the store and subscribing to store’s changes in UI frameworks.
 
 
