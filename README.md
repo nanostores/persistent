@@ -1,7 +1,7 @@
 # Nano Stores Persistent
 
-<img align="right" width="95" height="148" title="Logux logotype"
-     src="https://logux.io/branding/logotype.svg">
+<img align="right" width="120" height="120" title="Nano Stores logo"
+     src="https://nanostores.github.io/nanostores/logo.svg">
 
 A tiny persistent store for [Nano Stores](https://github.com/nanostores/nanostores)
 state manager. It stores data in `localStorage` and synchronize changes between
