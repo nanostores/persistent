@@ -30,7 +30,7 @@
     "node": "^12.0.0 || ^14.0.0 || >=16.0.0"
   },
   "peerDependencies": {
-    "nanostores": ">=0.3.0"
+    "nanostores": "^0.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -57,7 +57,7 @@
     "jest": "^27.0.6",
     "jest-localstorage-mock": "^2.4.14",
     "lint-staged": "^11.0.0",
-    "nanostores": "nanostores/nanostores#next",
+    "nanostores": "^0.4.0",
     "prettier": "^2.3.2",
     "simple-git-hooks": "^2.5.1",
     "size-limit": "^5.0.1",

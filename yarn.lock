@@ -4781,9 +4781,10 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-nanostores@nanostores/nanostores#next:
-  version "0.3.3"
-  resolved "https://codeload.github.com/nanostores/nanostores/tar.gz/b589b729c3edb4e44d209ff862362b882b849733"
+nanostores@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.4.0.tgz#a68a268f3d19f2a22f8b4168513234f8c4a68b9e"
+  integrity sha512-+MW0VPM2BRiO3Io5MOEgH+UMSyn5ttL4zzrqpu3Gn0eXGCX0y9n/FTqc49MXGNDA8/UZtdcmTbIku79jm7y1og==
 
 natural-compare@^1.4.0:
   version "1.4.0"
