@@ -39,7 +39,7 @@
     "@logux/sharec-config": "^0.11.0",
     "@size-limit/preset-small-lib": "^5.0.2",
     "@types/jest": "^27.0.0",
-    "@types/node": "^16.4.14",
+    "@types/node": "^16.6.0",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
     "check-dts": "^0.5.5",
