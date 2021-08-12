@@ -2,8 +2,10 @@ import { createMap, createStore } from 'nanostores'
 
 let storageEngine = {}
 let eventsEngine = { addEventListener() {}, removeEventListener() {} }
-if (localStorage) {
+if (typeof localStorage !== 'undefined') {
   storageEngine = localStorage
+}
+if (typeof window !== 'undefined') {
   eventsEngine = window
 }
 
