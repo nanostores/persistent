@@ -68,7 +68,7 @@ export function createPersistentMap<
  * @param name Key name in localStorage.
  * @param initial Initial value on missed data in localStorage.
  */
-export function createPersistentStore<Value>(
+export function createPersistentStore<Value extends string | undefined>(
   name: string,
   initial?: Value,
   opts?: PersistentOptions

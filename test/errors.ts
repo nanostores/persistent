@@ -1,4 +1,7 @@
-import { createPersistentMap } from '../index.js'
+import { createPersistentMap, createPersistentStore } from '../index.js'
+
+// THROWS '{ code: string; }' does not satisfy the constraint 'string'
+let lang = createPersistentStore<{ code: string }>('locale', { code: 'ru' })
 
 let settings = createPersistentMap<{
   favorite?: string
