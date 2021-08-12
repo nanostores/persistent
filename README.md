@@ -10,7 +10,7 @@ browser tabs.
 * **Small.** from 193 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
-* Framework agnostic. It support SSR.
+* Framework agnostic. It supports SSR.
   `localStorage` can be switched to another storage.
 
 ```ts
