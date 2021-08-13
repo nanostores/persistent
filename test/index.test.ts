@@ -1,10 +1,15 @@
 import { cleanStores, MapStore, getValue, WritableStore } from 'nanostores'
+import { delay } from 'nanodelay'
 
 import {
   createPersistentStore,
+  useTestStorageEngine,
   createPersistentMap,
+  setPersistentEngine,
   PersistentListener,
-  setPersistentEngine
+  setTestStorageKey,
+  cleanTestStorage,
+  getTestStorage
 } from '../index.js'
 
 afterEach(() => {
@@ -244,4 +249,32 @@ describe('engine', () => {
     map.set({})
     expect(storage).toEqual({})
   })
+})
+
+it('has test API', async () => {
+  let settings = createPersistentMap<{ lang: string }>('settings:', {
+    lang: 'en'
+  })
+  useTestStorageEngine()
+
+  let events: string[] = []
+  let unbind = settings.listen(value => {
+    events.push(value.lang)
+  })
+
+  settings.setKey('lang', 'ru')
+  expect(getTestStorage()).toEqual({ 'settings:lang': 'ru' })
+
+  setTestStorageKey('settings:lang', undefined)
+  expect(Object.keys(getTestStorage())).toHaveLength(0)
+
+  setTestStorageKey('settings:lang', 'uk')
+  expect(getTestStorage()).toEqual({ 'settings:lang': 'uk' })
+  expect(getValue(settings)).toEqual({ lang: 'uk' })
+
+  unbind()
+  await delay(1001)
+
+  cleanTestStorage()
+  expect(Object.keys(getTestStorage())).toHaveLength(0)
 })

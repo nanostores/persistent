@@ -79,3 +79,37 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
 
   return store
 }
+
+let testStorage = {}
+let testListeners = []
+
+export function useTestStorageEngine() {
+  setPersistentEngine(testStorage, {
+    addEventListener(event, cb) {
+      testListeners.push(cb)
+    },
+    removeEventListener(event, cb) {
+      testListeners = testListeners.filter(i => i !== cb)
+    }
+  })
+}
+
+export function setTestStorageKey(key, newValue) {
+  if (typeof newValue === 'undefined') {
+    delete testStorage[key]
+  } else {
+    testStorage[key] = newValue
+  }
+  let event = { key, newValue }
+  for (let listener of testListeners) {
+    listener(event)
+  }
+}
+
+export function getTestStorage() {
+  return testStorage
+}
+
+export function cleanTestStorage() {
+  testStorage = {}
+}

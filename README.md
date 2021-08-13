@@ -75,7 +75,7 @@ in separated `localStorage` key.
 ```ts
 import { createPersistentMap } from '@nanostores/persistent'
 
-export interface SettingsValue {
+export type SettingsValue = {
   sidebar: 'show' | 'hide',
   theme: 'dark' | 'light' | 'auto'
 }
@@ -180,3 +180,37 @@ function onChange () {
 }
 ```
 
+
+### Tests
+
+There is a special API to replace `localStorage` to fake storage engine
+with helpers to change key and get all values.
+
+```js
+import {
+  useTestStorageEngine,
+  setTestStorageKey,
+  cleanTestStorage,
+  getTestStorage,
+} from '@nanostores/persistent'
+
+import { settings } from './storage.js'
+
+beforeAll(() => {
+  useTestStorageEngine()
+})
+
+beforeEach(() => {
+  cleanTestStorage()
+})
+
+it('listens for changes', () => {
+  setTestStorageKey('settings:locale', 'ru')
+  expect(getValue(settings)).toEqual({ locale: 'ru' })
+})
+
+it('changes storage', () => {
+  settings.setKey('locale')
+  expect(getTestStorage()).toEqual({ 'settings:locale': 'ru' })
+})
+```

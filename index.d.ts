@@ -73,3 +73,87 @@ export function createPersistentStore<Value extends string | undefined>(
   initial?: Value,
   opts?: PersistentOptions
 ): WritableStore<Value>
+
+/**
+ * Enable fake storage to test persistent stores.
+ *
+ * ```js
+ * import { useTestStorageEngine } from '@nanostores/persistent'
+ *
+ * beforeAll(() => {
+ *   useTestStorageEngine()
+ * })
+ * ```
+ */
+export function useTestStorageEngine(): void
+
+/**
+ * Set fake storage key to test persistent store.
+ *
+ * ```js
+ * import {
+ *   useTestStorageEngine,
+ *   setTestStorageKey,
+ *   cleanTestStorage
+ * } from '@nanostores/persistent'
+ *
+ * beforeAll(() => {
+ *   useTestStorageEngine()
+ * })
+ *
+ * beforeEach(() => {
+ *   cleanTestStorage()
+ * })
+ *
+ * it('listens for changes', () => {
+ *   setTestStorageKey('settings:locale', 'ru')
+ *   expect(getValue(settings)).toEqual({ locale: 'ru' })
+ * })
+ * ```
+ *
+ * @param key Full name of key in localStorage.
+ * @param newValue New value of the key.
+ */
+export function setTestStorageKey(
+  key: string,
+  newValue: string | undefined
+): void
+
+/**
+ * Get full content of fake storage to test persistent stores.
+ *
+ * ```js
+ * import {
+ *   useTestStorageEngine,
+ *   cleanTestStorage,
+ *   getTestStorage,
+ * } from '@nanostores/persistent'
+ *
+ * beforeAll(() => {
+ *   useTestStorageEngine()
+ * })
+ *
+ * beforeEach(() => {
+ *   cleanTestStorage()
+ * })
+ *
+ * it('changes storage', () => {
+ *   settings.setKey('locale')
+ *   expect(getTestStorage()).toEqual({ 'settings:locale': 'ru' })
+ * })
+ * ```
+ */
+export function getTestStorage(): Record<string, string>
+
+/**
+ * Clean test storage used to test persistent stores.
+ *
+ * ```js
+ * import { cleanTestStorage } from '@nanostores/persistent'
+ *
+ * beforeEach(() => {
+ *   cleanTestStorage()
+ * })
+ * ```
+ */
+export function cleanTestStorage(): void
