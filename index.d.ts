@@ -151,7 +151,7 @@ export function getTestStorage(): Record<string, string>
  * ```js
  * import { cleanTestStorage } from '@nanostores/persistent'
  *
- * beforeEach(() => {
+ * afterEach(() => {
  *   cleanTestStorage()
  * })
  * ```

@@ -200,7 +200,7 @@ beforeAll(() => {
   useTestStorageEngine()
 })
 
-beforeEach(() => {
+afterEach(() => {
   cleanTestStorage()
 })
 
