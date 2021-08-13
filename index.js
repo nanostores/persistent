@@ -111,5 +111,7 @@ export function getTestStorage() {
 }
 
 export function cleanTestStorage() {
-  testStorage = {}
+  for (let i in testStorage) {
+    setTestStorageKey(i, undefined)
+  }
 }

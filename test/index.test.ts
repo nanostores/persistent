@@ -272,9 +272,11 @@ it('has test API', async () => {
   expect(getTestStorage()).toEqual({ 'settings:lang': 'uk' })
   expect(getValue(settings)).toEqual({ lang: 'uk' })
 
+  cleanTestStorage()
+  expect(Object.keys(getTestStorage())).toHaveLength(0)
+  expect(getValue(settings)).toEqual({})
+
   unbind()
   await delay(1001)
-
-  cleanTestStorage()
   expect(Object.keys(getTestStorage())).toHaveLength(0)
 })
