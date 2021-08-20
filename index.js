@@ -1,5 +1,6 @@
 import { createMap, createStore } from 'nanostores'
 
+let id = a => a
 let storageEngine = {}
 let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 if (typeof localStorage !== 'undefined') {
@@ -15,6 +16,8 @@ export function setPersistentEngine(storage, events) {
 }
 
 export function createPersistentStore(name, initial = undefined, opts = {}) {
+  let encode = opts.encode || id
+  let decode = opts.decode || id
   function listener(e) {
     if (e.key === name) {
       store.set(e.newValue)
@@ -22,7 +25,7 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
   }
 
   let store = createStore(() => {
-    set(storageEngine[name] || initial)
+    set(decode(storageEngine[name]) || initial)
     if (opts.listen !== false) {
       eventsEngine.addEventListener('storage', listener)
       return () => {
@@ -36,7 +39,7 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
     if (typeof newValue === 'undefined') {
       delete storageEngine[name]
     } else {
-      storageEngine[name] = newValue
+      storageEngine[name] = encode(newValue)
     }
     set(newValue)
   }
@@ -45,6 +48,8 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
 }
 
 export function createPersistentMap(prefix, initial = {}, opts = {}) {
+  let encode = opts.encode || id
+  let decode = opts.decode || id
   function listener(e) {
     if (e.key.startsWith(prefix)) {
       store.setKey(e.key.slice(prefix.length), e.newValue)
@@ -55,7 +60,7 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     let data = { ...initial }
     for (let key in storageEngine) {
       if (key.startsWith(prefix)) {
-        data[key.slice(prefix.length)] = storageEngine[key]
+        data[key.slice(prefix.length)] = decode(storageEngine[key])
       }
     }
     store.set(data)
@@ -72,7 +77,7 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     if (typeof newValue === 'undefined') {
       delete storageEngine[prefix + key]
     } else {
-      storageEngine[prefix + key] = newValue
+      storageEngine[prefix + key] = encode(newValue)
     }
     setKey(key, newValue)
   }
