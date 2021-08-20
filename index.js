@@ -1,6 +1,6 @@
 import { createMap, createStore } from 'nanostores'
 
-let id = a => a
+let identity = a => a
 let storageEngine = {}
 let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 if (typeof localStorage !== 'undefined') {
@@ -16,8 +16,8 @@ export function setPersistentEngine(storage, events) {
 }
 
 export function createPersistentStore(name, initial = undefined, opts = {}) {
-  let encode = opts.encode || id
-  let decode = opts.decode || id
+  let encode = opts.encode || identity
+  let decode = opts.decode || identity
   function listener(e) {
     if (e.key === name) {
       store.set(e.newValue)
@@ -48,8 +48,8 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
 }
 
 export function createPersistentMap(prefix, initial = {}, opts = {}) {
-  let encode = opts.encode || id
-  let decode = opts.decode || id
+  let encode = opts.encode || identity
+  let decode = opts.decode || identity
   function listener(e) {
     if (e.key.startsWith(prefix)) {
       store.setKey(e.key.slice(prefix.length), e.newValue)
