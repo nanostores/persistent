@@ -127,14 +127,14 @@
       "import": {
         "./index.js": "{ createPersistentStore }"
       },
-      "limit": "193 B"
+      "limit": "217 B"
     },
     {
       "name": "Map",
       "import": {
         "./index.js": "{ createPersistentMap }"
       },
-      "limit": "248 B"
+      "limit": "275 B"
     }
   ],
   "yaspeller": {

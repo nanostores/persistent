@@ -7,7 +7,7 @@ A tiny persistent store for [Nano Stores](https://github.com/nanostores/nanostor
 state manager. It stores data in `localStorage` and synchronize changes between
 browser tabs.
 
-* **Small.** from 193 bytes (minified and gzipped).
+* **Small.** from 217 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
@@ -107,6 +107,24 @@ import { createPersistentStore } from '@nanostores/persistent'
 export const draft = createPersistentStore('draft', '', { listen: false })
 ```
 
+### Persisted value processing
+
+`encode` and `decode` options can be set to process a value before setting or after getting it from the persistent engine
+
+```ts
+import { createPersistentStore } from '@nanostores/persistent'
+
+export const draft = createPersistentStore('draft', [], {
+  encode: JSON.stringify,
+  decode: (value) => {
+    try {
+      return JSON.parse(value)
+    } catch() {
+      return value
+    }
+  }
+})
+```
 
 ### Persistent Engine
 
