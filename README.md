@@ -58,7 +58,7 @@ You can change store value by `set` method. You can also use `update` syntax
 sugar from Nano Stores.
 
 ```ts
-import { update } from '@nanostores/persistent'
+import { update } from 'nanostores'
 
 update(shoppingCart, card => [...card, newProduct])
 ```
