@@ -107,16 +107,19 @@ import { createPersistentStore } from '@nanostores/persistent'
 export const draft = createPersistentStore('draft', '', { listen: false })
 ```
 
-### Persisted value processing
+### Value Encoding
 
-`encode` and `decode` options can be set to process a value before setting or after getting it from the persistent engine
+`encode` and `decode` options can be set to process a value before setting
+or after getting it from the persistent storage.
 
 ```ts
 import { createPersistentStore } from '@nanostores/persistent'
 
 export const draft = createPersistentStore('draft', [], {
-  encode: JSON.stringify,
-  decode: (value) => {
+  encode (value) {
+    return JSON.stringify(value)
+  },
+  decode (value ) {
     try {
       return JSON.parse(value)
     } catch() {
