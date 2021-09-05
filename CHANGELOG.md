@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.1
+* Fixed `encode` and `decode` option types.
+
 ## 0.3
 * Added `encode` and `decode` options (by Ivan Vasilyev).
 
