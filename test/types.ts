@@ -1,4 +1,8 @@
-import { createPersistentMap, setPersistentEngine } from '../index.js'
+import {
+  createPersistentStore,
+  createPersistentMap,
+  setPersistentEngine
+} from '../index.js'
 
 setPersistentEngine(localStorage, window)
 
@@ -16,3 +20,14 @@ settings.subscribe(value => {
 settings.setKey('theme', 'dark')
 settings.setKey('favorite', '1')
 settings.setKey('favorite', undefined)
+
+let count = createPersistentStore<number>('count', 0, {
+  encode(origin) {
+    return `${origin}`
+  },
+  decode(encoded) {
+    return parseInt(encoded, 10)
+  }
+})
+
+count.set(1)
