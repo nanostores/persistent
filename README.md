@@ -107,6 +107,7 @@ import { createPersistentStore } from '@nanostores/persistent'
 export const draft = createPersistentStore('draft', '', { listen: false })
 ```
 
+
 ### Value Encoding
 
 `encode` and `decode` options can be set to process a value before setting
@@ -129,7 +130,8 @@ export const draft = createPersistentStore('draft', [], {
 })
 ```
 
-### Persistent Engine
+
+### Persistent Engines
 
 You can switch `localStorage` to any other storage for all used stores.
 
