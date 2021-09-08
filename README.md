@@ -130,6 +130,19 @@ export const draft = createPersistentStore('draft', [], {
 })
 ```
 
+### Server-Side Rendering
+
+The stores has built-in SSR support. On the server they will use
+empty objects instead of `localStorage`.
+
+You can manually initialize stores with specific data:
+
+```js
+if (isServer) {
+  locale.set(user.locale)
+}
+```
+
 
 ### Persistent Engines
 
