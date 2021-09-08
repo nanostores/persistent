@@ -20,12 +20,12 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
   let decode = opts.decode || identity
   function listener(e) {
     if (e.key === name) {
-      store.set(e.newValue)
+      store.set(decode(e.newValue))
     }
   }
 
   let store = createStore(() => {
-    set(decode(storageEngine[name]) || initial)
+    set(storageEngine[name] ? decode(storageEngine[name]) : initial)
     if (opts.listen !== false) {
       eventsEngine.addEventListener('storage', listener)
       return () => {
@@ -52,7 +52,7 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
   let decode = opts.decode || identity
   function listener(e) {
     if (e.key.startsWith(prefix)) {
-      store.setKey(e.key.slice(prefix.length), e.newValue)
+      store.setKey(e.key.slice(prefix.length), decode(e.newValue))
     }
   }
 

@@ -20,6 +20,11 @@ function clone(data: object): object {
   return JSON.parse(JSON.stringify(data))
 }
 
+function changeLocalStorage(key: string, newValue: string): void {
+  localStorage[key] = newValue
+  window.dispatchEvent(new StorageEvent('storage', { key, newValue }))
+}
+
 describe('map', () => {
   let map: MapStore<{ one?: string; two?: string }>
 
@@ -76,13 +81,7 @@ describe('map', () => {
       events.push(clone(value))
     })
 
-    localStorage['c:one'] = '1'
-    window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'c:one',
-        newValue: '1'
-      })
-    )
+    changeLocalStorage('c:one', '1')
 
     expect(events).toEqual([{ one: '1' }])
     expect(getValue(map)).toEqual({ one: '1' })
@@ -96,13 +95,7 @@ describe('map', () => {
       events.push(clone(value))
     })
 
-    localStorage['c2:one'] = '1'
-    window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'c2:one',
-        newValue: '1'
-      })
-    )
+    changeLocalStorage('c2:one', '1')
 
     expect(events).toEqual([])
     expect(getValue(map)).toEqual({})
@@ -158,13 +151,7 @@ describe('store', () => {
       events.push(value)
     })
 
-    localStorage.c = '1'
-    window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'c',
-        newValue: '1'
-      })
-    )
+    changeLocalStorage('c', '1')
 
     expect(events).toEqual(['1'])
     expect(getValue(store)).toEqual('1')
@@ -178,13 +165,7 @@ describe('store', () => {
       events.push(value)
     })
 
-    localStorage.c2 = '1'
-    window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'c2',
-        newValue: '1'
-      })
-    )
+    changeLocalStorage('c2', '1')
 
     expect(events).toEqual([])
     expect(getValue(store)).toBeUndefined()
@@ -248,6 +229,50 @@ describe('engine', () => {
     store.set(undefined)
     map.set({})
     expect(storage).toEqual({})
+  })
+})
+
+describe('custom encoding', () => {
+  let map: MapStore<{ locale: string[] }>
+  let store: WritableStore<string[]>
+
+  afterEach(() => {
+    cleanStores(map, store)
+  })
+
+  it('supports by store', () => {
+    store = createPersistentStore('locale', ['en', 'US'], {
+      encode: JSON.stringify,
+      decode: JSON.parse
+    })
+
+    store.listen(() => {})
+    store.set(['ru', 'RU'])
+
+    expect(localStorage.getItem('locale')).toEqual('["ru","RU"]')
+
+    changeLocalStorage('locale', '["fr","CA"]')
+
+    expect(getValue(store)).toEqual(['fr', 'CA'])
+    expect(localStorage.getItem('locale')).toEqual('["fr","CA"]')
+  })
+
+  it('supports by map', () => {
+    map = createPersistentMap(
+      'settings:',
+      { locale: ['en', 'US'] },
+      { encode: JSON.stringify, decode: JSON.parse }
+    )
+
+    map.listen(() => {})
+    map.setKey('locale', ['ru', 'RU'])
+
+    expect(localStorage.getItem('settings:locale')).toEqual('["ru","RU"]')
+
+    changeLocalStorage('settings:locale', '["fr","CA"]')
+
+    expect(getValue(map).locale).toEqual(['fr', 'CA'])
+    expect(localStorage.getItem('settings:locale')).toEqual('["fr","CA"]')
   })
 })
 
