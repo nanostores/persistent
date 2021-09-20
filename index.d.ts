@@ -72,7 +72,7 @@ interface PersistentMapFactory {
     initial?: Value,
     opts?: PersistentSimpleOptions
   ): MapStore<Value>
-  <Value>(
+  <Value extends object>(
     name: string,
     initial: Value,
     opts: PersistentSimpleOptions & PersistentEncoder<Value>
