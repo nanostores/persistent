@@ -1,6 +1,6 @@
 {
   "name": "@nanostores/persistent",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A tiny persistent store for Nano Stores state manager",
   "keywords": [
     "nano",

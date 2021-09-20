@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.3.3
+* Fix types (by @davidmz).
+
 ## 0.3.2
 * Fixed custom encoding.
 
