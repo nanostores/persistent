@@ -12,8 +12,8 @@ export interface PersistentListener {
 }
 
 export interface PersistentEvents {
-  addEventListener(event: string, callback: PersistentListener): void
-  removeEventListener(event: string, callback: PersistentListener): void
+  addEventListener(key: string, callback: PersistentListener): void
+  removeEventListener(key: string, callback: PersistentListener): void
 }
 
 /**
@@ -195,3 +195,8 @@ export function getTestStorage(): Record<string, string>
  * ```
  */
 export function cleanTestStorage(): void
+
+/**
+ * Adapts window to PersistentEvents contract
+ */
+export const windowPersistentEvents: PersistentEvents

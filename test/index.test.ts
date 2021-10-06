@@ -9,7 +9,8 @@ import {
   PersistentListener,
   setTestStorageKey,
   cleanTestStorage,
-  getTestStorage
+  getTestStorage,
+  windowPersistentEvents
 } from '../index.js'
 
 afterEach(() => {
@@ -188,17 +189,17 @@ describe('engine', () => {
 
   afterEach(() => {
     cleanStores(map, store)
-    setPersistentEngine(localStorage, window)
+    setPersistentEngine(localStorage, windowPersistentEvents)
   })
 
   it('changes engine', () => {
     let storage: Record<string, string> = {}
     let listeners: PersistentListener[] = []
     let events = {
-      addEventListener(name: 'storage', callback: PersistentListener) {
+      addEventListener(key: string, callback: PersistentListener) {
         listeners.push(callback)
       },
-      removeEventListener(name: 'storage', callback: PersistentListener) {
+      removeEventListener(key: string, callback: PersistentListener) {
         listeners = listeners.filter(i => i !== callback)
       }
     }

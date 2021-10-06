@@ -1,10 +1,11 @@
 import {
   createPersistentStore,
   createPersistentMap,
-  setPersistentEngine
+  setPersistentEngine,
+  windowPersistentEvents
 } from '../index.js'
 
-setPersistentEngine(localStorage, window)
+setPersistentEngine(localStorage, windowPersistentEvents)
 
 let settings = createPersistentMap<{
   favorite?: string
