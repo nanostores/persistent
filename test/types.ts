@@ -2,8 +2,17 @@ import {
   createPersistentStore,
   createPersistentMap,
   setPersistentEngine,
-  windowPersistentEvents
+  PersistentListener
 } from '../index.js'
+
+const windowPersistentEvents = {
+  addEventListener(key: string, listener: PersistentListener) {
+    window.addEventListener('storage', listener as unknown as EventListener)
+  },
+  removeEventListener(key: string, listener: PersistentListener) {
+    window.removeEventListener('storage', listener as unknown as EventListener)
+  }
+}
 
 setPersistentEngine(localStorage, windowPersistentEvents)
 

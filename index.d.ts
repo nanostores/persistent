@@ -196,8 +196,3 @@ export function getTestStorage(): Record<string, string>
  * ```
  */
 export function cleanTestStorage(): void
-
-/**
- * Adapts window to PersistentEvents contract
- */
-export const windowPersistentEvents: PersistentEvents

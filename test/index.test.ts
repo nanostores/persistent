@@ -11,13 +11,21 @@ import {
   setTestStorageKey,
   cleanTestStorage,
   getTestStorage,
-  windowPersistentEvents,
   PersistentEvents
 } from '../index.js'
 
 afterEach(() => {
   localStorage.clear()
 })
+
+const windowPersistentEvents: PersistentEvents = {
+  addEventListener(key: string, listener: PersistentListener) {
+    window.addEventListener('storage', listener as unknown as EventListener)
+  },
+  removeEventListener(key: string, listener: PersistentListener) {
+    window.removeEventListener('storage', listener as unknown as EventListener)
+  }
+}
 
 function clone(data: object): object {
   return JSON.parse(JSON.stringify(data))
