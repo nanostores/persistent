@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals'
 import { cleanStores, MapStore, getValue, WritableStore } from 'nanostores'
 import { delay } from 'nanodelay'
 
@@ -10,7 +11,8 @@ import {
   setTestStorageKey,
   cleanTestStorage,
   getTestStorage,
-  windowPersistentEvents
+  windowPersistentEvents,
+  PersistentEvents
 } from '../index.js'
 
 afterEach(() => {
@@ -305,4 +307,187 @@ it('has test API', async () => {
   unbind()
   await delay(1001)
   expect(Object.keys(getTestStorage())).toHaveLength(0)
+})
+
+describe('requiresListenerPerKey', () => {
+  let mockStorage: Record<string, any>
+  let mockListeners: Record<string, PersistentListener>
+  let mockEvents: PersistentEvents
+
+  function useMockStorageEngine(): void {
+    mockStorage = {}
+    mockListeners = {}
+    mockEvents = {
+      addEventListener: jest.fn((key, listener) => {
+        mockListeners[key] = listener
+      }),
+      removeEventListener: jest.fn(key => {
+        delete mockListeners[key]
+      }),
+      requiresListenerPerKey: true
+    }
+    setPersistentEngine(mockStorage, mockEvents)
+  }
+
+  function setMockStorageKey(key: string, newValue: any): void {
+    mockStorage[key] = newValue
+    if (key in mockListeners) mockListeners[key]({ key, newValue })
+  }
+
+  function expectAllListenersRemoved(numListeners: number): void {
+    jest.runAllTimers()
+    expect(mockEvents.removeEventListener).toHaveBeenCalledTimes(numListeners)
+    expect(Object.keys(mockListeners)).toStrictEqual([])
+  }
+
+  beforeEach(() => {
+    jest.useFakeTimers()
+    useMockStorageEngine()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+    setPersistentEngine(localStorage, windowPersistentEvents)
+  })
+
+  it('store initial', () => {
+    let store = createPersistentStore('lang', 'en')
+    let removeListener = store.listen(() => {})
+
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(1)
+    expect(Object.keys(mockListeners)).toStrictEqual(['lang'])
+
+    setMockStorageKey('lang', 'de')
+
+    expect(mockStorage).toStrictEqual({ lang: 'de' })
+    expect(getValue(store)).toStrictEqual('de')
+
+    removeListener()
+    expectAllListenersRemoved(1)
+  })
+
+  it('store.set', () => {
+    let store = createPersistentStore('lang')
+    let removeListener = store.listen(() => {})
+    store.set('en')
+    store.set('de')
+    store.set('fr')
+
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(1)
+    expect(Object.keys(mockListeners)).toStrictEqual(['lang'])
+
+    setMockStorageKey('lang', 'es')
+
+    expect(mockStorage).toStrictEqual({ lang: 'es' })
+    expect(getValue(store)).toStrictEqual('es')
+
+    removeListener()
+    expectAllListenersRemoved(1)
+  })
+
+  it('map initial', () => {
+    let settings = createPersistentMap('settings:', {
+      lang: 'en',
+      theme: 'dark'
+    })
+    let removeListener = settings.listen(() => {})
+
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:lang',
+      'settings:theme'
+    ])
+
+    setMockStorageKey('settings:lang', 'es')
+    setMockStorageKey('settings:theme', 'blue')
+
+    expect(mockStorage).toStrictEqual({
+      'settings:lang': 'es',
+      'settings:theme': 'blue'
+    })
+    expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
+
+    removeListener()
+    expectAllListenersRemoved(2)
+  })
+
+  it('map.setKey', () => {
+    let settings = createPersistentMap('settings:')
+    let removeListener = settings.listen(() => {})
+
+    settings.setKey('lang', 'en')
+    settings.setKey('lang', 'de')
+    settings.setKey('theme', 'dark')
+    settings.setKey('theme', 'light')
+
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:lang',
+      'settings:theme'
+    ])
+
+    setMockStorageKey('settings:lang', 'es')
+    setMockStorageKey('settings:theme', 'blue')
+
+    expect(mockStorage).toStrictEqual({
+      'settings:lang': 'es',
+      'settings:theme': 'blue'
+    })
+    expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
+
+    removeListener()
+    expectAllListenersRemoved(2)
+  })
+
+  it('map.set', () => {
+    let settings = createPersistentMap('settings:')
+    let removeListener = settings.listen(() => {})
+    settings.set({
+      lang: 'en',
+      theme: 'dark'
+    })
+
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:lang',
+      'settings:theme'
+    ])
+
+    setMockStorageKey('settings:lang', 'es')
+    setMockStorageKey('settings:theme', 'blue')
+
+    expect(mockStorage).toStrictEqual({
+      'settings:lang': 'es',
+      'settings:theme': 'blue'
+    })
+    expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
+
+    removeListener()
+    expectAllListenersRemoved(2)
+  })
+
+  it('map does not listen to new keys', () => {
+    let settings = createPersistentMap('settings:')
+    settings.listen(() => {})
+    settings.set({
+      lang: 'en',
+      theme: 'dark'
+    })
+
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:lang',
+      'settings:theme'
+    ])
+
+    // Add key to storage that is not in settings but has the same prefix
+    setMockStorageKey('settings:admin', 'false')
+
+    expect(mockStorage).toStrictEqual({
+      'settings:lang': 'en',
+      'settings:theme': 'dark',
+      'settings:admin': 'false'
+    })
+    expect(getValue(settings)).toStrictEqual({ lang: 'en', theme: 'dark' })
+  })
 })

@@ -74,9 +74,15 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     }
     store.set(data)
     if (opts.listen !== false) {
-      eventsEngine.addEventListener(prefix, listener)
-      return () => {
-        eventsEngine.removeEventListener(prefix, listener)
+      if (eventsEngine.requiresListenerPerKey) {
+        return () => {
+          for (let key in store.value) {
+            eventsEngine.removeEventListener(prefix + key, listener)
+          }
+        }
+      } else {
+        eventsEngine.addEventListener(prefix, listener)
+        return () => eventsEngine.removeEventListener(prefix, listener)
       }
     }
   })
@@ -86,6 +92,12 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     if (typeof newValue === 'undefined') {
       delete storageEngine[prefix + key]
     } else {
+      if (
+        eventsEngine.requiresListenerPerKey &&
+        !(prefix + key in storageEngine)
+      ) {
+        eventsEngine.addEventListener(prefix + key, listener)
+      }
       storageEngine[prefix + key] = encode(newValue)
     }
     setKey(key, newValue)
