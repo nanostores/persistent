@@ -14,7 +14,7 @@ export interface PersistentListener {
 export interface PersistentEvents {
   addEventListener(key: string, callback: PersistentListener): void
   removeEventListener(key: string, callback: PersistentListener): void
-  requiresListenerPerKey?: boolean
+  perKey?: boolean
 }
 
 /**

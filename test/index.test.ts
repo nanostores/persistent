@@ -332,7 +332,7 @@ describe('requiresListenerPerKey', () => {
       removeEventListener: jest.fn(key => {
         delete mockListeners[key]
       }),
-      requiresListenerPerKey: true
+      perKey: true
     }
     setPersistentEngine(mockStorage, mockEvents)
   }
