@@ -471,7 +471,25 @@ describe('requiresListenerPerKey', () => {
     expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
-    expectAllListenersRemoved(2)
+  })
+
+  it('remove map key', () => {
+    let settings = createPersistentMap('settings:', {
+      lang: 'en',
+      theme: 'dark'
+    })
+    let removeListener = settings.listen(() => {})
+
+    settings.setKey('lang', undefined as unknown as string)
+
+    expect(mockEvents.removeEventListener).toHaveBeenCalledTimes(1)
+    expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:theme',
+      'settings:'
+    ])
+
+    removeListener()
+    expectAllListenersRemoved(1 + 2)
   })
 
   it('map does not listen to new keys', () => {
