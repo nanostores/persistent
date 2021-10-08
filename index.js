@@ -73,15 +73,12 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     }
     store.set(data)
     if (opts.listen !== false) {
-      if (eventsEngine.perKey) {
-        return () => {
-          for (let key in store.value) {
-            eventsEngine.removeEventListener(prefix + key, listener)
-          }
+      eventsEngine.addEventListener(prefix, listener)
+      return () => {
+        eventsEngine.removeEventListener(prefix, listener)
+        for (let key in store.value) {
+          eventsEngine.removeEventListener(prefix + key, listener)
         }
-      } else {
-        eventsEngine.addEventListener(prefix, listener)
-        return () => eventsEngine.removeEventListener(prefix, listener)
       }
     }
   })

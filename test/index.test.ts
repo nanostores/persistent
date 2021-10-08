@@ -400,10 +400,11 @@ describe('requiresListenerPerKey', () => {
     })
     let removeListener = settings.listen(() => {})
 
-    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(3)
     expect(Object.keys(mockListeners)).toStrictEqual([
       'settings:lang',
-      'settings:theme'
+      'settings:theme',
+      'settings:'
     ])
 
     setMockStorageKey('settings:lang', 'es')
@@ -416,7 +417,7 @@ describe('requiresListenerPerKey', () => {
     expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
-    expectAllListenersRemoved(2)
+    expectAllListenersRemoved(3)
   })
 
   it('map.setKey', () => {
@@ -428,8 +429,9 @@ describe('requiresListenerPerKey', () => {
     settings.setKey('theme', 'dark')
     settings.setKey('theme', 'light')
 
-    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(3)
     expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:',
       'settings:lang',
       'settings:theme'
     ])
@@ -444,7 +446,7 @@ describe('requiresListenerPerKey', () => {
     expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
-    expectAllListenersRemoved(2)
+    expectAllListenersRemoved(3)
   })
 
   it('map.set', () => {
@@ -455,8 +457,9 @@ describe('requiresListenerPerKey', () => {
       theme: 'dark'
     })
 
-    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(3)
     expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:',
       'settings:lang',
       'settings:theme'
     ])
@@ -471,6 +474,7 @@ describe('requiresListenerPerKey', () => {
     expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
+    expectAllListenersRemoved(3)
   })
 
   it('remove map key', () => {
@@ -500,8 +504,9 @@ describe('requiresListenerPerKey', () => {
       theme: 'dark'
     })
 
-    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(2)
+    expect(mockEvents.addEventListener).toHaveBeenCalledTimes(3)
     expect(Object.keys(mockListeners)).toStrictEqual([
+      'settings:',
       'settings:lang',
       'settings:theme'
     ])
