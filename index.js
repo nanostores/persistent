@@ -86,12 +86,16 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
   let setKey = store.setKey
   store.setKey = (key, newValue) => {
     if (typeof newValue === 'undefined') {
-      if (eventsEngine.perKey) {
+      if (opts.listen !== false && eventsEngine.perKey) {
         eventsEngine.removeEventListener(prefix + key, listener)
       }
       delete storageEngine[prefix + key]
     } else {
-      if (eventsEngine.perKey && !(prefix + key in storageEngine)) {
+      if (
+        opts.listen !== false &&
+        eventsEngine.perKey &&
+        !(key in store.value)
+      ) {
         eventsEngine.addEventListener(prefix + key, listener)
       }
       storageEngine[prefix + key] = encode(newValue)
