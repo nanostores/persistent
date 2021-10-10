@@ -1,10 +1,20 @@
 import {
   createPersistentStore,
   createPersistentMap,
-  setPersistentEngine
+  setPersistentEngine,
+  PersistentListener
 } from '../index.js'
 
-setPersistentEngine(localStorage, window)
+const windowPersistentEvents = {
+  addEventListener(key: string, listener: PersistentListener) {
+    window.addEventListener('storage', listener as unknown as EventListener)
+  },
+  removeEventListener(key: string, listener: PersistentListener) {
+    window.removeEventListener('storage', listener as unknown as EventListener)
+  }
+}
+
+setPersistentEngine(localStorage, windowPersistentEvents)
 
 let settings = createPersistentMap<{
   favorite?: string

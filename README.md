@@ -172,14 +172,17 @@ const storage = new Proxy({}, {
   }
 })
 
-// Must implement addEventListener and removeEventListener for `storage` event
+// Must implement addEventListener and removeEventListener
 const events = {
-  addEventListener (name, callback) {
+  addEventListener (key, callback) {
     listeners.push(callback)
   },
-  removeEventListener (name, callback) {
+  removeEventListener (key, callback) {
     listeners = listeners.filter(i => i !== callback)
-  }
+  },
+  // window dispatches "storage" events for any key change
+  // => One listener for all map keys is enough
+  perKey: false
 }
 
 setPersistentEngine(storage, events)
@@ -192,6 +195,8 @@ You need to specify bodies of `events.addEventListener`
 and `events.removeEventListener` only for environment with browser tabs
 or another reasons to storage synchronization.
 
+`perKey` makes `PersistentMap` add one listener for each of its keys, in addition to the one for all keys. This is relevant when events for key changes are only dispatched for keys that were specifically subscribed too.
+
 For TypeScript, we have `PersistentListener` and `PersistentEvent` types
 for events object.
 
@@ -199,10 +204,10 @@ for events object.
 import { PersistentListener, PersistentEvent } from '@nanostores/persistent'
 
 const events = {
-  addEventListener (name: 'storage', callback: PersistentListener) {
+  addEventListener (key: string, callback: PersistentListener) {
     …
   },
-  removeEventListener (name: 'storage', callback: PersistentListener) {
+  removeEventListener (key: string, callback: PersistentListener) {
     …
   }
 }

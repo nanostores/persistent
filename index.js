@@ -6,8 +6,16 @@ let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 if (typeof localStorage !== 'undefined') {
   storageEngine = localStorage
 }
+
 if (typeof window !== 'undefined') {
-  eventsEngine = window
+  eventsEngine = {
+    addEventListener(key, listener) {
+      window.addEventListener('storage', listener)
+    },
+    removeEventListener(key, listener) {
+      window.removeEventListener('storage', listener)
+    }
+  }
 }
 
 export function setPersistentEngine(storage, events) {
@@ -27,9 +35,9 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
   let store = createStore(() => {
     set(storageEngine[name] ? decode(storageEngine[name]) : initial)
     if (opts.listen !== false) {
-      eventsEngine.addEventListener('storage', listener)
+      eventsEngine.addEventListener(name, listener)
       return () => {
-        eventsEngine.removeEventListener('storage', listener)
+        eventsEngine.removeEventListener(name, listener)
       }
     }
   })
@@ -65,9 +73,12 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     }
     store.set(data)
     if (opts.listen !== false) {
-      eventsEngine.addEventListener('storage', listener)
+      eventsEngine.addEventListener(prefix, listener)
       return () => {
-        eventsEngine.removeEventListener('storage', listener)
+        eventsEngine.removeEventListener(prefix, listener)
+        for (let key in store.value) {
+          eventsEngine.removeEventListener(prefix + key, listener)
+        }
       }
     }
   })
@@ -75,8 +86,18 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
   let setKey = store.setKey
   store.setKey = (key, newValue) => {
     if (typeof newValue === 'undefined') {
+      if (opts.listen !== false && eventsEngine.perKey) {
+        eventsEngine.removeEventListener(prefix + key, listener)
+      }
       delete storageEngine[prefix + key]
     } else {
+      if (
+        opts.listen !== false &&
+        eventsEngine.perKey &&
+        !(key in store.value)
+      ) {
+        eventsEngine.addEventListener(prefix + key, listener)
+      }
       storageEngine[prefix + key] = encode(newValue)
     }
     setKey(key, newValue)
@@ -90,10 +111,10 @@ let testListeners = []
 
 export function useTestStorageEngine() {
   setPersistentEngine(testStorage, {
-    addEventListener(event, cb) {
+    addEventListener(key, cb) {
       testListeners.push(cb)
     },
-    removeEventListener(event, cb) {
+    removeEventListener(key, cb) {
       testListeners = testListeners.filter(i => i !== cb)
     }
   })
