@@ -7,7 +7,7 @@ A tiny persistent store for [Nano Stores](https://github.com/nanostores/nanostor
 state manager. It stores data in `localStorage` and synchronize changes between
 browser tabs.
 
-* **Small.** from 220 bytes (minified and gzipped).
+* **Small.** from 235 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
@@ -195,7 +195,9 @@ You need to specify bodies of `events.addEventListener`
 and `events.removeEventListener` only for environment with browser tabs
 or another reasons to storage synchronization.
 
-`perKey` makes `PersistentMap` add one listener for each of its keys, in addition to the one for all keys. This is relevant when events for key changes are only dispatched for keys that were specifically subscribed too.
+`perKey` makes `PersistentMap` add one listener for each of its keys,
+in addition to the one for all keys. This is relevant when events for key
+changes are only dispatched for keys that were specifically subscribed too.
 
 For TypeScript, we have `PersistentListener` and `PersistentEvent` types
 for events object.
