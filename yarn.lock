@@ -4066,10 +4066,9 @@ nanospinner@^0.3.0:
   dependencies:
     picocolors "^0.2.0"
 
-nanostores@^0.4.9:
+nanostores@nanostores/nanostores#next:
   version "0.4.9"
-  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.4.9.tgz#1d3af043731dbaf0f74365067759f5e1ca707364"
-  integrity sha512-B1l3090TtSHmuGzcgKWWT3vnrTzkrJLRAUT2lfXBrJ4OenGxsCiymYH36n+TYJgEeiXQdcD2+TYzTJpB4Lq9GA==
+  resolved "https://codeload.github.com/nanostores/nanostores/tar.gz/b17a9ca9ea6af3e82ca9f8cd431a12b9f202990d"
 
 natural-compare@^1.4.0:
   version "1.4.0"

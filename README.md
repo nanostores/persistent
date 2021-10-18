@@ -7,16 +7,16 @@ A tiny persistent store for [Nano Stores](https://github.com/nanostores/nanostor
 state manager. It stores data in `localStorage` and synchronize changes between
 browser tabs.
 
-* **Small.** from 294 bytes (minified and gzipped).
+* **Small.** from 300 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
   `localStorage` can be switched to another storage.
 
 ```ts
-import { createPersistentStore } from '@nanostores/persistent'
+import { persistentAtom } from '@nanostores/persistent'
 
-export const locale = createPersistentStore('locale', 'en')
+export const locale = persistentAtom('locale', 'en')
 ```
 
 <a href="https://evilmartians.com/?utm_source=logux-client">
@@ -46,9 +46,9 @@ The store with primitive value keep the whole data in the single `localStorage`
 key.
 
 ```ts
-import { createPersistentStore } from '@nanostores/persistent'
+import { persistentAtom } from '@nanostores/persistent'
 
-export const shoppingCart = createPersistentStore<Product[]>('cart', [])
+export const shoppingCart = persistentAtom<Product[]>('cart', [])
 ```
 
 This store will keep it’s value `localStorage` in `cart` key.
@@ -73,14 +73,14 @@ There is a special key-value map store. It keep each key
 in separated `localStorage` key.
 
 ```ts
-import { createPersistentMap } from '@nanostores/persistent'
+import { persistentMap } from '@nanostores/persistent'
 
 export type SettingsValue = {
   sidebar: 'show' | 'hide',
   theme: 'dark' | 'light' | 'auto'
 }
 
-export const settings = createPersistentMap('settings:', {
+export const settings = persistentMap('settings:', {
   sidebar: 'show',
   theme: 'auto'
 })
@@ -102,9 +102,9 @@ By default, store’s changes will be synchronized between browser tabs.
 There is a `listen` option to disable synchronization.
 
 ```ts
-import { createPersistentStore } from '@nanostores/persistent'
+import { persistentAtom } from '@nanostores/persistent'
 
-export const draft = createPersistentStore('draft', '', { listen: false })
+export const draft = persistentAtom('draft', '', { listen: false })
 ```
 
 
@@ -114,9 +114,9 @@ export const draft = createPersistentStore('draft', '', { listen: false })
 or after getting it from the persistent storage.
 
 ```ts
-import { createPersistentStore } from '@nanostores/persistent'
+import { persistentAtom } from '@nanostores/persistent'
 
-export const draft = createPersistentStore('draft', [], {
+export const draft = persistentAtom('draft', [], {
   encode (value) {
     return JSON.stringify(value)
   },
@@ -249,7 +249,7 @@ afterEach(() => {
 
 it('listens for changes', () => {
   setTestStorageKey('settings:locale', 'ru')
-  expect(getValue(settings)).toEqual({ locale: 'ru' })
+  expect(settings.get()).toEqual({ locale: 'ru' })
 })
 
 it('changes storage', () => {

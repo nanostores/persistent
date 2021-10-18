@@ -1,17 +1,17 @@
-import { jest } from '@jest/globals'
-import { cleanStores, MapStore, getValue, WritableStore } from 'nanostores'
+import { cleanStores, MapStore, WritableAtom } from 'nanostores'
 import { delay } from 'nanodelay'
+import { jest } from '@jest/globals'
 
 import {
-  createPersistentStore,
   useTestStorageEngine,
-  createPersistentMap,
+  persistentMap,
   setPersistentEngine,
   PersistentListener,
   setTestStorageKey,
   cleanTestStorage,
+  PersistentEvents,
   getTestStorage,
-  PersistentEvents
+  persistentAtom
 } from '../index.js'
 
 afterEach(() => {
@@ -45,14 +45,14 @@ describe('map', () => {
 
   it('loads data from localStorage', () => {
     localStorage.setItem('a:one', '1')
-    map = createPersistentMap<{ one?: string; two?: string }>('a:', {
+    map = persistentMap<{ one?: string; two?: string }>('a:', {
       two: '2'
     })
-    expect(getValue(map)).toEqual({ one: '1', two: '2' })
+    expect(map.get()).toEqual({ one: '1', two: '2' })
   })
 
   it('saves to localStorage', () => {
-    map = createPersistentMap('b:', {})
+    map = persistentMap('b:', {})
 
     let events: object[] = []
     map.listen(value => {
@@ -85,7 +85,7 @@ describe('map', () => {
   })
 
   it('listens for other tabs', () => {
-    map = createPersistentMap('c:', {})
+    map = persistentMap('c:', {})
 
     let events: object[] = []
     map.listen(value => {
@@ -95,14 +95,14 @@ describe('map', () => {
     changeLocalStorage('c:one', '1')
 
     expect(events).toEqual([{ one: '1' }])
-    expect(getValue(map)).toEqual({ one: '1' })
+    expect(map.get()).toEqual({ one: '1' })
 
     changeLocalStorage('c:one', null)
-    expect(getValue(map)).toEqual({ one: undefined })
+    expect(map.get()).toEqual({ one: undefined })
   })
 
   it('listens for local storage cleaning', () => {
-    map = createPersistentMap('c:', {})
+    map = persistentMap('c:', {})
 
     let events: object[] = []
     map.listen(value => {
@@ -120,11 +120,11 @@ describe('map', () => {
       { two: '2' },
       {}
     ])
-    expect(getValue(map)).toEqual({})
+    expect(map.get()).toEqual({})
   })
 
   it('ignores other tabs on requets', () => {
-    map = createPersistentMap('c2:', {}, { listen: false })
+    map = persistentMap('c2:', {}, { listen: false })
 
     let events: object[] = []
     map.listen(value => {
@@ -134,11 +134,11 @@ describe('map', () => {
     changeLocalStorage('c2:one', '1')
 
     expect(events).toEqual([])
-    expect(getValue(map)).toEqual({})
+    expect(map.get()).toEqual({})
   })
 
   it('saves to localStorage in disabled state', () => {
-    map = createPersistentMap('d:', {})
+    map = persistentMap('d:', {})
 
     map.setKey('one', '1')
     expect(localStorage['d:one']).toBe('1')
@@ -149,7 +149,7 @@ describe('map', () => {
 })
 
 describe('store', () => {
-  let store: WritableStore<string | undefined>
+  let store: WritableAtom<string | undefined>
 
   afterEach(() => {
     cleanStores(store)
@@ -157,18 +157,18 @@ describe('store', () => {
 
   it('loads data from localStorage', () => {
     localStorage.setItem('a', '1')
-    store = createPersistentStore('a', '2')
-    expect(getValue(store)).toBe('1')
+    store = persistentAtom('a', '2')
+    expect(store.get()).toBe('1')
   })
 
   it('saves to localStorage', () => {
-    store = createPersistentStore<string | undefined>('b')
+    store = persistentAtom<string | undefined>('b')
 
     let events: (string | undefined)[] = []
     store.listen(value => {
       events.push(value)
     })
-    expect(getValue(store)).toBeUndefined()
+    expect(store.get()).toBeUndefined()
 
     store.set('1')
     expect(localStorage.__STORE__).toEqual({ b: '1' })
@@ -180,7 +180,7 @@ describe('store', () => {
   })
 
   it('listens for other tabs', () => {
-    store = createPersistentStore('c')
+    store = persistentAtom('c')
 
     let events: (string | undefined)[] = []
     store.listen(value => {
@@ -190,14 +190,14 @@ describe('store', () => {
     changeLocalStorage('c', '1')
 
     expect(events).toEqual(['1'])
-    expect(getValue(store)).toBe('1')
+    expect(store.get()).toBe('1')
 
     changeLocalStorage('c', null)
-    expect(getValue(store)).toBeUndefined()
+    expect(store.get()).toBeUndefined()
   })
 
   it('listens for key cleaning', () => {
-    store = createPersistentStore('c')
+    store = persistentAtom('c')
 
     let events: (string | undefined)[] = []
     store.listen(value => {
@@ -209,11 +209,11 @@ describe('store', () => {
     window.dispatchEvent(new StorageEvent('storage', {}))
 
     expect(events).toEqual(['init', undefined])
-    expect(getValue(store)).toBeUndefined()
+    expect(store.get()).toBeUndefined()
   })
 
   it('ignores other tabs on requets', () => {
-    store = createPersistentStore('c2', undefined, { listen: false })
+    store = persistentAtom('c2', undefined, { listen: false })
 
     let events: (string | undefined)[] = []
     store.listen(value => {
@@ -223,11 +223,11 @@ describe('store', () => {
     changeLocalStorage('c2', '1')
 
     expect(events).toEqual([])
-    expect(getValue(store)).toBeUndefined()
+    expect(store.get()).toBeUndefined()
   })
 
   it('saves to localStorage in disabled state', () => {
-    store = createPersistentStore('d')
+    store = persistentAtom('d')
 
     store.set('1')
     expect(localStorage.d).toBe('1')
@@ -239,7 +239,7 @@ describe('store', () => {
 
 describe('engine', () => {
   let map: MapStore<{ one?: string; two?: string }>
-  let store: WritableStore<string | undefined>
+  let store: WritableAtom<string | undefined>
 
   afterEach(() => {
     cleanStores(map, store)
@@ -259,11 +259,11 @@ describe('engine', () => {
     }
     setPersistentEngine(storage, events)
 
-    store = createPersistentStore('z')
+    store = persistentAtom('z')
     store.listen(() => {})
     store.set('1')
 
-    map = createPersistentMap('z:')
+    map = persistentMap('z:')
     map.listen(() => {})
     map.setKey('one', '2')
 
@@ -278,8 +278,8 @@ describe('engine', () => {
     storage['z:one'] = '2b'
     for (let i of listeners) i({ key: 'z:one', newValue: '2b' })
 
-    expect(getValue(store)).toBe('1a')
-    expect(getValue(map)).toEqual({ one: '2b' })
+    expect(store.get()).toBe('1a')
+    expect(map.get()).toEqual({ one: '2b' })
 
     store.set(undefined)
     map.set({})
@@ -289,14 +289,14 @@ describe('engine', () => {
 
 describe('custom encoding', () => {
   let map: MapStore<{ locale: string[] }>
-  let store: WritableStore<string[]>
+  let store: WritableAtom<string[]>
 
   afterEach(() => {
     cleanStores(map, store)
   })
 
   it('supports by store', () => {
-    store = createPersistentStore('locale', ['en', 'US'], {
+    store = persistentAtom('locale', ['en', 'US'], {
       encode: JSON.stringify,
       decode: JSON.parse
     })
@@ -308,12 +308,12 @@ describe('custom encoding', () => {
 
     changeLocalStorage('locale', '["fr","CA"]')
 
-    expect(getValue(store)).toEqual(['fr', 'CA'])
+    expect(store.get()).toEqual(['fr', 'CA'])
     expect(localStorage.getItem('locale')).toBe('["fr","CA"]')
   })
 
   it('supports by map', () => {
-    map = createPersistentMap(
+    map = persistentMap(
       'settings:',
       { locale: ['en', 'US'] },
       { encode: JSON.stringify, decode: JSON.parse }
@@ -326,13 +326,13 @@ describe('custom encoding', () => {
 
     changeLocalStorage('settings:locale', '["fr","CA"]')
 
-    expect(getValue(map).locale).toEqual(['fr', 'CA'])
+    expect(map.get().locale).toEqual(['fr', 'CA'])
     expect(localStorage.getItem('settings:locale')).toBe('["fr","CA"]')
   })
 })
 
 it('has test API', async () => {
-  let settings = createPersistentMap<{ lang: string }>('settings:', {
+  let settings = persistentMap<{ lang: string }>('settings:', {
     lang: 'en'
   })
   useTestStorageEngine()
@@ -350,11 +350,11 @@ it('has test API', async () => {
 
   setTestStorageKey('settings:lang', 'uk')
   expect(getTestStorage()).toEqual({ 'settings:lang': 'uk' })
-  expect(getValue(settings)).toEqual({ lang: 'uk' })
+  expect(settings.get()).toEqual({ lang: 'uk' })
 
   cleanTestStorage()
   expect(Object.keys(getTestStorage())).toHaveLength(0)
-  expect(getValue(settings)).toEqual({})
+  expect(settings.get()).toEqual({})
 
   unbind()
   await delay(1001)
@@ -403,7 +403,7 @@ describe('per key listeners', () => {
   })
 
   it('store initial', () => {
-    let store = createPersistentStore('lang', 'en')
+    let store = persistentAtom('lang', 'en')
     let removeListener = store.listen(() => {})
 
     expect(mockEvents.addEventListener).toHaveBeenCalledTimes(1)
@@ -412,14 +412,14 @@ describe('per key listeners', () => {
     setMockStorageKey('lang', 'de')
 
     expect(mockStorage).toStrictEqual({ lang: 'de' })
-    expect(getValue(store)).toBe('de')
+    expect(store.get()).toBe('de')
 
     removeListener()
     expectAllListenersRemoved(1)
   })
 
   it('store.set', () => {
-    let store = createPersistentStore('lang')
+    let store = persistentAtom('lang')
     let removeListener = store.listen(() => {})
     store.set('en')
     store.set('de')
@@ -431,14 +431,14 @@ describe('per key listeners', () => {
     setMockStorageKey('lang', 'es')
 
     expect(mockStorage).toStrictEqual({ lang: 'es' })
-    expect(getValue(store)).toBe('es')
+    expect(store.get()).toBe('es')
 
     removeListener()
     expectAllListenersRemoved(1)
   })
 
   it('map initial', () => {
-    let settings = createPersistentMap('settings:', {
+    let settings = persistentMap('settings:', {
       lang: 'en',
       theme: 'dark'
     })
@@ -458,14 +458,14 @@ describe('per key listeners', () => {
       'settings:lang': 'es',
       'settings:theme': 'blue'
     })
-    expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
+    expect(settings.get()).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
     expectAllListenersRemoved(3)
   })
 
   it('map.setKey', () => {
-    let settings = createPersistentMap('settings:')
+    let settings = persistentMap('settings:')
     let removeListener = settings.listen(() => {})
 
     settings.setKey('lang', 'en')
@@ -487,14 +487,14 @@ describe('per key listeners', () => {
       'settings:lang': 'es',
       'settings:theme': 'blue'
     })
-    expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
+    expect(settings.get()).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
     expectAllListenersRemoved(3)
   })
 
   it('map.set', () => {
-    let settings = createPersistentMap('settings:')
+    let settings = persistentMap('settings:')
     let removeListener = settings.listen(() => {})
     settings.set({
       lang: 'en',
@@ -515,14 +515,14 @@ describe('per key listeners', () => {
       'settings:lang': 'es',
       'settings:theme': 'blue'
     })
-    expect(getValue(settings)).toStrictEqual({ lang: 'es', theme: 'blue' })
+    expect(settings.get()).toStrictEqual({ lang: 'es', theme: 'blue' })
 
     removeListener()
     expectAllListenersRemoved(3)
   })
 
   it('remove map key', () => {
-    let settings = createPersistentMap('settings:', {
+    let settings = persistentMap('settings:', {
       lang: 'en',
       theme: 'dark'
     })
@@ -541,7 +541,7 @@ describe('per key listeners', () => {
   })
 
   it('map does not listen to new keys', () => {
-    let settings = createPersistentMap('settings:')
+    let settings = persistentMap('settings:')
     settings.listen(() => {})
     settings.set({
       lang: 'en',
@@ -563,6 +563,6 @@ describe('per key listeners', () => {
       'settings:theme': 'dark',
       'settings:admin': 'false'
     })
-    expect(getValue(settings)).toStrictEqual({ lang: 'en', theme: 'dark' })
+    expect(settings.get()).toStrictEqual({ lang: 'en', theme: 'dark' })
   })
 })

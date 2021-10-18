@@ -1,13 +1,9 @@
-import {
-  createPersistentStore,
-  createPersistentMap,
-  setPersistentEngine
-} from '../index.js'
+import { setPersistentEngine, persistentAtom, persistentMap } from '../index.js'
 
 // THROWS '{ code: string; }' does not satisfy the constraint 'string'
-let lang = createPersistentStore<{ code: string }>('locale', { code: 'ru' })
+let lang = persistentAtom<{ code: string }>('locale', { code: 'ru' })
 
-let settings = createPersistentMap<{
+let settings = persistentMap<{
   favorite?: string
   theme: 'light' | 'dark'
 }>('settings:', {
@@ -26,7 +22,7 @@ settings.setKey('option', '1')
 // THROWS 'undefined' is not assignable to parameter of type '"light" | "dark"'
 settings.setKey('theme', undefined)
 
-let count = createPersistentStore<number>('count', 0, {
+let count = persistentAtom<number>('count', 0, {
   encode(origin) {
     return `${origin}`
   },

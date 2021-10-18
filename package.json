@@ -57,7 +57,7 @@
     "jest-localstorage-mock": "^2.4.18",
     "lint-staged": "^11.2.3",
     "nanodelay": "^2.0.2",
-    "nanostores": "^0.4.9",
+    "nanostores": "nanostores/nanostores#next",
     "prettier": "^2.4.1",
     "simple-git-hooks": "^2.6.1",
     "size-limit": "^6.0.3",
@@ -125,16 +125,16 @@
     {
       "name": "Store",
       "import": {
-        "./index.js": "{ createPersistentStore }"
+        "./index.js": "{ persistentAtom }"
       },
-      "limit": "294 B"
+      "limit": "300 B"
     },
     {
       "name": "Map",
       "import": {
-        "./index.js": "{ createPersistentMap }"
+        "./index.js": "{ persistentMap }"
       },
-      "limit": "395 B"
+      "limit": "401 B"
     }
   ],
   "clean-publish": {

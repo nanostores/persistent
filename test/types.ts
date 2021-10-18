@@ -1,8 +1,8 @@
 import {
-  createPersistentStore,
-  createPersistentMap,
   setPersistentEngine,
-  PersistentListener
+  PersistentListener,
+  persistentAtom,
+  persistentMap
 } from '../index.js'
 
 const windowPersistentEvents = {
@@ -16,7 +16,7 @@ const windowPersistentEvents = {
 
 setPersistentEngine(localStorage, windowPersistentEvents)
 
-let settings = createPersistentMap<{
+let settings = persistentMap<{
   favorite?: string
   theme: 'light' | 'dark'
 }>('settings:', {
@@ -31,7 +31,7 @@ settings.setKey('theme', 'dark')
 settings.setKey('favorite', '1')
 settings.setKey('favorite', undefined)
 
-let count = createPersistentStore<number>('count', 0, {
+let count = persistentAtom<number>('count', 0, {
   encode(origin) {
     return `${origin}`
   },

@@ -1,4 +1,4 @@
-import { MapStore, WritableStore } from 'nanostores'
+import { MapStore, WritableAtom } from 'nanostores'
 
 export type PersistentStore = Record<string, string>
 
@@ -55,9 +55,9 @@ interface PersistentMapFactory {
    * Keep key-value data in localStorage.
    *
    * ```ts
-   * import { createPersistentMap } from '@nanostores/persistent'
+   * import { persistentMap } from '@nanostores/persistent'
    *
-   * export const settings = createPersistentMap<{
+   * export const settings = persistentMap<{
    *   theme: 'dark' | 'light'
    *   favorite: string
    * }>('settings:', { theme: 'light' })
@@ -80,18 +80,18 @@ interface PersistentMapFactory {
   ): MapStore<Value>
 }
 
-export const createPersistentMap: PersistentMapFactory
+export const persistentMap: PersistentMapFactory
 
-interface PersistentStoreFactory {
+interface PersistentAtomFactory {
   /**
    * Store a value in localStorage.
    *
-   * For key-value objects use {@link createPersistentMap}.
+   * For key-value objects use {@link persistentMap}.
    *
    * ```ts
-   * import { createPersistentStore } from '@nanostores/persistent'
+   * import { persistentAtom } from '@nanostores/persistent'
    *
-   * export const locale = createPersistentStore<string>('locale', 'en')
+   * export const locale = persistentAtom<string>('locale', 'en')
    * ```
    *
    * @param name Key name in localStorage.
@@ -103,15 +103,15 @@ interface PersistentStoreFactory {
     name: string,
     initial?: Value,
     opts?: PersistentSimpleOptions
-  ): WritableStore<Value>
+  ): WritableAtom<Value>
   <Value>(
     name: string,
     initial: Value,
     opts: PersistentSimpleOptions & PersistentEncoder<Value>
-  ): WritableStore<Value>
+  ): WritableAtom<Value>
 }
 
-export const createPersistentStore: PersistentStoreFactory
+export const persistentAtom: PersistentAtomFactory
 
 /**
  * Enable fake storage to test persistent stores.
@@ -146,7 +146,7 @@ export function useTestStorageEngine(): void
  *
  * it('listens for changes', () => {
  *   setTestStorageKey('settings:locale', 'ru')
- *   expect(getValue(settings)).toEqual({ locale: 'ru' })
+ *   expect(settings.get()).toEqual({ locale: 'ru' })
  * })
  * ```
  *

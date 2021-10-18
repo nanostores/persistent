@@ -2,9 +2,9 @@
  * @jest-environment node
  */
 
-import { cleanStores, MapStore, getValue, WritableStore } from 'nanostores'
+import { cleanStores, MapStore, WritableAtom } from 'nanostores'
 
-import { createPersistentStore, createPersistentMap } from '../index.js'
+import { persistentAtom, persistentMap } from '../index.js'
 
 describe('map', () => {
   let map: MapStore<{ one?: string; two?: string }>
@@ -14,26 +14,26 @@ describe('map', () => {
   })
 
   it('works without localStorage', () => {
-    map = createPersistentMap<{ one?: string; two?: string }>('a:', {
+    map = persistentMap<{ one?: string; two?: string }>('a:', {
       one: '1'
     })
     map.listen(() => {})
     map.setKey('two', '2')
-    expect(getValue(map)).toEqual({ one: '1', two: '2' })
+    expect(map.get()).toEqual({ one: '1', two: '2' })
   })
 })
 
 describe('store', () => {
-  let store: WritableStore<string | undefined>
+  let store: WritableAtom<string | undefined>
 
   afterEach(() => {
     cleanStores(store)
   })
 
   it('works without localStorage', () => {
-    store = createPersistentStore('a', '1')
+    store = persistentAtom('a', '1')
     store.listen(() => {})
     store.set('2')
-    expect(getValue(store)).toBe('2')
+    expect(store.get()).toBe('2')
   })
 })

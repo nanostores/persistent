@@ -1,4 +1,4 @@
-import { createMap, createStore } from 'nanostores'
+import { map, atom, onMount } from 'nanostores'
 
 let identity = a => a
 let storageEngine = {}
@@ -23,7 +23,7 @@ export function setPersistentEngine(storage, events) {
   eventsEngine = events
 }
 
-export function createPersistentStore(name, initial = undefined, opts = {}) {
+export function persistentAtom(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
   function listener(e) {
@@ -34,15 +34,7 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
     }
   }
 
-  let store = createStore(() => {
-    set(storageEngine[name] ? decode(storageEngine[name]) : initial)
-    if (opts.listen !== false) {
-      eventsEngine.addEventListener(name, listener)
-      return () => {
-        eventsEngine.removeEventListener(name, listener)
-      }
-    }
-  })
+  let store = atom(initial)
 
   let set = store.set
   store.set = newValue => {
@@ -54,10 +46,20 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
     set(newValue)
   }
 
+  onMount(store, () => {
+    set(storageEngine[name] ? decode(storageEngine[name]) : initial)
+    if (opts.listen !== false) {
+      eventsEngine.addEventListener(name, listener)
+      return () => {
+        eventsEngine.removeEventListener(name, listener)
+      }
+    }
+  })
+
   return store
 }
 
-export function createPersistentMap(prefix, initial = {}, opts = {}) {
+export function persistentMap(prefix, initial = {}, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
   function listener(e) {
@@ -72,24 +74,7 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     }
   }
 
-  let store = createMap(() => {
-    let data = { ...initial }
-    for (let key in storageEngine) {
-      if (key.startsWith(prefix)) {
-        data[key.slice(prefix.length)] = decode(storageEngine[key])
-      }
-    }
-    store.set(data)
-    if (opts.listen !== false) {
-      eventsEngine.addEventListener(prefix, listener)
-      return () => {
-        eventsEngine.removeEventListener(prefix, listener)
-        for (let key in store.value) {
-          eventsEngine.removeEventListener(prefix + key, listener)
-        }
-      }
-    }
-  })
+  let store = map()
 
   let setKey = store.setKey
   store.setKey = (key, newValue) => {
@@ -110,6 +95,25 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
     }
     setKey(key, newValue)
   }
+
+  onMount(store, () => {
+    let data = { ...initial }
+    for (let key in storageEngine) {
+      if (key.startsWith(prefix)) {
+        data[key.slice(prefix.length)] = decode(storageEngine[key])
+      }
+    }
+    store.set(data)
+    if (opts.listen !== false) {
+      eventsEngine.addEventListener(prefix, listener)
+      return () => {
+        eventsEngine.removeEventListener(prefix, listener)
+        for (let key in store.value) {
+          eventsEngine.removeEventListener(prefix + key, listener)
+        }
+      }
+    }
+  })
 
   return store
 }
