@@ -34,6 +34,6 @@ describe('store', () => {
     store = createPersistentStore('a', '1')
     store.listen(() => {})
     store.set('2')
-    expect(getValue(store)).toEqual('2')
+    expect(getValue(store)).toBe('2')
   })
 })

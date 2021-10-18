@@ -116,7 +116,7 @@ describe('map', () => {
     map = createPersistentMap('d:', {})
 
     map.setKey('one', '1')
-    expect(localStorage['d:one']).toEqual('1')
+    expect(localStorage['d:one']).toBe('1')
 
     map.setKey('one', undefined)
     expect(localStorage['d:one']).toBeUndefined()
@@ -133,7 +133,7 @@ describe('store', () => {
   it('loads data from localStorage', () => {
     localStorage.setItem('a', '1')
     store = createPersistentStore('a', '2')
-    expect(getValue(store)).toEqual('1')
+    expect(getValue(store)).toBe('1')
   })
 
   it('saves to localStorage', () => {
@@ -165,7 +165,7 @@ describe('store', () => {
     changeLocalStorage('c', '1')
 
     expect(events).toEqual(['1'])
-    expect(getValue(store)).toEqual('1')
+    expect(getValue(store)).toBe('1')
   })
 
   it('ignores other tabs on requets', () => {
@@ -186,7 +186,7 @@ describe('store', () => {
     store = createPersistentStore('d')
 
     store.set('1')
-    expect(localStorage.d).toEqual('1')
+    expect(localStorage.d).toBe('1')
 
     store.set(undefined)
     expect(localStorage.d).toBeUndefined()
@@ -234,7 +234,7 @@ describe('engine', () => {
     storage['z:one'] = '2b'
     for (let i of listeners) i({ key: 'z:one', newValue: '2b' })
 
-    expect(getValue(store)).toEqual('1a')
+    expect(getValue(store)).toBe('1a')
     expect(getValue(map)).toEqual({ one: '2b' })
 
     store.set(undefined)
@@ -260,12 +260,12 @@ describe('custom encoding', () => {
     store.listen(() => {})
     store.set(['ru', 'RU'])
 
-    expect(localStorage.getItem('locale')).toEqual('["ru","RU"]')
+    expect(localStorage.getItem('locale')).toBe('["ru","RU"]')
 
     changeLocalStorage('locale', '["fr","CA"]')
 
     expect(getValue(store)).toEqual(['fr', 'CA'])
-    expect(localStorage.getItem('locale')).toEqual('["fr","CA"]')
+    expect(localStorage.getItem('locale')).toBe('["fr","CA"]')
   })
 
   it('supports by map', () => {
@@ -278,12 +278,12 @@ describe('custom encoding', () => {
     map.listen(() => {})
     map.setKey('locale', ['ru', 'RU'])
 
-    expect(localStorage.getItem('settings:locale')).toEqual('["ru","RU"]')
+    expect(localStorage.getItem('settings:locale')).toBe('["ru","RU"]')
 
     changeLocalStorage('settings:locale', '["fr","CA"]')
 
     expect(getValue(map).locale).toEqual(['fr', 'CA'])
-    expect(localStorage.getItem('settings:locale')).toEqual('["fr","CA"]')
+    expect(localStorage.getItem('settings:locale')).toBe('["fr","CA"]')
   })
 })
 
@@ -368,7 +368,7 @@ describe('requiresListenerPerKey', () => {
     setMockStorageKey('lang', 'de')
 
     expect(mockStorage).toStrictEqual({ lang: 'de' })
-    expect(getValue(store)).toStrictEqual('de')
+    expect(getValue(store)).toBe('de')
 
     removeListener()
     expectAllListenersRemoved(1)
@@ -387,7 +387,7 @@ describe('requiresListenerPerKey', () => {
     setMockStorageKey('lang', 'es')
 
     expect(mockStorage).toStrictEqual({ lang: 'es' })
-    expect(getValue(store)).toStrictEqual('es')
+    expect(getValue(store)).toBe('es')
 
     removeListener()
     expectAllListenersRemoved(1)
