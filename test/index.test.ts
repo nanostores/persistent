@@ -31,7 +31,7 @@ function clone(data: object): object {
   return JSON.parse(JSON.stringify(data))
 }
 
-function changeLocalStorage(key: string, newValue: string): void {
+function changeLocalStorage(key: string, newValue: string | null): void {
   localStorage[key] = newValue
   window.dispatchEvent(new StorageEvent('storage', { key, newValue }))
 }
@@ -96,6 +96,9 @@ describe('map', () => {
 
     expect(events).toEqual([{ one: '1' }])
     expect(getValue(map)).toEqual({ one: '1' })
+
+    changeLocalStorage('c:one', null)
+    expect(getValue(map)).toEqual({ one: undefined })
   })
 
   it('listens for local storage cleaning', () => {
@@ -188,9 +191,12 @@ describe('store', () => {
 
     expect(events).toEqual(['1'])
     expect(getValue(store)).toBe('1')
+
+    changeLocalStorage('c', null)
+    expect(getValue(store)).toBeUndefined()
   })
 
-  it('listens for local storage cleaning', () => {
+  it('listens for key cleaning', () => {
     store = createPersistentStore('c')
 
     let events: (string | undefined)[] = []
