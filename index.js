@@ -27,7 +27,9 @@ export function createPersistentStore(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
   function listener(e) {
-    if (e.key === name) {
+    if (!e.key) {
+      store.set(undefined)
+    } else if (e.key === name) {
       store.set(decode(e.newValue))
     }
   }
@@ -59,7 +61,9 @@ export function createPersistentMap(prefix, initial = {}, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
   function listener(e) {
-    if (e.key.startsWith(prefix)) {
+    if (!e.key) {
+      store.set({})
+    } else if (e.key.startsWith(prefix)) {
       store.setKey(e.key.slice(prefix.length), decode(e.newValue))
     }
   }

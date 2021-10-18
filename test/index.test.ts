@@ -98,6 +98,28 @@ describe('map', () => {
     expect(getValue(map)).toEqual({ one: '1' })
   })
 
+  it('listens for local storage cleaning', () => {
+    map = createPersistentMap('c:', {})
+
+    let events: object[] = []
+    map.listen(value => {
+      events.push(clone(value))
+    })
+    map.setKey('one', '1')
+    map.setKey('two', '2')
+
+    localStorage.clear()
+    window.dispatchEvent(new StorageEvent('storage', {}))
+
+    expect(events).toEqual([
+      { one: '1' },
+      { one: '1', two: '2' },
+      { two: '2' },
+      {}
+    ])
+    expect(getValue(map)).toEqual({})
+  })
+
   it('ignores other tabs on requets', () => {
     map = createPersistentMap('c2:', {}, { listen: false })
 
@@ -166,6 +188,22 @@ describe('store', () => {
 
     expect(events).toEqual(['1'])
     expect(getValue(store)).toBe('1')
+  })
+
+  it('listens for local storage cleaning', () => {
+    store = createPersistentStore('c')
+
+    let events: (string | undefined)[] = []
+    store.listen(value => {
+      events.push(value)
+    })
+    store.set('init')
+
+    localStorage.clear()
+    window.dispatchEvent(new StorageEvent('storage', {}))
+
+    expect(events).toEqual(['init', undefined])
+    expect(getValue(store)).toBeUndefined()
   })
 
   it('ignores other tabs on requets', () => {
@@ -317,7 +355,7 @@ it('has test API', async () => {
   expect(Object.keys(getTestStorage())).toHaveLength(0)
 })
 
-describe('requiresListenerPerKey', () => {
+describe('per key listeners', () => {
   let mockStorage: Record<string, any>
   let mockListeners: Record<string, PersistentListener>
   let mockEvents: PersistentEvents
