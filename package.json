@@ -127,14 +127,14 @@
       "import": {
         "./index.js": "{ createPersistentStore }"
       },
-      "limit": "285 B"
+      "limit": "294 B"
     },
     {
       "name": "Map",
       "import": {
         "./index.js": "{ createPersistentMap }"
       },
-      "limit": "378 B"
+      "limit": "395 B"
     }
   ],
   "clean-publish": {
