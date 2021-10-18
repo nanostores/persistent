@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.4.1
+* Fixed `localStorage.removeItem()` support (by Nikolay Govorov).
+* Fixed `localStorage.clear()` support.
+
 ## 0.4
 * Added support for per-key listeners in custom engine (by Michael Brunner).
 
