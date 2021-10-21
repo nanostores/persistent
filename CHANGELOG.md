@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5
+* Rename `createPersistentStore()` to `persistentAtom()`.
+* Rename `createPersistentMap()` to `persistentMap()`.
+* Moved to Nano Stores 0.5.
+
 ## 0.4.1
 * Fixed `localStorage.removeItem()` support (by Nikolay Govorov).
 * Fixed `localStorage.clear()` support.
