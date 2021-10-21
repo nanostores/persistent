@@ -96,6 +96,17 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
     setKey(key, newValue)
   }
 
+  store.set = function (newObject) {
+    for (let key in newObject) {
+      store.setKey(key, newObject[key])
+    }
+    for (let key in store.value) {
+      if (!(key in newObject)) {
+        store.setKey(key)
+      }
+    }
+  }
+
   onMount(store, () => {
     let data = { ...initial }
     for (let key in storageEngine) {
