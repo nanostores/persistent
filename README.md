@@ -54,13 +54,12 @@ export const shoppingCart = persistentAtom<Product[]>('cart', [])
 This store will keep it’s value `localStorage` in `cart` key.
 `[]` will be initial value on missed key in `localStorage`.
 
-You can change store value by `set` method. You can also use `update` syntax
-sugar from Nano Stores.
+You can change store value by `set` method.
 
 ```ts
 import { update } from 'nanostores'
 
-update(shoppingCart, card => [...card, newProduct])
+shoppingCart.set([...shoppingCart.get(), newProduct])
 ```
 
 You can store object in primitive store too. But Persistent Map store is better,
