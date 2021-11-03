@@ -14,7 +14,8 @@
     "cross-tab"
   ],
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage && eslint . && check-dts && size-limit && yaspeller *.md"
+    "unit": "tsm node_modules/uvu/bin.js . '\\.test\\.(ts|js)$'",
+    "test": "c8 yarn unit && eslint . && check-dts && size-limit"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
   "license": "MIT",
@@ -33,40 +34,28 @@
     "nanostores": "^0.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@logux/core": "^0.7.2",
-    "@logux/eslint-config": "^46.0.0",
-    "@logux/sharec-config": "^0.12.2",
-    "@size-limit/preset-small-lib": "^6.0.3",
-    "@types/jest": "^27.0.2",
+    "@logux/eslint-config": "^46.1.0",
+    "@size-limit/preset-small-lib": "^6.0.4",
+    "@types/jsdom": "^16.2.13",
     "@types/node": "^16.11.6",
-    "@typescript-eslint/eslint-plugin": "^5.2.0",
-    "@typescript-eslint/parser": "^5.2.0",
-    "check-dts": "^0.6.2",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "c8": "^7.10.0",
+    "check-dts": "^0.6.3",
     "clean-publish": "^3.4.2",
     "eslint": "^8.1.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^25.2.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^3.0.0",
     "eslint-plugin-promise": "^5.1.1",
-    "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-unicorn": "^37.0.1",
-    "jest": "^27.3.1",
-    "jest-localstorage-mock": "^2.4.18",
-    "lint-staged": "^11.2.6",
+    "jsdom": "^18.0.1",
     "nanodelay": "^2.0.2",
     "nanostores": "^0.5.4",
-    "prettier": "^2.4.1",
-    "simple-git-hooks": "^2.7.0",
-    "size-limit": "^6.0.3",
-    "ts-jest": "^27.0.7",
+    "size-limit": "^6.0.4",
+    "tsm": "^2.1.4",
     "typescript": "^4.4.4",
-    "yaspeller": "^8.0.0"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "uvu": "^0.5.2"
   },
   "prettier": {
     "arrowParens": "avoid",
@@ -76,34 +65,12 @@
     "singleQuote": true,
     "trailingComma": "none"
   },
-  "lint-staged": {
-    "*.md": "yaspeller",
-    "*.js": [
-      "prettier --write",
-      "eslint --fix"
+  "c8": {
+    "exclude": [
+      "**/*.test.*"
     ],
-    "*.ts": [
-      "prettier --write",
-      "eslint --fix"
-    ]
-  },
-  "jest": {
-    "preset": "ts-jest/presets/default-esm",
-    "globals": {
-      "ts-jest": {
-        "useESM": true,
-        "isolatedModules": true
-      }
-    },
-    "testEnvironment": "jsdom",
-    "coverageThreshold": {
-      "global": {
-        "statements": 100
-      }
-    },
-    "setupFiles": [
-      "jest-localstorage-mock"
-    ]
+    "lines": 100,
+    "check-coverage": true
   },
   "eslintConfig": {
     "extends": "@logux/eslint-config/esm",
@@ -127,38 +94,17 @@
       "import": {
         "./index.js": "{ persistentAtom }"
       },
-      "limit": "300 B"
+      "limit": "303 B"
     },
     {
       "name": "Map",
       "import": {
         "./index.js": "{ persistentMap }"
       },
-      "limit": "429 B"
+      "limit": "432 B"
     }
   ],
   "clean-publish": {
     "cleanDocs": true
-  },
-  "yaspeller": {
-    "lang": "en",
-    "ignoreCapitalization": true,
-    "ignoreText": [
-      " \\(by [^)]+\\).",
-      "\\d+\\.\\d+ “[^”]+”"
-    ],
-    "dictionary": [
-      "Versioning",
-      "UI",
-      "gzipped",
-      "Preact",
-      "Vue",
-      "JS",
-      "SSR"
-    ]
-  },
-  "sharec": {
-    "config": "@logux/sharec-config",
-    "version": "0.12.2"
   }
 }

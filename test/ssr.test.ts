@@ -1,39 +1,22 @@
-/**
- * @jest-environment node
- */
-
-import { cleanStores, MapStore, WritableAtom } from 'nanostores'
+import { equal } from 'uvu/assert'
+import { test } from 'uvu'
 
 import { persistentAtom, persistentMap } from '../index.js'
 
-describe('map', () => {
-  let map: MapStore<{ one?: string; two?: string }>
-
-  afterEach(() => {
-    cleanStores(map)
+test('works without localStorage', () => {
+  let map = persistentMap<{ one?: string; two?: string }>('a:', {
+    one: '1'
   })
-
-  it('works without localStorage', () => {
-    map = persistentMap<{ one?: string; two?: string }>('a:', {
-      one: '1'
-    })
-    map.listen(() => {})
-    map.setKey('two', '2')
-    expect(map.get()).toEqual({ one: '1', two: '2' })
-  })
+  map.listen(() => {})
+  map.setKey('two', '2')
+  equal(map.get(), { one: '1', two: '2' })
 })
 
-describe('store', () => {
-  let store: WritableAtom<string | undefined>
-
-  afterEach(() => {
-    cleanStores(store)
-  })
-
-  it('works without localStorage', () => {
-    store = persistentAtom('a', '1')
-    store.listen(() => {})
-    store.set('2')
-    expect(store.get()).toBe('2')
-  })
+test('works without localStorage', () => {
+  let store = persistentAtom<string>('a', '1')
+  store.listen(() => {})
+  store.set('2')
+  equal(store.get(), '2')
 })
+
+test.run()

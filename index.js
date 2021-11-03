@@ -7,15 +7,17 @@ if (typeof localStorage !== 'undefined') {
   storageEngine = localStorage
 }
 
-if (typeof window !== 'undefined') {
-  eventsEngine = {
-    addEventListener(key, listener) {
-      window.addEventListener('storage', listener)
-    },
-    removeEventListener(key, listener) {
-      window.removeEventListener('storage', listener)
-    }
+export let windowPersistentEvents = {
+  addEventListener(key, listener) {
+    window.addEventListener('storage', listener)
+  },
+  removeEventListener(key, listener) {
+    window.removeEventListener('storage', listener)
   }
+}
+
+if (typeof window !== 'undefined') {
+  eventsEngine = windowPersistentEvents
 }
 
 export function setPersistentEngine(storage, events) {

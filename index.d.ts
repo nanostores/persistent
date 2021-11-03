@@ -28,6 +28,11 @@ export function setPersistentEngine(
   events: PersistentEvents
 ): void
 
+/**
+ * `window` events to be used in `setPersistentEngine`.
+ */
+export const windowPersistentEvents: PersistentEvents
+
 interface PersistentEncoder<Origin = any> {
   /**
    * Encoder to convert value to string.

@@ -3,11 +3,10 @@
 <img align="right" width="92" height="92" title="Nano Stores logo"
      src="https://nanostores.github.io/nanostores/logo.svg">
 
-A tiny persistent store for [Nano Stores](https://github.com/nanostores/nanostores)
-state manager. It stores data in `localStorage` and synchronize changes between
-browser tabs.
+A tiny persistent store for [Nano Stores] state manager. It stores data
+in `localStorage` and synchronize changes between browser tabs.
 
-* **Small.** from 300 bytes (minified and gzipped).
+* **Small.** from 303 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
@@ -24,6 +23,7 @@ export const locale = persistentAtom('locale', 'en')
        alt="Sponsored by Evil Martians" width="236" height="54">
 </a>
 
+[Nano Stores]: https://github.com/nanostores/nanostores
 [Size Limit]: https://github.com/ai/size-limit
 
 
