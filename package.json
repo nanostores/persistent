@@ -35,26 +35,26 @@
   },
   "devDependencies": {
     "@logux/eslint-config": "^46.1.0",
-    "@size-limit/preset-small-lib": "^6.0.4",
+    "@size-limit/preset-small-lib": "^7.0.3",
     "@types/jsdom": "^16.2.13",
-    "@types/node": "^16.11.6",
-    "@typescript-eslint/eslint-plugin": "^5.3.0",
-    "@typescript-eslint/parser": "^5.3.0",
+    "@types/node": "^16.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "c8": "^7.10.0",
-    "check-dts": "^0.6.3",
-    "clean-publish": "^3.4.2",
-    "eslint": "^8.1.0",
+    "check-dts": "^0.6.4",
+    "clean-publish": "^3.4.3",
+    "eslint": "^8.2.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prefer-let": "^3.0.0",
+    "eslint-plugin-prefer-let": "^3.0.1",
     "eslint-plugin-promise": "^5.1.1",
-    "jsdom": "^18.0.1",
+    "jsdom": "^18.1.0",
     "nanodelay": "^2.0.2",
-    "nanostores": "^0.5.4",
-    "size-limit": "^6.0.4",
+    "nanostores": "^0.5.6",
+    "size-limit": "^7.0.3",
     "tsm": "^2.1.4",
-    "typescript": "^4.4.4",
+    "typescript": "^4.5.2",
     "uvu": "^0.5.2"
   },
   "prettier": {
@@ -90,7 +90,7 @@
   ],
   "size-limit": [
     {
-      "name": "Store",
+      "name": "Atom",
       "import": {
         "./index.js": "{ persistentAtom }"
       },
@@ -101,7 +101,7 @@
       "import": {
         "./index.js": "{ persistentMap }"
       },
-      "limit": "432 B"
+      "limit": "429 B"
     }
   ],
   "clean-publish": {
