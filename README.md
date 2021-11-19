@@ -51,8 +51,8 @@ import { persistentAtom } from '@nanostores/persistent'
 export const shoppingCart = persistentAtom<Product[]>('cart', [])
 ```
 
-This store will keep it’s value `localStorage` in `cart` key.
-`[]` will be initial value on missed key in `localStorage`.
+This store will keep it’s value in `cart` key of`localStorage`.
+An empty array `[]` will be initial value on missed key in `localStorage`.
 
 You can change store value by `set` method.
 
