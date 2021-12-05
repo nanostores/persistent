@@ -48,7 +48,10 @@ key.
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
 
-export const shoppingCart = persistentAtom<Product[]>('cart', [])
+export const shoppingCart = persistentAtom<Product[]>('cart', [], {
+  encode: JSON.stringify,
+  decode: JSON.parse,
+})
 ```
 
 This store will keep it’s value in `cart` key of`localStorage`.
