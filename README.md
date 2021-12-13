@@ -60,8 +60,6 @@ An empty array `[]` will be initial value on missed key in `localStorage`.
 You can change store value by `set` method.
 
 ```ts
-import { update } from 'nanostores'
-
 shoppingCart.set([...shoppingCart.get(), newProduct])
 ```
 
