@@ -28,13 +28,6 @@ export function setPersistentEngine(storage, events) {
 export function persistentAtom(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
-  function listener(e) {
-    if (!e.key || e.newValue === null) {
-      store.set(undefined)
-    } else if (e.key === name) {
-      store.set(decode(e.newValue))
-    }
-  }
 
   let store = atom(initial)
 
@@ -46,6 +39,14 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
       storageEngine[name] = encode(newValue)
     }
     set(newValue)
+  }
+
+  function listener(e) {
+    if (!e.key || e.newValue === null) {
+      store.set(undefined)
+    } else if (e.key === name) {
+      store.set(decode(e.newValue))
+    }
   }
 
   onMount(store, () => {
@@ -64,17 +65,6 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
 export function persistentMap(prefix, initial = {}, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
-  function listener(e) {
-    if (!e.key) {
-      store.set({})
-    } else if (e.key.startsWith(prefix)) {
-      if (e.newValue === null) {
-        store.setKey(e.key.slice(prefix.length), undefined)
-      } else {
-        store.setKey(e.key.slice(prefix.length), decode(e.newValue))
-      }
-    }
-  }
 
   let store = map()
 
@@ -105,6 +95,18 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
     for (let key in store.value) {
       if (!(key in newObject)) {
         store.setKey(key)
+      }
+    }
+  }
+
+  function listener(e) {
+    if (!e.key) {
+      store.set({})
+    } else if (e.key.startsWith(prefix)) {
+      if (e.newValue === null) {
+        store.setKey(e.key.slice(prefix.length), undefined)
+      } else {
+        store.setKey(e.key.slice(prefix.length), decode(e.newValue))
       }
     }
   }
