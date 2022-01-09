@@ -98,7 +98,7 @@ test('listens for local storage cleaning', () => {
   localStorage.clear()
   window.dispatchEvent(new StorageEvent('storage', {}))
 
-  equal(events, [{ one: '1' }, { one: '1', two: '2' }, { two: '2' }, {}])
+  equal(events, [{ one: '1' }, { one: '1', two: '2' }, {}])
   equal(map.get(), {})
 })
 

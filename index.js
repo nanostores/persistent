@@ -43,9 +43,9 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
 
   function listener(e) {
     if (!e.key || e.newValue === null) {
-      store.set(undefined)
+      set(undefined)
     } else if (e.key === name) {
-      store.set(decode(e.newValue))
+      set(decode(e.newValue))
     }
   }
 
@@ -88,6 +88,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
     setKey(key, newValue)
   }
 
+  let set = store.set
   store.set = function (newObject) {
     for (let key in newObject) {
       store.setKey(key, newObject[key])
@@ -101,12 +102,12 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
 
   function listener(e) {
     if (!e.key) {
-      store.set({})
+      set({})
     } else if (e.key.startsWith(prefix)) {
       if (e.newValue === null) {
-        store.setKey(e.key.slice(prefix.length), undefined)
+        setKey(e.key.slice(prefix.length), undefined)
       } else {
-        store.setKey(e.key.slice(prefix.length), decode(e.newValue))
+        setKey(e.key.slice(prefix.length), decode(e.newValue))
       }
     }
   }
