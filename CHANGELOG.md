@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.1
+* Fixed going to `undefined` in another tab after loading.
+
 ## 0.5
 * Rename `createPersistentStore()` to `persistentAtom()`.
 * Rename `createPersistentMap()` to `persistentMap()`.
