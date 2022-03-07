@@ -42,10 +42,14 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   function listener(e) {
-    if (!e.key || e.newValue === null) {
+    if (e.key === name) {
+      if (e.newValue === null) {
+        set(undefined)
+      } else {
+        set(decode(e.newValue))
+      }
+    } else if (!storageEngine[name]) {
       set(undefined)
-    } else if (e.key === name) {
-      set(decode(e.newValue))
     }
   }
 
