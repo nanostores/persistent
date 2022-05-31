@@ -130,18 +130,25 @@ test('allows to change encoding', () => {
   let settings = persistentMap<{ locale: string[] }>(
     'settings:',
     { locale: ['en', 'US'] },
-    { encode: JSON.stringify, decode: JSON.parse }
+    {
+      encode(list) {
+        return list.join(',')
+      },
+      decode(str) {
+        return str.split(',')
+      }
+    }
   )
 
   settings.listen(() => {})
   settings.setKey('locale', ['ru', 'RU'])
 
-  equal(localStorage.getItem('settings:locale'), '["ru","RU"]')
+  equal(localStorage.getItem('settings:locale'), 'ru,RU')
 
-  emitLocalStorage('settings:locale', '["fr","CA"]')
+  emitLocalStorage('settings:locale', 'fr,CA')
 
   equal(settings.get().locale, ['fr', 'CA'])
-  equal(localStorage.getItem('settings:locale'), '["fr","CA"]')
+  equal(localStorage.getItem('settings:locale'), 'fr,CA')
 })
 
 test('has test API', async () => {

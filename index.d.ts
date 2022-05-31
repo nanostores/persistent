@@ -81,7 +81,7 @@ interface PersistentMapFactory {
   <Value extends object>(
     name: string,
     initial: Value,
-    opts: PersistentSimpleOptions & PersistentEncoder<Value>
+    opts: PersistentSimpleOptions & PersistentEncoder<Value[keyof Value]>
   ): MapStore<Value>
 }
 
