@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.5.3
+* Fixed `encode`/`decode` types for `persistentMap()`.
+
 ## 0.5.2
 * Fixed data deletion on opening new tab (by Mohammad Babazadeh).
 
