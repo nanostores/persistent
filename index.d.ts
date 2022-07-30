@@ -33,7 +33,7 @@ export function setPersistentEngine(
  */
 export const windowPersistentEvents: PersistentEvents
 
-interface PersistentEncoder<Origin = any> {
+export interface PersistentEncoder<Origin = any> {
   /**
    * Encoder to convert value to string.
    */
