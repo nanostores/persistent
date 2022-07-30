@@ -1,6 +1,11 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.6
+* Moved to Nano Stores 0.6.
+* Dropped Node.js 12 support.
+* Added `PersistentEncoder` type export.
+
 ## 0.5.3
 * Fixed `encode`/`decode` types for `persistentMap()`.
 
