@@ -80,7 +80,7 @@ export type SettingsValue = {
   theme: 'dark' | 'light' | 'auto'
 }
 
-export const settings = persistentMap('settings:', {
+export const settings = persistentMap<SettingsValue>('settings:', {
   sidebar: 'show',
   theme: 'auto'
 })
