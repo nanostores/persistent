@@ -54,7 +54,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   onMount(store, () => {
-    set(storageEngine[name] ? decode(storageEngine[name]) : initial)
+    store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
     if (opts.listen !== false) {
       eventsEngine.addEventListener(name, listener)
       return () => {
