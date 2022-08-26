@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.6.1
+* Fixed `store.set` changes support (by Vance Tan).
+
 ## 0.6
 * Moved to Nano Stores 0.6.
 * Dropped Node.js 12 support.
