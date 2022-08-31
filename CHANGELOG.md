@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.6.2
+* Fixed `Block all cookies` mode support (by @Mitsunee).
+
 ## 0.6.1
 * Fixed `store.set` changes support (by Vance Tan).
 
