@@ -3,7 +3,15 @@ import { map, atom, onMount } from 'nanostores'
 let identity = a => a
 let storageEngine = {}
 let eventsEngine = { addEventListener() {}, removeEventListener() {} }
-if (typeof localStorage !== 'undefined') {
+
+function localStorageSupported() {
+  try {
+    return typeof localStorage !== 'undefined'
+  } catch {
+    return false
+  }
+}
+if (localStorageSupported()) {
   storageEngine = localStorage
 }
 
