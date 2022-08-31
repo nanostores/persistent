@@ -4,14 +4,16 @@ let identity = a => a
 let storageEngine = {}
 let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 
-function localStorageSupported() {
+function testSupport() {
   try {
     return typeof localStorage !== 'undefined'
   } catch {
+    /* c8 ignore next 3 */
+    // In Privacy Mode access to localStorage will return error
     return false
   }
 }
-if (localStorageSupported()) {
+if (testSupport()) {
   storageEngine = localStorage
 }
 
