@@ -49,6 +49,10 @@ interface PersistentSimpleOptions {
    * Does not synchronize changes from other browser tabs
    */
   listen?: boolean
+  /**
+   * Custom storage engine for this atom
+   */
+  storageEngine?: PersistentStore
 }
 
 export type PersistentOptions =
