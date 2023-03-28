@@ -52,7 +52,7 @@ interface PersistentSimpleOptions {
   /**
    * Custom storage engine for this atom
    */
-  storageEngine?: PersistentStore
+  engine?: PersistentStore
 }
 
 export type PersistentOptions =
