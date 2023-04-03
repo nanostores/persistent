@@ -34,7 +34,6 @@ jobs:
         node-version:
           - 18
           - 16
-          - 14
     name: Node.js ${{ matrix.node-version }} Quick
     steps:
       - name: Checkout the repository
@@ -52,7 +51,7 @@ jobs:
         run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Run unit tests
         run: pnpm unit
-  short:
+  old:
     runs-on: ubuntu-latest
     name: Node.js 14 Quick
     steps:
