@@ -1,8 +1,8 @@
-import { JSDOM } from 'jsdom'
+import { Window } from 'happy-dom'
 
-let dom = new JSDOM('<body></body>', { url: 'http://localhost/' })
-global.window = dom.window as any
-global.StorageEvent = dom.window.StorageEvent
+let window = new Window()
+global.window = window as any
+global.StorageEvent = window.StorageEvent as any
 
 global.localStorage = {} as any
 Object.defineProperty(localStorage, 'getItem', {
@@ -35,5 +35,7 @@ export function emitLocalStorage(key: string, newValue: string | null): void {
   } else {
     localStorage[key] = newValue
   }
-  window.dispatchEvent(new StorageEvent('storage', { key, newValue }))
+  global.window.dispatchEvent(
+    new global.StorageEvent('storage', { key, newValue })
+  )
 }
