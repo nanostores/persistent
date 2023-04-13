@@ -23,8 +23,8 @@ devDependencies:
     specifier: ^0.7.1
     version: 0.7.1(typescript@5.0.4)
   clean-publish:
-    specifier: ^4.1.1
-    version: 4.1.1
+    specifier: ^4.2.0
+    version: 4.2.0
   eslint:
     specifier: ^8.38.0
     version: 8.38.0
@@ -44,14 +44,14 @@ devDependencies:
     specifier: ^6.1.1
     version: 6.1.1(eslint@8.38.0)
   happy-dom:
-    specifier: ^9.1.9
-    version: 9.1.9
+    specifier: ^9.5.0
+    version: 9.5.0
   nanodelay:
     specifier: ^2.0.2
     version: 2.0.2
   nanostores:
-    specifier: ^0.7.4
-    version: 0.7.4
+    specifier: ^0.8.0
+    version: 0.8.0
   size-limit:
     specifier: ^8.2.4
     version: 8.2.4
@@ -787,8 +787,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /clean-publish@4.1.1:
-    resolution: {integrity: sha512-111O3MNk6x/dAbHZwG+iRZ4AYwpKqc7Qp1MarFhE1KtQIp9m9TkDuI+hedn7qgeFnLgSw3ItgEnHNwvhc7SmGg==}
+  /clean-publish@4.2.0:
+    resolution: {integrity: sha512-dqZF5y6KtlkYhbnJoXiOCP4L1TPdI7HtuDysslUrbI8vLPu65ZjVO3pu5xp4qH0X2cWdDN/La04woe6fg4LNSw==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
     dependencies:
@@ -1676,8 +1676,8 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
-  /happy-dom@9.1.9:
-    resolution: {integrity: sha512-OMbnoknA7iNNG/5fwt1JckCKc53QLLFo2ljzit1pCV9SC1TYwcQj0obq0QUTeqIf2p2skbFG69bo19YoSj/1DA==}
+  /happy-dom@9.5.0:
+    resolution: {integrity: sha512-pNdHSZRWIckzg8aDQRbBgaivr2Ef+uSTpCCRGnxIETyewHA6841T8EPE+cmfhPjGi5jQN6c+oloXGGYB5SrpcA==}
     dependencies:
       css.escape: 1.5.1
       he: 1.2.0
@@ -2064,9 +2064,9 @@ packages:
       picocolors: 1.0.0
     dev: true
 
-  /nanostores@0.7.4:
-    resolution: {integrity: sha512-MBeUVt7NBcXqh7AGT+KSr3O0X/995CZsvcP2QEMP+PXFwb07qv3Vjyq+EX0yS8f12Vv3Tn2g/BvK/OZoMhJlOQ==}
-    engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
+  /nanostores@0.8.0:
+    resolution: {integrity: sha512-Xgs3qwYhNYXyglDe41JEtACDvFZELFRofDBqBuJ02JG1mrwXWneQTsk89GHvW0bgLPcWXOz4GRm4enwgjnD8FQ==}
+    engines: {node: ^16.0.0 || >=18.0.0}
     dev: true
 
   /natural-compare-lite@1.4.0:
