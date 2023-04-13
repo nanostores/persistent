@@ -43,21 +43,6 @@ test('saves to localStorage', () => {
   equal(events, ['1', undefined])
 })
 
-test('saves to a custom storage', () => {
-  let customStorageEngine = {};
-  atom = persistentAtom<string | undefined>('b', undefined, {
-    engine: customStorageEngine
-  })
-
-  is(atom.get(), undefined)
-
-  atom.set('1')
-  equal(customStorageEngine, { b: '1' })
-
-  atom.set(undefined)
-  equal(customStorageEngine, {})
-})
-
 test('listens for other tabs', () => {
   atom = persistentAtom('c')
 

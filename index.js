@@ -38,16 +38,15 @@ export function setPersistentEngine(storage, events) {
 export function persistentAtom(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
-  let atomEngine = opts.engine || storageEngine
 
   let store = atom(initial)
 
   let set = store.set
   store.set = newValue => {
     if (typeof newValue === 'undefined') {
-      delete atomEngine[name]
+      delete storageEngine[name]
     } else {
-      atomEngine[name] = encode(newValue)
+      storageEngine[name] = encode(newValue)
     }
     set(newValue)
   }
@@ -59,13 +58,13 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
       } else {
         set(decode(e.newValue))
       }
-    } else if (!atomEngine[name]) {
+    } else if (!storageEngine[name]) {
       set(undefined)
     }
   }
 
   onMount(store, () => {
-    store.set(atomEngine[name] ? decode(atomEngine[name]) : initial)
+    store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
     if (opts.listen !== false) {
       eventsEngine.addEventListener(name, listener)
       return () => {
