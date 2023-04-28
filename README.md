@@ -69,7 +69,7 @@ because map store will update value if you will add new key to initial value.
 
 ### Map Store
 
-There is a special key-value map store. It keep each key
+There is a special key-value map store. It will keep each key
 in separated `localStorage` key.
 
 ```ts
