@@ -63,11 +63,25 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
     }
   }
 
+  function backPage(e) {
+    if (e.persisted) {
+      if (storageEngine[name] && storageEngine[name] !== store.get()) {
+        store.set(decode(storageEngine[name]))
+      }
+    }
+  }
+
   onMount(store, () => {
     store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
     if (opts.listen !== false) {
+      if (typeof window !== 'undefined') {
+        window.addEventListener('pageshow', backPage)
+      }
       eventsEngine.addEventListener(name, listener)
       return () => {
+        if (typeof window !== 'undefined') {
+          window.removeEventListener('pageshow', backPage)
+        }
         eventsEngine.removeEventListener(name, listener)
       }
     }
@@ -126,6 +140,22 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
     }
   }
 
+  function backPage(e) {
+    let data = { ...store.get() }
+    if (e.persisted) {
+      for (let key in storageEngine) {
+        if (key.startsWith(prefix)) {
+          let dataKey = key.slice(prefix.length)
+          let dataValue = decode(storageEngine[key])
+          if (data[dataKey] !== dataValue) {
+            data[dataKey] = dataValue
+          }
+        }
+      }
+    }
+    store.set(data)
+  }
+
   onMount(store, () => {
     let data = { ...initial }
     for (let key in storageEngine) {
@@ -137,8 +167,14 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
     if (opts.listen !== false) {
       eventsEngine.addEventListener(prefix, listener)
       return () => {
+        if (typeof window !== 'undefined') {
+          window.addEventListener('pageshow', backPage)
+        }
         eventsEngine.removeEventListener(prefix, listener)
         for (let key in store.value) {
+          if (typeof window !== 'undefined') {
+            window.removeEventListener('pageshow', backPage)
+          }
           eventsEngine.removeEventListener(prefix + key, listener)
         }
       }
