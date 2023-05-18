@@ -1,4 +1,7 @@
-import { cleanStores, WritableAtom } from 'nanostores'
+import type { WritableAtom } from 'nanostores'
+import type { PersistentListener } from '../index.js'
+
+import { cleanStores } from 'nanostores'
 import { equal, is } from 'uvu/assert'
 import { delay } from 'nanodelay'
 import { test } from 'uvu'
@@ -7,7 +10,6 @@ import { emitLocalStorage } from './setup.js'
 import {
   windowPersistentEvents,
   setPersistentEngine,
-  PersistentListener,
   persistentAtom
 } from '../index.js'
 

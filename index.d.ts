@@ -1,4 +1,4 @@
-import { MapStore, WritableAtom } from 'nanostores'
+import type { MapStore, WritableAtom } from 'nanostores'
 
 export type PersistentStore = Record<string, string>
 

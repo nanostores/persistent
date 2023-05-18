@@ -1,4 +1,7 @@
-import { cleanStores, MapStore } from 'nanostores'
+import type { MapStore } from 'nanostores'
+import type { PersistentListener } from '../index.js'
+
+import { cleanStores } from 'nanostores'
 import { equal, is } from 'uvu/assert'
 import { delay } from 'nanodelay'
 import { test } from 'uvu'
@@ -8,7 +11,6 @@ import {
   windowPersistentEvents,
   useTestStorageEngine,
   setPersistentEngine,
-  PersistentListener,
   setTestStorageKey,
   cleanTestStorage,
   getTestStorage,
