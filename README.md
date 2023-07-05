@@ -42,7 +42,7 @@ about using the store and subscribing to store’s changes in UI frameworks.
 
 ### Primitive Store
 
-The store with primitive value keep the whole data in the single `localStorage`
+The store with primitive value keeps the whole data in the single `localStorage`
 key.
 
 ```ts
@@ -54,7 +54,7 @@ export const shoppingCart = persistentAtom<Product[]>('cart', [], {
 })
 ```
 
-This store will keep it’s value in `cart` key of`localStorage`.
+This store will keep its value in `cart` key of`localStorage`.
 An empty array `[]` will be initial value on missed key in `localStorage`.
 
 You can change store value by `set` method.
@@ -63,8 +63,8 @@ You can change store value by `set` method.
 shoppingCart.set([...shoppingCart.get(), newProduct])
 ```
 
-You can store object in primitive store too. But Persistent Map store is better,
-because map store will update value if you will add new key to initial value.
+You can store the object in a primitive store too. But Persistent Map store is better,
+because map store will update value if you add a new key to the initial value.
 
 
 ### Map Store
@@ -97,7 +97,7 @@ settings.setKey('sidebar', 'hide')
 
 ### Sync between Browser Tabs
 
-By default, store’s changes will be synchronized between browser tabs.
+By default, the store changes will be synchronized between browser tabs.
 
 There is a `listen` option to disable synchronization.
 
@@ -132,7 +132,7 @@ export const draft = persistentAtom('draft', [], {
 
 ### Server-Side Rendering
 
-The stores has built-in SSR support. On the server they will use
+The store has built-in SSR support. On the server, they will use
 empty objects instead of `localStorage`.
 
 You can manually initialize stores with specific data:
@@ -192,10 +192,10 @@ You do not need to do anything for server-side rendering. We have build-in
 support.
 
 You need to specify bodies of `events.addEventListener`
-and `events.removeEventListener` only for environment with browser tabs
-or another reasons to storage synchronization.
+and `events.removeEventListener` only for environments with browser tabs
+or another reasons for storage synchronization.
 
-`perKey` makes `PersistentMap` add one listener for each of its keys,
+`perKey` makes `PersistentMap` add one listener for each of its keys
 in addition to the one for all keys. This is relevant when events for key
 changes are only dispatched for keys that were specifically subscribed too.
 
@@ -226,7 +226,7 @@ function onChange () {
 
 ### Tests
 
-There is a special API to replace `localStorage` to fake storage engine
+There is a special API to replace `localStorage` to a fake storage engine
 with helpers to change key and get all values.
 
 ```js
