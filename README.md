@@ -3,8 +3,8 @@
 <img align="right" width="92" height="92" title="Nano Stores logo"
      src="https://nanostores.github.io/nanostores/logo.svg">
 
-A tiny persistent store for [Nano Stores] state manager. It stores data
-in `localStorage` and synchronize changes between browser tabs.
+A store for [Nano Stores] state manager to keep data in `localStorage`
+and synchronize changes between browser tabs.
 
 * **Small.** from 332 bytes (minified and gzipped).
   Zero dependencies. It uses [Size Limit] to control size.
