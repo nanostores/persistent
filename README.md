@@ -7,7 +7,7 @@ A store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
 * **Small.** from 332 bytes (minified and gzipped).
-  Zero dependencies. It uses [Size Limit] to control size.
+  Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
   `localStorage` can be switched to another storage.
