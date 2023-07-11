@@ -2,6 +2,3 @@ node_modules/
 
 coverage/
 /demo/dist/
-/test-results/
-/playwright-report/
-/playwright/.cache/

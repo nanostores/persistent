@@ -17,7 +17,7 @@
     "demo": "vite serve ./demo --port 3000",
     "demo:build": "vite build ./demo",
     "demo:preview": "vite preview ./demo",
-    "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts && npx playwright test && rm -r ./demo/dist",
+    "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts",
     "test": "c8 yarn unit && eslint . && check-dts && size-limit"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
@@ -44,7 +44,6 @@
   },
   "devDependencies": {
     "@logux/eslint-config": "^50.0.0",
-    "@playwright/test": "^1.35.1",
     "@size-limit/preset-small-lib": "^8.2.4",
     "@types/node": "^20.2.3",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
