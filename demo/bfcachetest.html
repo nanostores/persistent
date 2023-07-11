@@ -1,37 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nano Stores Persistent Bfcache test</title>
+    <link
+      rel="icon"
+      href="https://nanostores.github.io/nanostores/logo.svg"
+      type="image/svg+xml"
+    />
+    <style>
+      html {
+        font-family: sans-serif;
+        line-height: 2;
+        color-scheme: light dark;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <title>Nano Stores Persistent Bfcache test</title>
-  <link rel="icon" href="https://nanostores.github.io/nanostores/logo.svg" type="image/svg+xml">
-  <style>
-    html {
-      font-family: sans-serif;
-      line-height: 2;
-      color-scheme: light dark;
-    }
+      html,
+      select,
+      button {
+        font-size: 16px;
+      }
+    </style>
+  </head>
 
-    html,
-    select,
-    button {
-      font-size: 16px;
-    }
-
-  </style>
-</head>
-
-<body>
-  <h1>Set Atom:</h1>
-  <pre id="atom"></pre>
-  <button id="buttonAtom" data-testid="buttonAtom">Add item to atom</button>
-  <button id="clearAtom">Clear atom</button>
-  <h1>Set Map:</h1>
-  <pre id="map"></pre>
-  <button id="buttonMap" data-testid="buttonMap">Change map</button>
-  <button id="clearMap">Clear map</button>
-  <a href="../index.html">Back</a>
-  <script type="module" src="./bfcachetest.js" defer></script>
-</body>
-
+  <body>
+    <h1>Set Atom:</h1>
+    <pre id="atom"></pre>
+    <button id="buttonAtom" data-testid="buttonAtom">Add item to atom</button>
+    <button id="clearAtom">Clear atom</button>
+    <h1>Set Map:</h1>
+    <pre id="map"></pre>
+    <button id="buttonMap" data-testid="buttonMap">Change map</button>
+    <button id="clearMap">Clear map</button>
+    <a href="../index.html">Back</a>
+    <script type="module" src="./bfcachetest.js" defer></script>
+  </body>
 </html>

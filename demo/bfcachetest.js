@@ -17,7 +17,7 @@ clearButtonAtom.addEventListener('click', () => {
   anAtom.set([])
 })
 
-anAtom.subscribe((val) => {
+anAtom.subscribe(val => {
   preAtom.textContent = JSON.stringify(val, null, 2)
 })
 
@@ -29,6 +29,6 @@ clearButtonMap.addEventListener('click', () => {
   aMap.set({})
 })
 
-aMap.subscribe((val) => {
+aMap.subscribe(val => {
   preMap.textContent = JSON.stringify(val, null, 2)
 })
