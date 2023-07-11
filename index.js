@@ -18,11 +18,10 @@ if (testSupport()) {
 }
 
 let pageShowHandler
-const backFromBfCache = sync => () => sync()
 
 export let windowPersistentEvents = {
   addEventListener(key, listener, sync) {
-    pageShowHandler = backFromBfCache(sync)
+    pageShowHandler = () => sync()
 
     window.addEventListener('storage', listener)
     window.addEventListener('pageshow', pageShowHandler)
