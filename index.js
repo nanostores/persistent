@@ -71,7 +71,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   onMount(store, () => {
-    const sync = () => {
+    let sync = () => {
       store.set(storageEngine[name] ? decode(storageEngine[name]) : initial);
     };
 
@@ -138,7 +138,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
   }
 
   onMount(store, () => {
-    const sync = () => {
+    let sync = () => {
       let data = { ...initial };
       for (let key in storageEngine) {
         if (key.startsWith(prefix)) {

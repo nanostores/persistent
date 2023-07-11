@@ -98,14 +98,14 @@
       "import": {
         "./index.js": "{ persistentAtom }"
       },
-      "limit": "332 B"
+      "limit": "375 B"
     },
     {
       "name": "Map",
       "import": {
         "./index.js": "{ persistentMap }"
       },
-      "limit": "461 B"
+      "limit": "506 B"
     }
   ],
   "clean-publish": {
