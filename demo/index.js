@@ -17,3 +17,14 @@ anAtom.subscribe((val) => {
 aMap.subscribe((val) => {
   mapPre.textContent = JSON.stringify(val, null, 2);
 });
+
+//BF cache debug
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    // eslint-disable-next-line no-console
+    console.group("This page was restored from the bfcache.");
+  } else {
+    // eslint-disable-next-line no-console
+    console.group("This page was loaded normally.");
+  }
+});
