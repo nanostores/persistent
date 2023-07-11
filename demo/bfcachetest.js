@@ -1,4 +1,4 @@
-import { anAtom, aMap } from '../index.js'
+import { anAtom, aMap } from './index.js'
 
 const preAtom = document.querySelector('#atom')
 const preMap = document.querySelector('#map')
