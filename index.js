@@ -1,6 +1,6 @@
 import { map, atom, onMount } from 'nanostores'
 
-let identity = (a) => a
+let identity = a => a
 let storageEngine = {}
 let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 
@@ -18,7 +18,7 @@ if (testSupport()) {
 }
 
 let pageShowHandler
-const backFromBfCache = (sync) => () => sync()
+const backFromBfCache = sync => () => sync()
 
 export let windowPersistentEvents = {
   addEventListener(key, listener, sync) {
@@ -49,7 +49,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   let store = atom(initial)
 
   let set = store.set
-  store.set = (newValue) => {
+  store.set = newValue => {
     if (typeof newValue === 'undefined') {
       delete storageEngine[name]
     } else {
@@ -172,7 +172,7 @@ export function useTestStorageEngine() {
       testListeners.push(cb)
     },
     removeEventListener(key, cb) {
-      testListeners = testListeners.filter((i) => i !== cb)
+      testListeners = testListeners.filter(i => i !== cb)
     },
   })
 }
