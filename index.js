@@ -1,4 +1,4 @@
-import { map, atom, onMount } from "nanostores"
+import { map, atom, onMount } from 'nanostores'
 
 let identity = (a) => a
 let storageEngine = {}
@@ -6,7 +6,7 @@ let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 
 function testSupport() {
   try {
-    return typeof localStorage !== "undefined"
+    return typeof localStorage !== 'undefined'
   } catch {
     /* c8 ignore next 3 */
     // In Privacy Mode access to localStorage will return error
@@ -24,16 +24,16 @@ export let windowPersistentEvents = {
   addEventListener(key, listener, sync) {
     pageShowHandler = backFromBfCache(sync)
 
-    window.addEventListener("storage", listener)
-    window.addEventListener("pageshow", pageShowHandler)
+    window.addEventListener('storage', listener)
+    window.addEventListener('pageshow', pageShowHandler)
   },
   removeEventListener(key, listener) {
-    window.removeEventListener("storage", listener)
-    window.removeEventListener("pageshow", pageShowHandler)
+    window.removeEventListener('storage', listener)
+    window.removeEventListener('pageshow', pageShowHandler)
   },
 }
 
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   eventsEngine = windowPersistentEvents
 }
 
@@ -50,7 +50,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
 
   let set = store.set
   store.set = (newValue) => {
-    if (typeof newValue === "undefined") {
+    if (typeof newValue === 'undefined') {
       delete storageEngine[name]
     } else {
       storageEngine[name] = encode(newValue)
@@ -95,7 +95,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
 
   let setKey = store.setKey
   store.setKey = (key, newValue) => {
-    if (typeof newValue === "undefined") {
+    if (typeof newValue === 'undefined') {
       if (opts.listen !== false && eventsEngine.perKey) {
         eventsEngine.removeEventListener(prefix + key, listener)
       }
@@ -178,7 +178,7 @@ export function useTestStorageEngine() {
 }
 
 export function setTestStorageKey(key, newValue) {
-  if (typeof newValue === "undefined") {
+  if (typeof newValue === 'undefined') {
     delete testStorage[key]
   } else {
     testStorage[key] = newValue

@@ -1,19 +1,19 @@
-import { anAtom, aMap } from "../index.js"
+import { anAtom, aMap } from '../index.js'
 
-const preAtom = document.querySelector("#atom")
-const preMap = document.querySelector("#map")
+const preAtom = document.querySelector('#atom')
+const preMap = document.querySelector('#map')
 
-const buttonAtom = document.querySelector("#buttonAtom")
-const clearButtonAtom = document.querySelector("#clearAtom")
+const buttonAtom = document.querySelector('#buttonAtom')
+const clearButtonAtom = document.querySelector('#clearAtom')
 
-const buttonMap = document.querySelector("#buttonMap")
-const clearButtonMap = document.querySelector("#clearMap")
+const buttonMap = document.querySelector('#buttonMap')
+const clearButtonMap = document.querySelector('#clearMap')
 
-buttonAtom.addEventListener("click", () => {
+buttonAtom.addEventListener('click', () => {
   anAtom.set([...anAtom.get(), Math.random() * Date.now()])
 })
 
-clearButtonAtom.addEventListener("click", () => {
+clearButtonAtom.addEventListener('click', () => {
   anAtom.set([])
 })
 
@@ -21,11 +21,11 @@ anAtom.subscribe((val) => {
   preAtom.textContent = JSON.stringify(val, null, 2)
 })
 
-buttonMap.addEventListener("click", () => {
+buttonMap.addEventListener('click', () => {
   aMap.set({ ...aMap.get(), a: String(Math.random() * Date.now()) })
 })
 
-clearButtonMap.addEventListener("click", () => {
+clearButtonMap.addEventListener('click', () => {
   aMap.set({})
 })
 
