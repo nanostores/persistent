@@ -29,7 +29,7 @@ export let windowPersistentEvents = {
   removeEventListener(key, listener) {
     window.removeEventListener('storage', listener)
     window.removeEventListener('pageshow', pageShowHandler)
-  },
+  }
 }
 
 if (typeof window !== 'undefined') {
@@ -172,7 +172,7 @@ export function useTestStorageEngine() {
     },
     removeEventListener(key, cb) {
       testListeners = testListeners.filter(i => i !== cb)
-    },
+    }
   })
 }
 
