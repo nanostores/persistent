@@ -13,7 +13,7 @@ export interface PersistentListener {
 
 export interface PersistentEvents {
   addEventListener(key: string, callback: PersistentListener, readonly sync: () => void): void 
-  removeEventListener(key: string, callback: PersistentListener): void
+  removeEventListener(key: string, callback: PersistentListener, readonly sync: () => void): void
   perKey?: boolean
 }
 
