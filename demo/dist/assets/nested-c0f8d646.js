@@ -1,0 +1,1 @@
+import{a as t}from"./main-7ac59f1a.js";const n=document.querySelector("#items"),o=document.querySelector("#button"),c=document.querySelector("#clear");o.addEventListener("click",()=>{t.set([...t.get(),Math.random()*Date.now()])});c.addEventListener("click",()=>{t.set([])});t.subscribe(e=>{n.textContent=JSON.stringify(e,null,2)});
