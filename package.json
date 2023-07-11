@@ -17,7 +17,7 @@
     "demo": "vite serve ./demo --port 3000",
     "demo:build": "vite build ./demo",
     "demo:preview": "vite preview ./demo",
-    "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts",
+    "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts && npx playwright test && rm -r ./demo/dist",
     "test": "c8 yarn unit && eslint . && check-dts && size-limit"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
