@@ -1,12 +1,27 @@
-import { persistentAtom } from "../index.js";
+import { persistentAtom, persistentMap } from "../index.js";
 
 export const anAtom = persistentAtom("test", [], {
   encode: JSON.stringify,
   decode: JSON.parse,
 });
 
-const pre = document.querySelector("#items");
+export const aMap = persistentMap("testMap", {});
+
+const atomPre = document.querySelector("#atom");
+const mapPre = document.querySelector("#map");
 
 anAtom.subscribe((val) => {
-  pre.textContent = JSON.stringify(val, null, 2);
+  atomPre.textContent = JSON.stringify(val, null, 2);
+});
+
+aMap.subscribe((val) => {
+  mapPre.textContent = JSON.stringify(val, null, 2);
+});
+
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    console.log("This page was restored from the bfcache.");
+  } else {
+    console.log("This page was loaded normally.");
+  }
 });
