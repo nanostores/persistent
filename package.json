@@ -14,7 +14,6 @@
     "cross-tab"
   ],
   "scripts": {
-    "dev": "vite serve ./demo --port 3000",
     "start": "vite build ./demo && vite preview ./demo",
     "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts",
     "test": "c8 yarn unit && eslint . && check-dts && size-limit"
