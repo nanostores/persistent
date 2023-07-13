@@ -18,11 +18,13 @@ if (testSupport()) {
 }
 
 export let windowPersistentEvents = {
-  addEventListener(key, listener) {
+  addEventListener(key, listener, sync) {
     window.addEventListener('storage', listener)
+    window.addEventListener('pageshow', sync)
   },
-  removeEventListener(key, listener) {
+  removeEventListener(key, listener, sync) {
     window.removeEventListener('storage', listener)
+    window.removeEventListener('pageshow', sync)
   }
 }
 
@@ -63,12 +65,16 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
     }
   }
 
-  onMount(store, () => {
+  function sync() {
     store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
+  }
+
+  onMount(store, () => {
+    sync()
     if (opts.listen !== false) {
-      eventsEngine.addEventListener(name, listener)
+      eventsEngine.addEventListener(name, listener, sync)
       return () => {
-        eventsEngine.removeEventListener(name, listener)
+        eventsEngine.removeEventListener(name, listener, sync)
       }
     }
   })
@@ -86,7 +92,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
   store.setKey = (key, newValue) => {
     if (typeof newValue === 'undefined') {
       if (opts.listen !== false && eventsEngine.perKey) {
-        eventsEngine.removeEventListener(prefix + key, listener)
+        eventsEngine.removeEventListener(prefix + key, listener, sync)
       }
       delete storageEngine[prefix + key]
     } else {
@@ -95,7 +101,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
         eventsEngine.perKey &&
         !(key in store.value)
       ) {
-        eventsEngine.addEventListener(prefix + key, listener)
+        eventsEngine.addEventListener(prefix + key, listener, sync)
       }
       storageEngine[prefix + key] = encode(newValue)
     }
@@ -126,7 +132,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
     }
   }
 
-  onMount(store, () => {
+  function sync() {
     let data = { ...initial }
     for (let key in storageEngine) {
       if (key.startsWith(prefix)) {
@@ -134,12 +140,16 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
       }
     }
     store.set(data)
+  }
+
+  onMount(store, () => {
+    sync()
     if (opts.listen !== false) {
-      eventsEngine.addEventListener(prefix, listener)
+      eventsEngine.addEventListener(prefix, listener, sync)
       return () => {
-        eventsEngine.removeEventListener(prefix, listener)
+        eventsEngine.removeEventListener(prefix, listener, sync)
         for (let key in store.value) {
-          eventsEngine.removeEventListener(prefix + key, listener)
+          eventsEngine.removeEventListener(prefix + key, listener, sync)
         }
       }
     }
