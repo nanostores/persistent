@@ -14,10 +14,14 @@
     "cross-tab"
   ],
   "scripts": {
-    "build": "vite build ./demo",
-    "start": "pnpm run build && vite preview ./demo",
     "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts",
-    "test": "c8 yarn unit && eslint . && check-dts && size-limit"
+    "test:build": "vite build ./demo",
+    "test:lint": "eslint .",
+    "test:coverage": "c8 pnpm unit",
+    "test:types": "check-dts",
+    "test:size": "size-limit",
+    "test": "pnpm run /^test:/",
+    "start": "pnpm run test:build && vite preview ./demo"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
   "license": "MIT",
@@ -100,7 +104,7 @@
   },
   "eslintIgnore": [
     "**/errors.ts",
-    "dist/**.js"
+    "dist/"
   ],
   "size-limit": [
     {
