@@ -1,8 +1,8 @@
 import { persistentAtom, persistentMap } from '../index.js'
 
 export let $atom = persistentAtom('test', [], {
-  encode: JSON.stringify,
-  decode: JSON.parse
+  decode: JSON.parse,
+  encode: JSON.stringify
 })
 
 export let $map = persistentMap('testMap', {})

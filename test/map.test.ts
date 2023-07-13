@@ -1,21 +1,19 @@
-import type { MapStore } from 'nanostores'
-import type { PersistentListener } from '../index.js'
-
-import { cleanStores } from 'nanostores'
-import { equal, is } from 'uvu/assert'
 import { delay } from 'nanodelay'
+import { cleanStores, type MapStore } from 'nanostores'
 import { test } from 'uvu'
+import { equal, is } from 'uvu/assert'
 
-import { emitLocalStorage } from './setup.js'
 import {
-  windowPersistentEvents,
-  useTestStorageEngine,
-  setPersistentEngine,
-  setTestStorageKey,
   cleanTestStorage,
   getTestStorage,
-  persistentMap
+  type PersistentListener,
+  persistentMap,
+  setPersistentEngine,
+  setTestStorageKey,
+  useTestStorageEngine,
+  windowPersistentEvents
 } from '../index.js'
+import { emitLocalStorage } from './utils.js'
 
 function clone(data: object): object {
   return JSON.parse(JSON.stringify(data))
@@ -133,11 +131,11 @@ test('allows to change encoding', () => {
     'settings:',
     { locale: ['en', 'US'] },
     {
-      encode(list) {
-        return list.join(',')
-      },
       decode(str) {
         return str.split(',')
+      },
+      encode(list) {
+        return list.join(',')
       }
     }
   )
@@ -219,10 +217,10 @@ test('supports per key engine', async () => {
     addEventListener(key, listener) {
       listeners[key] = listener
     },
+    perKey: true,
     removeEventListener(key) {
       delete listeners[key]
-    },
-    perKey: true
+    }
   })
 
   map = persistentMap<{ one?: string; two?: string }>('a:', {

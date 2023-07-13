@@ -1,4 +1,4 @@
-import { map, atom, onMount } from 'nanostores'
+import { atom, map, onMount } from 'nanostores'
 
 let identity = a => a
 let storageEngine = {}

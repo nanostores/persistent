@@ -1,17 +1,18 @@
-import type { WritableAtom } from 'nanostores'
-import type { PersistentListener } from '../index.js'
+import './setup.js'
 
-import { cleanStores } from 'nanostores'
-import { equal, is } from 'uvu/assert'
 import { delay } from 'nanodelay'
+import { cleanStores } from 'nanostores'
+import type { WritableAtom } from 'nanostores'
 import { test } from 'uvu'
+import { equal, is } from 'uvu/assert'
 
-import { emitLocalStorage } from './setup.js'
 import {
-  windowPersistentEvents,
+  persistentAtom,
+  type PersistentListener,
   setPersistentEngine,
-  persistentAtom
+  windowPersistentEvents
 } from '../index.js'
+import { emitLocalStorage } from './utils.js'
 
 let atom: WritableAtom<string | undefined>
 
@@ -22,7 +23,7 @@ test.after.each(() => {
 })
 
 test('loads data from localStorage', () => {
-  localStorage.setItem('a', '1')
+  localStorage.a = '1'
   atom = persistentAtom('a', '2')
   equal(atom.get(), '1')
 })
@@ -104,8 +105,8 @@ test('saves to localStorage in disabled state', () => {
 
 test('allows to change encoding', () => {
   let locale = persistentAtom('locale', ['en', 'US'], {
-    encode: JSON.stringify,
-    decode: JSON.parse
+    decode: JSON.parse,
+    encode: JSON.stringify
   })
 
   locale.listen(() => {})
@@ -155,10 +156,10 @@ test('supports per key engine', async () => {
     addEventListener(key, listener) {
       listeners[key] = listener
     },
+    perKey: true,
     removeEventListener(key) {
       delete listeners[key]
-    },
-    perKey: true
+    }
   })
 
   atom = persistentAtom('lang')

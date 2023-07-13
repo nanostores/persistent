@@ -17,12 +17,12 @@ export interface PersistentEvents {
     callback: PersistentListener,
     restore: () => void
   ): void
+  perKey?: boolean
   removeEventListener(
     key: string,
     callback: PersistentListener,
     restore: () => void
   ): void
-  perKey?: boolean
 }
 
 /**
@@ -43,13 +43,13 @@ export const windowPersistentEvents: PersistentEvents
 
 export interface PersistentEncoder<Origin = any> {
   /**
-   * Encoder to convert value to string.
-   */
-  encode: (value: Origin) => string
-  /**
    * Decoder to convert value from string.
    */
   decode: (encoded: string) => Origin
+  /**
+   * Encoder to convert value to string.
+   */
+  encode: (value: Origin) => string
 }
 
 interface PersistentSimpleOptions {

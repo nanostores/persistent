@@ -1,6 +1,9 @@
-import type { PersistentListener } from '../index.js'
-
-import { setPersistentEngine, persistentAtom, persistentMap } from '../index.js'
+import {
+  persistentAtom,
+  type PersistentListener,
+  persistentMap,
+  setPersistentEngine
+} from '../index.js'
 
 const windowPersistentEvents = {
   addEventListener(key: string, listener: PersistentListener) {
@@ -15,7 +18,7 @@ setPersistentEngine(localStorage, windowPersistentEvents)
 
 let settings = persistentMap<{
   favorite?: string
-  theme: 'light' | 'dark'
+  theme: 'dark' | 'light'
 }>('settings:', {
   theme: 'light'
 })
@@ -29,11 +32,11 @@ settings.setKey('favorite', '1')
 settings.setKey('favorite', undefined)
 
 let count = persistentAtom<number>('count', 0, {
-  encode(origin) {
-    return `${origin}`
-  },
   decode(encoded) {
     return parseInt(encoded, 10)
+  },
+  encode(origin) {
+    return `${origin}`
   }
 })
 

@@ -13,7 +13,7 @@ Object.defineProperty(localStorage, 'getItem', {
 })
 Object.defineProperty(global.localStorage, 'setItem', {
   enumerable: false,
-  value(key: string, value: string | null) {
+  value(key: string, value: null | string) {
     localStorage[key] = `${value}`
   }
 })
@@ -28,14 +28,3 @@ Object.defineProperty(global, '_localStorage', {
   value: global.localStorage,
   writable: false
 })
-
-export function emitLocalStorage(key: string, newValue: string | null): void {
-  if (newValue === null) {
-    delete localStorage[key]
-  } else {
-    localStorage[key] = newValue
-  }
-  global.window.dispatchEvent(
-    new global.StorageEvent('storage', { key, newValue })
-  )
-}

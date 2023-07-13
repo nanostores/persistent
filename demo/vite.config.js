@@ -7,8 +7,8 @@ export default defineConfig({
     minify: false,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        bfcachetest: resolve(__dirname, 'bfcachetest.html')
+        bfcachetest: resolve(__dirname, 'bfcachetest.html'),
+        main: resolve(__dirname, 'index.html')
       }
     }
   }
