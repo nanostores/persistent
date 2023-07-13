@@ -14,7 +14,8 @@
     "cross-tab"
   ],
   "scripts": {
-    "start": "vite build ./demo && vite preview ./demo",
+    "build": "vite build ./demo",
+    "start": "pnpm run build && vite preview ./demo",
     "unit": "tsm node_modules/uvu/bin.js . '(atom|map)\\.test\\.ts$' && tsm ./test/ssr.test.ts",
     "test": "c8 yarn unit && eslint . && check-dts && size-limit"
   },
@@ -85,10 +86,21 @@
     "rules": {
       "@typescript-eslint/no-explicit-any": "off",
       "consistent-return": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "demo/*.ts"
+        ],
+        "rules": {
+          "no-console": "off"
+        }
+      }
+    ]
   },
   "eslintIgnore": [
-    "**/errors.ts"
+    "**/errors.ts",
+    "dist/**.js"
   ],
   "size-limit": [
     {
@@ -96,7 +108,7 @@
       "import": {
         "./index.js": "{ persistentAtom }"
       },
-      "limit": "358 B"
+      "limit": "359 B"
     },
     {
       "name": "Map",
