@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.9.1
+* Fixed bfcache support (by @GoldStrikeArch).
+
 ## 0.9
 * Moved to Nano Stores 0.9.
 
