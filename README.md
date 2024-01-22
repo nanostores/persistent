@@ -63,8 +63,9 @@ You can change store value by `set` method.
 shoppingCart.set([...shoppingCart.get(), newProduct])
 ```
 
-You can store the object in a primitive store too. But Persistent Map store is better,
-because map store will update value if you add a new key to the initial value.
+You can store the object in a primitive store too. But Persistent Map store
+is better, because map store will update value if you add a new key to
+the initial value.
 
 
 ### Map Store
