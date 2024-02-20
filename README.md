@@ -6,7 +6,7 @@
 A smart store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
-* **Small.** from 359 bytes (minified and gzipped).
+* **Small.** from 281 bytes (minified and brotlied).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
@@ -18,13 +18,14 @@ import { persistentAtom } from '@nanostores/persistent'
 export const locale = persistentAtom('locale', 'en')
 ```
 
-<a href="https://evilmartians.com/?utm_source=nanostores-persistent">
-  <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
-       alt="Sponsored by Evil Martians" width="236" height="54">
-</a>
-
 [Nano Stores]: https://github.com/nanostores/nanostores
 [Size Limit]: https://github.com/ai/size-limit
+
+---
+
+<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="" width="22" height="16" />  Made in <b><a href="https://evilmartians.com/devtools?utm_source=nanostores-persistent&utm_campaign=devtools-button&utm_medium=github">Evil Martians</a></b>, product consulting for <b>developer tools</b>.
+
+---
 
 
 ## Install

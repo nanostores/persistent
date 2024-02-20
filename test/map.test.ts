@@ -1,7 +1,9 @@
+import './setup.js'
+
 import { delay } from 'nanodelay'
 import { cleanStores, type MapStore } from 'nanostores'
-import { test } from 'uvu'
-import { equal, is } from 'uvu/assert'
+import { deepStrictEqual, equal } from 'node:assert'
+import { afterEach, test } from 'node:test'
 
 import {
   cleanTestStorage,
@@ -21,7 +23,7 @@ function clone(data: object): object {
 
 let map: MapStore<{ one?: string; two?: string }>
 
-test.after.each(() => {
+afterEach(() => {
   localStorage.clear()
   cleanStores(map)
   setPersistentEngine(localStorage, windowPersistentEvents)
@@ -32,7 +34,7 @@ test('loads data from localStorage', () => {
   map = persistentMap<{ one?: string; two?: string }>('a:', {
     two: '2'
   })
-  equal(map.get(), { one: '1', two: '2' })
+  deepStrictEqual(map.get(), { one: '1', two: '2' })
 })
 
 test('saves to localStorage', () => {
@@ -45,12 +47,12 @@ test('saves to localStorage', () => {
 
   map.setKey('one', '1')
   map.setKey('two', '2')
-  equal(localStorage, { 'b:one': '1', 'b:two': '2' })
-  equal(events, [{ one: '1' }, { one: '1', two: '2' }])
+  deepStrictEqual(localStorage, { 'b:one': '1', 'b:two': '2' })
+  deepStrictEqual(events, [{ one: '1' }, { one: '1', two: '2' }])
 
   map.set({ one: '11' })
-  equal(localStorage, { 'b:one': '11' })
-  equal(events, [
+  deepStrictEqual(localStorage, { 'b:one': '11' })
+  deepStrictEqual(events, [
     { one: '1' },
     { one: '1', two: '2' },
     { one: '11', two: '2' },
@@ -58,8 +60,8 @@ test('saves to localStorage', () => {
   ])
 
   map.setKey('one', undefined)
-  equal(localStorage, {})
-  equal(events, [
+  deepStrictEqual(localStorage, {})
+  deepStrictEqual(events, [
     { one: '1' },
     { one: '1', two: '2' },
     { one: '11', two: '2' },
@@ -78,11 +80,11 @@ test('listens for other tabs', () => {
 
   emitLocalStorage('c:one', '1')
 
-  equal(events, [{ one: '1' }])
-  equal(map.get(), { one: '1' })
+  deepStrictEqual(events, [{ one: '1' }])
+  deepStrictEqual(map.get(), { one: '1' })
 
   emitLocalStorage('c:one', null)
-  equal(map.get(), {})
+  deepStrictEqual(map.get(), {})
 })
 
 test('listens for local storage cleaning', () => {
@@ -98,8 +100,8 @@ test('listens for local storage cleaning', () => {
   localStorage.clear()
   window.dispatchEvent(new StorageEvent('storage', {}))
 
-  equal(events, [{ one: '1' }, { one: '1', two: '2' }, {}])
-  equal(map.get(), {})
+  deepStrictEqual(events, [{ one: '1' }, { one: '1', two: '2' }, {}])
+  deepStrictEqual(map.get(), {})
 })
 
 test('ignores other tabs on request', () => {
@@ -112,8 +114,8 @@ test('ignores other tabs on request', () => {
 
   emitLocalStorage('c2:one', '1')
 
-  equal(events, [])
-  equal(map.get(), {})
+  deepStrictEqual(events, [])
+  deepStrictEqual(map.get(), {})
 })
 
 test('saves to localStorage in disabled state', () => {
@@ -123,7 +125,7 @@ test('saves to localStorage in disabled state', () => {
   equal(localStorage['d:one'], '1')
 
   map.setKey('one', undefined)
-  is(localStorage['d:one'], undefined)
+  equal(localStorage['d:one'], undefined)
 })
 
 test('allows to change encoding', () => {
@@ -147,7 +149,7 @@ test('allows to change encoding', () => {
 
   emitLocalStorage('settings:locale', 'fr,CA')
 
-  equal(settings.get().locale, ['fr', 'CA'])
+  deepStrictEqual(settings.get().locale, ['fr', 'CA'])
   equal(localStorage.getItem('settings:locale'), 'fr,CA')
 })
 
@@ -163,22 +165,22 @@ test('has test API', async () => {
   })
 
   settings.setKey('lang', 'ru')
-  equal(getTestStorage(), { 'settings:lang': 'ru' })
+  deepStrictEqual(getTestStorage(), { 'settings:lang': 'ru' })
 
   setTestStorageKey('settings:lang', undefined)
-  equal(Object.keys(getTestStorage()), [])
+  deepStrictEqual(Object.keys(getTestStorage()), [])
 
   setTestStorageKey('settings:lang', 'uk')
-  equal(getTestStorage(), { 'settings:lang': 'uk' })
-  equal(settings.get(), { lang: 'uk' })
+  deepStrictEqual(getTestStorage(), { 'settings:lang': 'uk' })
+  deepStrictEqual(settings.get(), { lang: 'uk' })
 
   cleanTestStorage()
-  equal(Object.keys(getTestStorage()), [])
-  equal(settings.get(), {})
+  deepStrictEqual(Object.keys(getTestStorage()), [])
+  deepStrictEqual(settings.get(), {})
 
   unbind()
   await delay(1001)
-  equal(Object.keys(getTestStorage()), [])
+  deepStrictEqual(Object.keys(getTestStorage()), [])
 })
 
 test('changes engine', () => {
@@ -199,15 +201,15 @@ test('changes engine', () => {
   map.setKey('one', '2')
 
   equal(listeners.length, 1)
-  equal(storage, { 'z:one': '2' })
+  deepStrictEqual(storage, { 'z:one': '2' })
 
   storage['z:one'] = '2b'
   for (let i of listeners) i({ key: 'z:one', newValue: '2b' })
 
-  equal(map.get(), { one: '2b' })
+  deepStrictEqual(map.get(), { one: '2b' })
 
   map.set({})
-  equal(storage, {})
+  deepStrictEqual(storage, {})
 })
 
 test('supports per key engine', async () => {
@@ -227,25 +229,23 @@ test('supports per key engine', async () => {
     one: '1'
   })
   let unbind = map.listen(() => {})
-  equal(Object.keys(listeners), ['a:one', 'a:'])
+  deepStrictEqual(Object.keys(listeners), ['a:one', 'a:'])
 
   map.setKey('one', undefined)
   map.setKey('two', '2')
-  equal(Object.keys(listeners), ['a:', 'a:two'])
+  deepStrictEqual(Object.keys(listeners), ['a:', 'a:two'])
 
   map.set({ one: '1a' })
-  equal(Object.keys(listeners), ['a:', 'a:one'])
+  deepStrictEqual(Object.keys(listeners), ['a:', 'a:one'])
 
   storage['a:one'] = '1b'
   listeners['a:one']({ key: 'a:one', newValue: '1b' })
-  equal(map.get(), { one: '1b' })
+  deepStrictEqual(map.get(), { one: '1b' })
 
   storage['a:new'] = '1b'
-  equal(map.get(), { one: '1b' })
+  deepStrictEqual(map.get(), { one: '1b' })
 
   unbind()
   await delay(1010)
-  equal(Object.keys(listeners), [])
+  deepStrictEqual(Object.keys(listeners), [])
 })
-
-test.run()
