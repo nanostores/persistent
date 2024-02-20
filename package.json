@@ -14,13 +14,12 @@
     "cross-tab"
   ],
   "scripts": {
-    "test:build": "vite build ./demo",
     "test:lint": "eslint .",
     "test:coverage": "c8 pnpm bnt",
     "test:types": "check-dts",
     "test:size": "size-limit",
     "test": "pnpm run /^test:/",
-    "start": "pnpm run test:build && vite preview ./demo"
+    "start": "vite ./test/demo"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
   "license": "MIT",
@@ -101,7 +100,7 @@
     "overrides": [
       {
         "files": [
-          "demo/*.ts"
+          "test/demo/*.ts"
         ],
         "rules": {
           "no-console": "off"
