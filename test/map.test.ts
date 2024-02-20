@@ -1,5 +1,5 @@
 import { delay } from 'nanodelay'
-import { cleanStores, type MapStore } from 'nanostores'
+import { cleanStores, type MapStore, map as nanoMap } from 'nanostores'
 import { test } from 'uvu'
 import { equal, is } from 'uvu/assert'
 
@@ -50,22 +50,11 @@ test('saves to localStorage', () => {
 
   map.set({ one: '11' })
   equal(localStorage, { 'b:one': '11' })
-  equal(events, [
-    { one: '1' },
-    { one: '1', two: '2' },
-    { one: '11', two: '2' },
-    { one: '11' }
-  ])
+  equal(events, [{ one: '1' }, { one: '1', two: '2' }, { one: '11' }])
 
   map.setKey('one', undefined)
   equal(localStorage, {})
-  equal(events, [
-    { one: '1' },
-    { one: '1', two: '2' },
-    { one: '11', two: '2' },
-    { one: '11' },
-    {}
-  ])
+  equal(events, [{ one: '1' }, { one: '1', two: '2' }, { one: '11' }, {}])
 })
 
 test('listens for other tabs', () => {
@@ -246,6 +235,44 @@ test('supports per key engine', async () => {
   unbind()
   await delay(1010)
   equal(Object.keys(listeners), [])
+})
+
+test('emits one event per update', () => {
+  map = persistentMap<{ one?: string; two?: string }>('1:', {
+    one: '1',
+    two: '2'
+  })
+
+  let events: object[] = []
+  map.listen(value => {
+    events.push(clone(value))
+  })
+  map.set({ one: '2', two: '3' })
+
+  equal(events.length, 1)
+  equal(map.get(), { one: '2', two: '3' })
+})
+
+test('emits equally many events per update compared to non-persistent map', () => {
+  map = persistentMap<{ one?: string; two?: string }>('1:', {
+    one: '1',
+    two: '2'
+  })
+  let nano = nanoMap({ one: '1', two: '2' })
+
+  let events: object[] = []
+  let nanoEvents: object[] = []
+  map.listen(value => {
+    events.push(clone(value))
+  })
+  nano.listen(value => {
+    nanoEvents.push(clone(value))
+  })
+  map.set({ one: '2', two: '3' })
+  nano.set({ one: '2', two: '3' })
+
+  equal(map.get(), nano.get())
+  equal(events.length, nanoEvents.length)
 })
 
 test.run()

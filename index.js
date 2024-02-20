@@ -89,7 +89,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
   let store = map()
 
   let setKey = store.setKey
-  store.setKey = (key, newValue) => {
+  store.setKey = (key, newValue, silent) => {
     if (typeof newValue === 'undefined') {
       if (opts.listen !== false && eventsEngine.perKey) {
         eventsEngine.removeEventListener(prefix + key, listener, restore)
@@ -105,19 +105,22 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
       }
       storageEngine[prefix + key] = encode(newValue)
     }
-    setKey(key, newValue)
+    if (!silent) {
+      setKey(key, newValue)
+    }
   }
 
   let set = store.set
   store.set = function (newObject) {
     for (let key in newObject) {
-      store.setKey(key, newObject[key])
+      store.setKey(key, newObject[key], true)
     }
     for (let key in store.value) {
       if (!(key in newObject)) {
-        store.setKey(key)
+        store.setKey(key, undefined, true)
       }
     }
+    set(newObject)
   }
 
   function listener(e) {
