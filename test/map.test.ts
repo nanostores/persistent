@@ -252,7 +252,7 @@ test('emits one event per update', () => {
   map.set({ one: '2', two: '3' })
 
   equal(events.length, 1)
-  equal(map.get(), { one: '2', two: '3' })
+  deepStrictEqual(map.get(), { one: '2', two: '3' })
 })
 
 test('emits equally many events per update compared to non-persistent map', () => {
@@ -273,6 +273,6 @@ test('emits equally many events per update compared to non-persistent map', () =
   map.set({ one: '2', two: '3' })
   nano.set({ one: '2', two: '3' })
 
-  equal(map.get(), nano.get())
+  deepStrictEqual(map.get(), nano.get())
   equal(events.length, nanoEvents.length)
 })

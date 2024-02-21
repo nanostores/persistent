@@ -7,8 +7,8 @@ let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 function testSupport() {
   try {
     return typeof localStorage !== 'undefined'
+    /* c8 ignore next 4 */
   } catch {
-    /* c8 ignore next 3 */
     // In Privacy Mode access to localStorage will return error
     return false
   }
@@ -89,7 +89,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
   let store = map()
 
   let setKey = store.setKey
-  store.setKey = (key, newValue, silent) => {
+  let storeKey = (key, newValue) => {
     if (typeof newValue === 'undefined') {
       if (opts.listen !== false && eventsEngine.perKey) {
         eventsEngine.removeEventListener(prefix + key, listener, restore)
@@ -105,19 +105,21 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
       }
       storageEngine[prefix + key] = encode(newValue)
     }
-    if (!silent) {
-      setKey(key, newValue)
-    }
+  }
+
+  store.setKey = (key, newValue) => {
+    storeKey(key, newValue)
+    setKey(key, newValue)
   }
 
   let set = store.set
   store.set = function (newObject) {
     for (let key in newObject) {
-      store.setKey(key, newObject[key], true)
+      storeKey(key, newObject[key])
     }
     for (let key in store.value) {
       if (!(key in newObject)) {
-        store.setKey(key, undefined, true)
+        storeKey(key, undefined)
       }
     }
     set(newObject)
@@ -142,7 +144,9 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
         data[key.slice(prefix.length)] = decode(storageEngine[key])
       }
     }
-    store.set(data)
+    for (let key in data) {
+      store.setKey(key, data[key])
+    }
   }
 
   onMount(store, () => {
