@@ -1,4 +1,4 @@
-import { persistentAtom, persistentMap } from '../index.js'
+import { persistentAtom, persistentMap } from '../../index.js'
 
 export let $atom = persistentAtom('test', [], {
   decode: JSON.parse,

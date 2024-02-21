@@ -1,5 +1,5 @@
 // vite.config.js
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({

@@ -1,5 +1,5 @@
-import { test } from 'uvu'
-import { equal } from 'uvu/assert'
+import { deepStrictEqual, equal } from 'node:assert'
+import { test } from 'node:test'
 
 import { persistentAtom, persistentMap } from '../index.js'
 
@@ -9,7 +9,7 @@ test('works without localStorage for map', () => {
   })
   map.listen(() => {})
   map.setKey('two', '2')
-  equal(map.get(), { one: '1', two: '2' })
+  deepStrictEqual(map.get(), { one: '1', two: '2' })
 })
 
 test('works without localStorage for atom', () => {
@@ -18,5 +18,3 @@ test('works without localStorage for atom', () => {
   store.set('2')
   equal(store.get(), '2')
 })
-
-test.run()

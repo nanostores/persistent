@@ -1,6 +1,10 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.10.0
+* Moved to Nano Stores 0.10.
+* Removed Node.js 16 support.
+
 ## 0.9.1
 * Fixed bfcache support (by @GoldStrikeArch).
 
