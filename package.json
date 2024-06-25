@@ -44,30 +44,31 @@
     "nanostores": "^0.9.0 || ^0.10.0"
   },
   "devDependencies": {
-    "@logux/eslint-config": "^52.0.2",
-    "@size-limit/preset-small-lib": "^11.0.2",
-    "@types/node": "^20.11.19",
-    "@typescript-eslint/eslint-plugin": "^7.0.2",
-    "@typescript-eslint/parser": "^7.0.2",
-    "better-node-test": "^0.5.0",
-    "c8": "^9.1.0",
-    "check-dts": "^0.7.2",
-    "clean-publish": "^4.2.0",
-    "eslint": "^8.56.0",
+    "@logux/eslint-config": "^53.2.0",
+    "@size-limit/preset-small-lib": "^11.1.4",
+    "@types/node": "^20.14.8",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
+    "better-node-test": "^0.5.1",
+    "c8": "^10.1.2",
+    "check-dts": "^0.8.0",
+    "clean-publish": "^5.0.0",
+    "eslint": "^9.5.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-n": "^17.9.0",
     "eslint-plugin-node-import": "^1.0.4",
-    "eslint-plugin-perfectionist": "^2.5.0",
+    "eslint-plugin-perfectionist": "^2.11.0",
     "eslint-plugin-prefer-let": "^3.0.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "happy-dom": "^13.3.8",
+    "eslint-plugin-promise": "^6.2.0",
+    "globals": "^15.6.0",
+    "happy-dom": "^14.12.3",
     "nanodelay": "^2.0.2",
-    "nanostores": "^0.10.0",
-    "size-limit": "^11.0.2",
-    "tsx": "^4.7.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.1.4"
+    "nanostores": "^0.10.3",
+    "size-limit": "^11.1.4",
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.1"
   },
   "prettier": {
     "arrowParens": "avoid",
@@ -91,27 +92,6 @@
     "skip-full": true,
     "clean": true
   },
-  "eslintConfig": {
-    "extends": "@logux/eslint-config/ts",
-    "rules": {
-      "@typescript-eslint/no-explicit-any": "off",
-      "consistent-return": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "test/demo/*.ts"
-        ],
-        "rules": {
-          "no-console": "off"
-        }
-      }
-    ]
-  },
-  "eslintIgnore": [
-    "**/errors.ts",
-    "dist/"
-  ],
   "size-limit": [
     {
       "name": "Atom",

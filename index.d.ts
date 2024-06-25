@@ -60,8 +60,8 @@ interface PersistentSimpleOptions {
 }
 
 export type PersistentOptions =
+  | (PersistentEncoder & PersistentSimpleOptions)
   | PersistentSimpleOptions
-  | (PersistentSimpleOptions & PersistentEncoder)
 
 interface PersistentMapFactory {
   /**
@@ -89,7 +89,7 @@ interface PersistentMapFactory {
   <Value extends object>(
     name: string,
     initial: Value,
-    opts: PersistentSimpleOptions & PersistentEncoder<Value[keyof Value]>
+    opts: PersistentEncoder<Value[keyof Value]> & PersistentSimpleOptions
   ): MapStore<Value>
 }
 
@@ -120,7 +120,7 @@ interface PersistentAtomFactory {
   <Value>(
     name: string,
     initial: Value,
-    opts: PersistentSimpleOptions & PersistentEncoder<Value>
+    opts: PersistentEncoder<Value> & PersistentSimpleOptions
   ): WritableAtom<Value>
 }
 
