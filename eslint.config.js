@@ -10,7 +10,8 @@ export default [
       globals: globals.browser
     },
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off'
+      '@typescript-eslint/no-explicit-any': 'off',
+      'n/no-unsupported-features/node-builtins': 'off'
     }
   },
   {
