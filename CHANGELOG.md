@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.10.2
+* Added Nano Stores 0.11 support.
+
 ## 0.10.1
 * Fixed multiple update events on single `persistentMap.set` call (by @kaytwo).
 
