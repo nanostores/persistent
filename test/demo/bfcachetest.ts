@@ -10,6 +10,7 @@ let buttonMap = document.querySelector<HTMLButtonElement>('#buttonMap')!
 let clearButtonMap = document.querySelector<HTMLButtonElement>('#clearMap')!
 
 buttonAtom.addEventListener('click', () => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   $atom.set([...$atom.get(), Math.random() * Date.now()])
 })
 

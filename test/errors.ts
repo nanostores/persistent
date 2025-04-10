@@ -15,11 +15,11 @@ settings.subscribe(value => {
   console.log(value.light)
 })
 
-// THROWS "1"' is not assignable to parameter of type '"light" | "dark"
+// THROWS "1"' is not assignable to parameter of type '"dark" | "light"'
 settings.setKey('theme', '1')
 // THROWS '"option"' is not assignable to parameter of type
 settings.setKey('option', '1')
-// THROWS 'undefined' is not assignable to parameter of type '"light" | "dark"'
+// THROWS 'undefined' is not assignable to parameter of type '"dark" | "light"'
 settings.setKey('theme', undefined)
 
 let count = persistentAtom<number>('count', 0, {
