@@ -49,7 +49,7 @@ export interface PersistentEncoder<Origin = any> {
   /**
    * Encoder to convert value to string.
    */
-  encode: (value: Origin) => string
+  encode: (value: Origin) => string | undefined
 }
 
 interface PersistentSimpleOptions {

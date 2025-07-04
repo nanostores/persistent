@@ -45,10 +45,11 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
 
   let set = store.set
   store.set = newValue => {
-    if (typeof newValue === 'undefined') {
+    let converted = encode(newValue)
+    if (typeof converted === 'undefined') {
       delete storageEngine[name]
     } else {
-      storageEngine[name] = encode(newValue)
+      storageEngine[name] = converted
     }
     set(newValue)
   }
@@ -56,12 +57,12 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   function listener(e) {
     if (e.key === name) {
       if (e.newValue === null) {
-        set(undefined)
+        set(initial)
       } else {
         set(decode(e.newValue))
       }
     } else if (!storageEngine[name]) {
-      set(undefined)
+      set(initial)
     }
   }
 

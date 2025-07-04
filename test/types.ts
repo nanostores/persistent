@@ -36,7 +36,11 @@ let count = persistentAtom<number>('count', 0, {
     return parseInt(encoded, 10)
   },
   encode(origin) {
-    return `${origin}`
+    if (origin === 0) {
+      return undefined
+    } else {
+      return `${origin}`
+    }
   }
 })
 

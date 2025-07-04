@@ -177,3 +177,36 @@ test('supports per key engine', async () => {
   await delay(1010)
   deepStrictEqual(Object.keys(listeners), [])
 })
+
+test('goes back to initial on key removal', () => {
+  atom = persistentAtom('key', 'initial')
+  atom.set('1')
+
+  let events: (string | undefined)[] = []
+  atom.listen(value => {
+    events.push(value)
+  })
+
+  emitLocalStorage('key', null)
+  deepStrictEqual(events, ['initial'])
+  equal(atom.get(), 'initial')
+})
+
+test('goes back to initial on key removal with custom stringifier', () => {
+  let store = persistentAtom('bool', false, {
+    decode(str) {
+      return str !== ''
+    },
+    encode(value) {
+      return value ? 'yes' : undefined
+    }
+  })
+  equal(store.get(), false)
+  equal(typeof localStorage.bool, 'undefined')
+
+  store.set(true)
+  equal(localStorage.bool, 'yes')
+
+  emitLocalStorage('bool', null)
+  equal(store.get(), false)
+})
