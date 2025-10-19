@@ -15,7 +15,7 @@ and synchronize changes between browser tabs.
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
 
-export const locale = persistentAtom('locale', 'en')
+export const $locale = persistentAtom('locale', 'en')
 ```
 
 [Nano Stores]: https://github.com/nanostores/nanostores
@@ -49,7 +49,7 @@ key.
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
 
-export const shoppingCart = persistentAtom<Product[]>('cart', [], {
+export const $shoppingCart = persistentAtom<Product[]>('cart', [], {
   encode: JSON.stringify,
   decode: JSON.parse,
 })
@@ -61,7 +61,7 @@ An empty array `[]` will be initial value on missed key in `localStorage`.
 You can change store value by `set` method.
 
 ```ts
-shoppingCart.set([...shoppingCart.get(), newProduct])
+$shoppingCart.set([...$shoppingCart.get(), newProduct])
 ```
 
 You can store the object in a primitive store too. But Persistent Map store
@@ -82,7 +82,7 @@ export type SettingsValue = {
   theme: 'dark' | 'light' | 'auto'
 }
 
-export const settings = persistentMap<SettingsValue>('settings:', {
+export const $settings = persistentMap<SettingsValue>('settings:', {
   sidebar: 'show',
   theme: 'auto'
 })
@@ -93,7 +93,7 @@ This store will keep value in `settings:sidebar` and `settings:theme` keys.
 You can change the key by `setKey` method:
 
 ```ts
-settings.setKey('sidebar', 'hide')
+$settings.setKey('sidebar', 'hide')
 ```
 
 
@@ -106,7 +106,7 @@ There is a `listen` option to disable synchronization.
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
 
-export const draft = persistentAtom('draft', '', { listen: false })
+export const $draft = persistentAtom('draft', '', { listen: false })
 ```
 
 
@@ -118,7 +118,7 @@ or after getting it from the persistent storage.
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
 
-export const draft = persistentAtom('draft', [], {
+export const $draft = persistentAtom('draft', [], {
   encode (value) {
     return JSON.stringify(value)
   },
@@ -141,7 +141,7 @@ You can manually initialize stores with specific data:
 
 ```js
 if (isServer) {
-  locale.set(user.locale)
+  $locale.set(user.locale)
 }
 ```
 
@@ -239,7 +239,7 @@ import {
   getTestStorage,
 } from '@nanostores/persistent'
 
-import { settings } from './storage.js'
+import { $settings } from './storage.js'
 
 beforeAll(() => {
   useTestStorageEngine()
@@ -251,11 +251,11 @@ afterEach(() => {
 
 it('listens for changes', () => {
   setTestStorageKey('settings:locale', 'ru')
-  expect(settings.get()).toEqual({ locale: 'ru' })
+  expect($settings.get()).toEqual({ locale: 'ru' })
 })
 
 it('changes storage', () => {
-  settings.setKey('locale')
+  $settings.setKey('locale')
   expect(getTestStorage()).toEqual({ 'settings:locale': 'ru' })
 })
 ```
