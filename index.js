@@ -7,7 +7,7 @@ let eventsEngine = { addEventListener() {}, removeEventListener() {} }
 function testSupport() {
   try {
     return typeof localStorage !== 'undefined'
-    /* c8 ignore next 4 */
+    /* node:coverage ignore next 4 */
   } catch {
     // In Privacy Mode access to localStorage will return error
     return false

@@ -1,4 +1,4 @@
-import './setup.js'
+import './setup.ts'
 
 import { delay } from 'nanodelay'
 import { cleanStores, type MapStore, map as nanoMap } from 'nanostores'
@@ -15,7 +15,7 @@ import {
   useTestStorageEngine,
   windowPersistentEvents
 } from '../index.js'
-import { emitLocalStorage } from './utils.js'
+import { emitLocalStorage } from './utils.ts'
 
 function clone(data: object): object {
   return JSON.parse(JSON.stringify(data))
@@ -56,7 +56,12 @@ test('saves to localStorage', () => {
 
   map.setKey('one', undefined)
   deepStrictEqual(localStorage, {})
-  deepStrictEqual(events, [{ one: '1' }, { one: '1', two: '2' }, { one: '11' }, {}])
+  deepStrictEqual(events, [
+    { one: '1' },
+    { one: '1', two: '2' },
+    { one: '11' },
+    {}
+  ])
 })
 
 test('listens for other tabs', () => {

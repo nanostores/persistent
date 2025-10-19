@@ -1,4 +1,4 @@
-import './setup.js'
+import './setup.ts'
 
 import { delay } from 'nanodelay'
 import { cleanStores } from 'nanostores'
@@ -12,7 +12,7 @@ import {
   setPersistentEngine,
   windowPersistentEvents
 } from '../index.js'
-import { emitLocalStorage } from './utils.js'
+import { emitLocalStorage } from './utils.ts'
 
 let atom: WritableAtom<string | undefined>
 
