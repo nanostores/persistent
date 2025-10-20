@@ -13,6 +13,7 @@ import {
   windowPersistentEvents
 } from '../index.js'
 import { emitLocalStorage } from './utils.ts'
+import { persistentBoolean } from '../index.js'
 
 let atom: WritableAtom<string | undefined>
 
@@ -192,21 +193,30 @@ test('goes back to initial on key removal', () => {
   equal(atom.get(), 'initial')
 })
 
-test('goes back to initial on key removal with custom stringifier', () => {
-  let store = persistentAtom('bool', false, {
-    decode(str) {
-      return str !== ''
-    },
-    encode(value) {
-      return value ? 'yes' : undefined
-    }
-  })
-  equal(store.get(), false)
-  equal(typeof localStorage.bool, 'undefined')
+test('stores boolean', () => {
+  let store1 = persistentBoolean('false')
+  equal(store1.get(), false)
 
-  store.set(true)
-  equal(localStorage.bool, 'yes')
+  store1.set(true)
+  equal(store1.get(), true)
+  equal(localStorage.false, 'yes')
 
-  emitLocalStorage('bool', null)
-  equal(store.get(), false)
+  store1.set(false)
+  equal(store1.get(), false)
+  equal(typeof localStorage.false, 'undefined')
+
+  emitLocalStorage('false', 'yes')
+  equal(store1.get(), true)
+
+  emitLocalStorage('false', null)
+  equal(store1.get(), false)
+
+  let store2 = persistentBoolean('true', true)
+  equal(store2.get(), true)
+
+  store2.set(false)
+  equal(store2.get(), false)
+
+  store2.set(true)
+  equal(store2.get(), true)
 })

@@ -127,6 +127,26 @@ interface PersistentAtomFactory {
 export const persistentAtom: PersistentAtomFactory
 
 /**
+ * Store a boolean in localStorage.
+ *
+ * ```ts
+ * import { persistentBoolean } from '@nanostores/persistent'
+ *
+ * export const reduceMotion = persistentBoolean('reduce-motion')
+ * ```
+ *
+ * @param name Key name in localStorage.
+ * @param initial Value on missed data in localStorage. `false` by default.
+ * @param opts Store options.
+ * @return The store.
+ */
+export function persistentBoolean(
+  key: string,
+  initial?: boolean,
+  opts?: PersistentSimpleOptions
+): WritableAtom<boolean>
+
+/**
  * Enable fake storage to test persistent stores.
  *
  * ```js

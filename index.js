@@ -83,6 +83,18 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   return store
 }
 
+export function persistentBoolean(key, initial = false, opts = {}) {
+  return persistentAtom(key, initial, {
+    ...opts,
+    decode(str) {
+      return str === 'yes'
+    },
+    encode(value) {
+      return value ? 'yes' : undefined
+    }
+  })
+}
+
 export function persistentMap(prefix, initial = {}, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity

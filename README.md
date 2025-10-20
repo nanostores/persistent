@@ -6,7 +6,7 @@
 A smart store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
-* **Small.** from 281 bytes (minified and brotlied).
+* **Small.** from 280 bytes (minified and brotlied).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
@@ -67,6 +67,14 @@ $shoppingCart.set([...$shoppingCart.get(), newProduct])
 You can store the object in a primitive store too. But Persistent Map store
 is better, because map store will update value if you add a new key to
 the initial value.
+
+There is simple wrapper to store boolean:
+
+```ts
+import { persistentBoolean } from '@nanostores/persistent'
+
+export const reduceMotion = persistentBoolean('reduce-motion')
+```
 
 
 ### Map Store
