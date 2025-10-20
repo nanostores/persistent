@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.2.0
+* Added `persistentBoolean()` helper.
+
 ## 1.1.0
 * Added ability to delete key from storage in `encode`.
 * Fixed reaction on atom’s key removal.
