@@ -73,7 +73,7 @@ There is simple wrapper to store boolean:
 ```ts
 import { persistentBoolean } from '@nanostores/persistent'
 
-export const reduceMotion = persistentBoolean('reduce-motion')
+export const $reduceMotion = persistentBoolean('reduce-motion')
 ```
 
 
