@@ -90,7 +90,7 @@ export function persistentBoolean(key, initial = false, opts = {}) {
       return str === 'yes'
     },
     encode(value) {
-      return value === initial ? undefined : initial ? 'no' : 'yes'
+      return value ? 'yes' : 'no'
     }
   })
 }
