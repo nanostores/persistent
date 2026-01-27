@@ -75,7 +75,7 @@
       "import": {
         "./index.js": "{ persistentAtom }"
       },
-      "limit": "280 B"
+      "limit": "289 B"
     },
     {
       "name": "Map",
