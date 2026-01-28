@@ -12,8 +12,8 @@ import {
   setPersistentEngine,
   windowPersistentEvents
 } from '../index.js'
-import { emitLocalStorage } from './utils.ts'
 import { persistentBoolean } from '../index.js'
+import { emitLocalStorage } from './utils.ts'
 
 let atom: WritableAtom<string | undefined>
 
