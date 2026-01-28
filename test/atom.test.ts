@@ -13,7 +13,7 @@ import {
   windowPersistentEvents
 } from '../index.js'
 import { emitLocalStorage } from './utils.ts'
-import { persistentBoolean } from '../index.js'
+import { persistentBoolean, persistentJSON } from '../index.js'
 
 let atom: WritableAtom<string | undefined>
 
@@ -219,4 +219,32 @@ test('stores boolean', () => {
 
   store2.set(true)
   equal(store2.get(), true)
+})
+
+test('stores JSON', () => {
+  let store1 = persistentJSON('booleanJSON', false)
+  equal(store1.get(), false)
+
+  store1.set(true)
+  equal(store1.get(), true)
+  equal(localStorage.booleanJSON, 'true')
+
+  store1.set(false)
+  equal(store1.get(), false)
+  equal(localStorage.false, 'false')
+
+  emitLocalStorage('booleanJSON', 'true')
+  equal(store1.get(), true)
+
+  emitLocalStorage('booleanJSON', 'false')
+  equal(store1.get(), false)
+
+  let store2 = persistentJSON<string[]>('arrayJSON', [])
+  equal(store2.get(), [])
+
+  store2.set(['foo'])
+  equal(store2.get(), ['foo'])
+
+  store2.set([])
+  equal(store2.get(), [])
 })
