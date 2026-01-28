@@ -41,7 +41,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
 
-  let store = atom(initial)
+  let store = atom(name in storageEngine ? decode(storageEngine[name]) : initial)
 
   let set = store.set
   store.set = newValue => {
@@ -90,7 +90,7 @@ export function persistentBoolean(key, initial = false, opts = {}) {
       return str === 'yes'
     },
     encode(value) {
-      return value ? 'yes' : undefined
+      return value ? 'yes' : ''
     }
   })
 }
