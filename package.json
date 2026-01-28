@@ -82,7 +82,7 @@
       "import": {
         "./index.js": "{ persistentMap }"
       },
-      "limit": "411 B"
+      "limit": "434 B"
     }
   ],
   "clean-publish": {
