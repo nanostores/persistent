@@ -203,7 +203,7 @@ test('stores boolean', () => {
 
   store1.set(false)
   equal(store1.get(), false)
-  equal(typeof localStorage.false, 'undefined')
+  equal(localStorage.false, '')
 
   emitLocalStorage('false', 'yes')
   equal(store1.get(), true)
