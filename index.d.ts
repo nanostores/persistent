@@ -76,7 +76,7 @@ interface PersistentMapFactory {
    * }>('settings:', { theme: 'light' })
    * ```
    *
-   * @param prefix Key prefix in localStorage.
+   * @param name Key prefix in localStorage.
    * @param initial Initial value on missed data in localStorage.
    * @param opts Store options.
    * @return The store.
@@ -135,7 +135,7 @@ export const persistentAtom: PersistentAtomFactory
  * export const reduceMotion = persistentBoolean('reduce-motion')
  * ```
  *
- * @param name Key name in localStorage.
+ * @param key Key name in localStorage.
  * @param initial Value on missed data in localStorage. `false` by default.
  * @param opts Store options.
  * @return The store.
@@ -169,7 +169,7 @@ export function persistentJSON<T>(
   name: string,
   initial?: null,
   opts?: PersistentSimpleOptions
-): WritableAtom<T | null>
+): WritableAtom<null | T>
 
 /**
  * Enable fake storage to test persistent stores.

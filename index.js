@@ -98,8 +98,8 @@ export function persistentBoolean(key, initial = false, opts = {}) {
 export function persistentJSON(key, initial = null, opts = {}) {
   return persistentAtom(key, initial, {
     ...opts,
-    encode: JSON.stringify,
     decode: JSON.parse,
+    encode: JSON.stringify,
   })
 }
 

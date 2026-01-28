@@ -77,6 +77,33 @@ export const $reduceMotion = persistentBoolean('reduce-motion')
 ```
 
 
+### JSON Store
+
+`persistentJSON` is a handy shortcut for `persistentAtom` that takes care of JSON serialization for you.
+
+It works with any valid JSON type: objects, arrays, primitives (`string`, `number`, `boolean`, `null`).
+
+**With an initial value** — no null checks needed, clean and simple:
+
+```ts
+import { persistentJSON } from '@nanostores/persistent'
+
+const $cart = persistentJSON<Product[]>('cart', [])
+const $theme = persistentJSON<'dark' | 'light' | 'auto'>('theme', 'auto')
+
+$cart.set([...$cart.get(), newProduct])
+$theme.set('dark')
+```
+
+**Without initial value** — `null` by default, use optional chaining:
+
+```ts
+const $users = persistentJSON<Comment[]>('users')
+
+console.log($users.value?.map((comment) => comment.userId)) // ✅ Safe access
+```
+
+
 ### Map Store
 
 There is a special key-value map store. It will keep each key
