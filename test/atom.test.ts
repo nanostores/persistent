@@ -3,7 +3,7 @@ import './setup.ts'
 import { delay } from 'nanodelay'
 import { cleanStores } from 'nanostores'
 import type { WritableAtom } from 'nanostores'
-import { deepStrictEqual, equal } from 'node:assert'
+import { deepStrictEqual, equal, deepEqual } from 'node:assert'
 import { afterEach, test } from 'node:test'
 
 import {
@@ -231,7 +231,7 @@ test('stores JSON', () => {
 
   store1.set(false)
   equal(store1.get(), false)
-  equal(localStorage.false, 'false')
+  equal(localStorage.booleanJSON, 'false')
 
   emitLocalStorage('booleanJSON', 'true')
   equal(store1.get(), true)
@@ -240,11 +240,11 @@ test('stores JSON', () => {
   equal(store1.get(), false)
 
   let store2 = persistentJSON<string[]>('arrayJSON', [])
-  equal(store2.get(), [])
+  deepEqual(store2.get(), [])
 
   store2.set(['foo'])
-  equal(store2.get(), ['foo'])
+  deepEqual(store2.get(), ['foo'])
 
   store2.set([])
-  equal(store2.get(), [])
+  deepEqual(store2.get(), [])
 })
