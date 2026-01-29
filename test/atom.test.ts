@@ -4,7 +4,7 @@ import { delay } from 'nanodelay'
 import { cleanStores } from 'nanostores'
 import type { WritableAtom } from 'nanostores'
 import { deepStrictEqual, equal } from 'node:assert'
-import { afterEach, test } from 'node:test'
+import { afterEach, describe, test } from 'node:test'
 
 import {
   persistentAtom,
@@ -23,200 +23,202 @@ afterEach(() => {
   setPersistentEngine(localStorage, windowPersistentEvents)
 })
 
-test('loads data from localStorage', () => {
-  localStorage.a = '1'
-  atom = persistentAtom('a', '2')
-  equal(atom.get(), '1')
-})
-
-test('saves to localStorage', () => {
-  atom = persistentAtom<string | undefined>('b')
-
-  let events: (string | undefined)[] = []
-  atom.listen(value => {
-    events.push(value)
-  })
-  equal(atom.get(), undefined)
-
-  atom.set('1')
-  deepStrictEqual(localStorage, { b: '1' })
-  deepStrictEqual(events, ['1'])
-
-  atom.set(undefined)
-  deepStrictEqual(localStorage, {})
-  deepStrictEqual(events, ['1', undefined])
-})
-
-test('listens for other tabs', () => {
-  atom = persistentAtom('c')
-
-  let events: (string | undefined)[] = []
-  atom.listen(value => {
-    events.push(value)
+describe('persistentAtom', () => {
+  test('loads data from localStorage', () => {
+    localStorage.a = '1'
+    atom = persistentAtom('a', '2')
+    equal(atom.get(), '1')
   })
 
-  emitLocalStorage('c', '1')
+  test('saves to localStorage', () => {
+    atom = persistentAtom<string | undefined>('b')
 
-  deepStrictEqual(events, ['1'])
-  equal(atom.get(), '1')
+    let events: (string | undefined)[] = []
+    atom.listen(value => {
+      events.push(value)
+    })
+    equal(atom.get(), undefined)
 
-  emitLocalStorage('c', null)
-  equal(atom.get(), undefined)
-})
+    atom.set('1')
+    deepStrictEqual(localStorage, { b: '1' })
+    deepStrictEqual(events, ['1'])
 
-test('listens for key cleaning', () => {
-  atom = persistentAtom('c')
-
-  let events: (string | undefined)[] = []
-  atom.listen(value => {
-    events.push(value)
-  })
-  atom.set('init')
-
-  localStorage.clear()
-  window.dispatchEvent(new StorageEvent('storage', {}))
-
-  deepStrictEqual(events, ['init', undefined])
-  equal(atom.get(), undefined)
-})
-
-test('ignores other tabs on request', () => {
-  atom = persistentAtom('c2', undefined, { listen: false })
-
-  let events: (string | undefined)[] = []
-  atom.listen(value => {
-    events.push(value)
+    atom.set(undefined)
+    deepStrictEqual(localStorage, {})
+    deepStrictEqual(events, ['1', undefined])
   })
 
-  emitLocalStorage('c2', '1')
+  test('listens for other tabs', () => {
+    atom = persistentAtom('c')
 
-  deepStrictEqual(events, [])
-  equal(atom.get(), undefined)
-})
+    let events: (string | undefined)[] = []
+    atom.listen(value => {
+      events.push(value)
+    })
 
-test('saves to localStorage in disabled state', () => {
-  atom = persistentAtom('d')
+    emitLocalStorage('c', '1')
 
-  atom.set('1')
-  equal(localStorage.d, '1')
+    deepStrictEqual(events, ['1'])
+    equal(atom.get(), '1')
 
-  atom.set(undefined)
-  equal(localStorage.d, undefined)
-})
-
-test('allows to change encoding', () => {
-  let locale = persistentAtom('locale', ['en', 'US'], {
-    decode: JSON.parse,
-    encode: JSON.stringify
+    emitLocalStorage('c', null)
+    equal(atom.get(), undefined)
   })
 
-  locale.listen(() => {})
-  locale.set(['ru', 'RU'])
+  test('listens for key cleaning', () => {
+    atom = persistentAtom('c')
 
-  deepStrictEqual(localStorage.getItem('locale'), '["ru","RU"]')
+    let events: (string | undefined)[] = []
+    atom.listen(value => {
+      events.push(value)
+    })
+    atom.set('init')
 
-  emitLocalStorage('locale', '["fr","CA"]')
+    localStorage.clear()
+    window.dispatchEvent(new StorageEvent('storage', {}))
 
-  deepStrictEqual(locale.get(), ['fr', 'CA'])
-  deepStrictEqual(localStorage.getItem('locale'), '["fr","CA"]')
-})
+    deepStrictEqual(events, ['init', undefined])
+    equal(atom.get(), undefined)
+  })
 
-test('changes engine', () => {
-  let storage: Record<string, string> = {}
-  let listeners: PersistentListener[] = []
-  let events = {
-    addEventListener(key: string, callback: PersistentListener) {
-      listeners.push(callback)
-    },
-    removeEventListener(key: string, callback: PersistentListener) {
-      listeners = listeners.filter(i => i !== callback)
+  test('ignores other tabs on request', () => {
+    atom = persistentAtom('c2', undefined, { listen: false })
+
+    let events: (string | undefined)[] = []
+    atom.listen(value => {
+      events.push(value)
+    })
+
+    emitLocalStorage('c2', '1')
+
+    deepStrictEqual(events, [])
+    equal(atom.get(), undefined)
+  })
+
+  test('saves to localStorage in disabled state', () => {
+    atom = persistentAtom('d')
+
+    atom.set('1')
+    equal(localStorage.d, '1')
+
+    atom.set(undefined)
+    equal(localStorage.d, undefined)
+  })
+
+  test('allows to change encoding', () => {
+    let locale = persistentAtom('locale', ['en', 'US'], {
+      decode: JSON.parse,
+      encode: JSON.stringify
+    })
+
+    locale.listen(() => {})
+    locale.set(['ru', 'RU'])
+
+    deepStrictEqual(localStorage.getItem('locale'), '["ru","RU"]')
+
+    emitLocalStorage('locale', '["fr","CA"]')
+
+    deepStrictEqual(locale.get(), ['fr', 'CA'])
+    deepStrictEqual(localStorage.getItem('locale'), '["fr","CA"]')
+  })
+
+  test('changes engine', () => {
+    let storage: Record<string, string> = {}
+    let listeners: PersistentListener[] = []
+    let events = {
+      addEventListener(key: string, callback: PersistentListener) {
+        listeners.push(callback)
+      },
+      removeEventListener(key: string, callback: PersistentListener) {
+        listeners = listeners.filter(i => i !== callback)
+      }
     }
-  }
-  setPersistentEngine(storage, events)
+    setPersistentEngine(storage, events)
 
-  atom = persistentAtom('z')
-  atom.listen(() => {})
-  atom.set('1')
+    atom = persistentAtom('z')
+    atom.listen(() => {})
+    atom.set('1')
 
-  equal(listeners.length, 1)
-  deepStrictEqual(storage, { z: '1' })
+    equal(listeners.length, 1)
+    deepStrictEqual(storage, { z: '1' })
 
-  storage.z = '1a'
-  for (let i of listeners) i({ key: 'z', newValue: '1a' })
+    storage.z = '1a'
+    for (let i of listeners) i({ key: 'z', newValue: '1a' })
 
-  equal(atom.get(), '1a')
+    equal(atom.get(), '1a')
 
-  atom.set(undefined)
-  deepStrictEqual(storage, {})
-})
-
-test('supports per key engine', async () => {
-  let storage: Record<string, string> = {}
-  let listeners: Record<string, PersistentListener> = {}
-  setPersistentEngine(storage, {
-    addEventListener(key, listener) {
-      listeners[key] = listener
-    },
-    perKey: true,
-    removeEventListener(key) {
-      delete listeners[key]
-    }
+    atom.set(undefined)
+    deepStrictEqual(storage, {})
   })
 
-  atom = persistentAtom('lang')
-  let unbind = atom.listen(() => {})
-  deepStrictEqual(Object.keys(listeners), ['lang'])
+  test('supports per key engine', async () => {
+    let storage: Record<string, string> = {}
+    let listeners: Record<string, PersistentListener> = {}
+    setPersistentEngine(storage, {
+      addEventListener(key, listener) {
+        listeners[key] = listener
+      },
+      perKey: true,
+      removeEventListener(key) {
+        delete listeners[key]
+      }
+    })
 
-  atom.set('fr')
-  deepStrictEqual(Object.keys(listeners), ['lang'])
+    atom = persistentAtom('lang')
+    let unbind = atom.listen(() => {})
+    deepStrictEqual(Object.keys(listeners), ['lang'])
 
-  storage.lang = 'es'
-  listeners.lang({ key: 'lang', newValue: 'es' })
-  equal(atom.get(), 'es')
+    atom.set('fr')
+    deepStrictEqual(Object.keys(listeners), ['lang'])
 
-  unbind()
-  await delay(1010)
-  deepStrictEqual(Object.keys(listeners), [])
-})
+    storage.lang = 'es'
+    listeners.lang({ key: 'lang', newValue: 'es' })
+    equal(atom.get(), 'es')
 
-test('goes back to initial on key removal', () => {
-  atom = persistentAtom('key', 'initial')
-  atom.set('1')
-
-  let events: (string | undefined)[] = []
-  atom.listen(value => {
-    events.push(value)
+    unbind()
+    await delay(1010)
+    deepStrictEqual(Object.keys(listeners), [])
   })
 
-  emitLocalStorage('key', null)
-  deepStrictEqual(events, ['initial'])
-  equal(atom.get(), 'initial')
-})
+  test('goes back to initial on key removal', () => {
+    atom = persistentAtom('key', 'initial')
+    atom.set('1')
 
-test('stores boolean', () => {
-  let store1 = persistentBoolean('false')
-  equal(store1.get(), false)
+    let events: (string | undefined)[] = []
+    atom.listen(value => {
+      events.push(value)
+    })
 
-  store1.set(true)
-  equal(store1.get(), true)
-  equal(localStorage.false, 'yes')
+    emitLocalStorage('key', null)
+    deepStrictEqual(events, ['initial'])
+    equal(atom.get(), 'initial')
+  })
 
-  store1.set(false)
-  equal(store1.get(), false)
-  equal(localStorage.false, '')
+  test('stores boolean', () => {
+    let store1 = persistentBoolean('false')
+    equal(store1.get(), false)
 
-  emitLocalStorage('false', 'yes')
-  equal(store1.get(), true)
+    store1.set(true)
+    equal(store1.get(), true)
+    equal(localStorage.false, 'yes')
 
-  emitLocalStorage('false', null)
-  equal(store1.get(), false)
+    store1.set(false)
+    equal(store1.get(), false)
+    equal(localStorage.false, '')
 
-  let store2 = persistentBoolean('true', true)
-  equal(store2.get(), true)
+    emitLocalStorage('false', 'yes')
+    equal(store1.get(), true)
 
-  store2.set(false)
-  equal(store2.get(), false)
+    emitLocalStorage('false', null)
+    equal(store1.get(), false)
 
-  store2.set(true)
-  equal(store2.get(), true)
+    let store2 = persistentBoolean('true', true)
+    equal(store2.get(), true)
+
+    store2.set(false)
+    equal(store2.get(), false)
+
+    store2.set(true)
+    equal(store2.get(), true)
+  })
 })

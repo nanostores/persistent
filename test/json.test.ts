@@ -15,7 +15,7 @@ afterEach(() => {
   setPersistentEngine(localStorage, windowPersistentEvents)
 })
 
-describe('persistentJSON tests', () => {
+describe('persistentJSON', () => {
   test('Should set null as default', () => {
     let store1 = persistentJSON<boolean>('defaultJSON')
     equal(store1.get(), null)
