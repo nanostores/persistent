@@ -95,6 +95,14 @@ export function persistentBoolean(key, initial = false, opts = {}) {
   })
 }
 
+export function persistentJSON(key, initial = null, opts = {}) {
+  return persistentAtom(key, initial, {
+    ...opts,
+    decode: JSON.parse,
+    encode: JSON.stringify,
+  })
+}
+
 export function persistentMap(prefix, initial = {}, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
