@@ -2,8 +2,8 @@
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.2.1
-* Fixed keeping user’s value after changes default value by not removing key.
-* Initialize store as soon as possible.
+* Fixed keeping user’s value after changes default (by @d8corp).
+* Initialize store as soon as possible  (by @d8corp).
 
 ## 1.2.0
 * Added `persistentBoolean()` helper.
