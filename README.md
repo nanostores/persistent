@@ -83,8 +83,6 @@ export const $reduceMotion = persistentBoolean('reduce-motion')
 
 It works with any valid JSON type: objects, arrays, primitives (`string`, `number`, `boolean`, `null`).
 
-**With an initial value** — no null checks needed, clean and simple:
-
 ```ts
 import { persistentJSON } from '@nanostores/persistent'
 
@@ -95,12 +93,12 @@ $cart.set([...$cart.get(), newProduct])
 $theme.set('dark')
 ```
 
-**Without initial value** — `null` by default, use optional chaining:
+You can miss initial value argument. In this case, we will add `null` to store type.
 
 ```ts
-const $users = persistentJSON<Comment[]>('users')
+const $comments = persistentJSON<Comment[]>('comments')
 
-console.log($users.value?.map((comment) => comment.userId)) // ✅ Safe access
+console.log($comments.get()?.map(i => i.userId)) // Safe access
 ```
 
 
