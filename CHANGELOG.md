@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.0
+* Added `persistentJSON()` helper (by @d8corp).
+
 ## 1.2.1
 * Fixed keeping user’s value after changes default (by @d8corp).
 * Initialize store as soon as possible  (by @d8corp).
