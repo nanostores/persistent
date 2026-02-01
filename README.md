@@ -93,7 +93,7 @@ $cart.set([...$cart.get(), newProduct])
 $theme.set('dark')
 ```
 
-You can miss initial value argument. In this case, we will add `null` to store type.
+You can omit initial value argument. In this case, we will add `null` to store type.
 
 ```ts
 const $comments = persistentJSON<Comment[]>('comments')
@@ -152,10 +152,10 @@ or after getting it from the persistent storage.
 import { persistentAtom } from '@nanostores/persistent'
 
 export const $draft = persistentAtom('draft', [], {
-  encode (value) {
+  encode(value) {
     return JSON.stringify(value)
   },
-  decode (value ) {
+  decode(value) {
     try {
       return JSON.parse(value)
     } catch() {
@@ -187,7 +187,7 @@ You can switch `localStorage` to any other storage for all used stores.
 import { setPersistentEngine } from '@nanostores/persistent'
 
 let listeners = []
-function onChange (key, newValue) {
+function onChange(key, newValue) {
   const event = { key, newValue }
   for (const i of listeners) i(event)
 }
@@ -209,10 +209,10 @@ const storage = new Proxy({}, {
 
 // Must implement addEventListener and removeEventListener
 const events = {
-  addEventListener (key, callback) {
+  addEventListener(key, callback) {
     listeners.push(callback)
   },
-  removeEventListener (key, callback) {
+  removeEventListener(key, callback) {
     listeners = listeners.filter(i => i !== callback)
   },
   // window dispatches "storage" events for any key change
@@ -223,8 +223,7 @@ const events = {
 setPersistentEngine(storage, events)
 ```
 
-You do not need to do anything for server-side rendering. We have build-in
-support.
+You do not need to do anything for server-side rendering. It's supported by default.
 
 You need to specify bodies of `events.addEventListener`
 and `events.removeEventListener` only for environments with browser tabs
@@ -241,15 +240,15 @@ for events object.
 import { PersistentListener, PersistentEvent } from '@nanostores/persistent'
 
 const events = {
-  addEventListener (key: string, callback: PersistentListener) {
+  addEventListener(key: string, callback: PersistentListener) {
     …
   },
-  removeEventListener (key: string, callback: PersistentListener) {
+  removeEventListener(key: string, callback: PersistentListener) {
     …
   }
 }
 
-function onChange () {
+function onChange() {
   const event: PersistentEvent = {
     key: 'locale' // Changed storage key
     newValue: 'ru'
