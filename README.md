@@ -7,10 +7,10 @@ A smart store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
 * **Small.** from 289 bytes (minified and brotlied).
-* Zero dependencies. It uses [Size Limit] to control size.
+  Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
-* `localStorage` can be switched to another storage.
+  `localStorage` can be switched to another storage.
 
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
@@ -152,10 +152,10 @@ or after getting it from the persistent storage.
 import { persistentAtom } from '@nanostores/persistent'
 
 export const $draft = persistentAtom('draft', [], {
-  encode (value) {
+  encode(value) {
     return JSON.stringify(value)
   },
-  decode (value) {
+  decode(value) {
     try {
       return JSON.parse(value)
     } catch() {
@@ -187,21 +187,21 @@ You can switch `localStorage` to any other storage for all used stores.
 import { setPersistentEngine } from '@nanostores/persistent'
 
 let listeners = []
-function onChange (key, newValue) {
+function onChange(key, newValue) {
   const event = { key, newValue }
   for (const i of listeners) i(event)
 }
 
 // Must implement storage[key] = value, storage[key], and delete storage[key]
 const storage = new Proxy({}, {
-  set (target, name, value) {
+  set(target, name, value) {
     target[name] = value
     onChange(name, value)
   },
-  get (target, name) {
+  get(target, name) {
     return target[name]
   },
-  deleteProperty (target, name) {
+  deleteProperty(target, name) {
     delete target[name]
     onChange(name, undefined)
   }
@@ -209,10 +209,10 @@ const storage = new Proxy({}, {
 
 // Must implement addEventListener and removeEventListener
 const events = {
-  addEventListener (key, callback) {
+  addEventListener(key, callback) {
     listeners.push(callback)
   },
-  removeEventListener (key, callback) {
+  removeEventListener(key, callback) {
     listeners = listeners.filter(i => i !== callback)
   },
   // window dispatches "storage" events for any key change
@@ -240,15 +240,15 @@ for events object.
 import { PersistentListener, PersistentEvent } from '@nanostores/persistent'
 
 const events = {
-  addEventListener (key: string, callback: PersistentListener) {
+  addEventListener(key: string, callback: PersistentListener) {
     …
   },
-  removeEventListener (key: string, callback: PersistentListener) {
+  removeEventListener(key: string, callback: PersistentListener) {
     …
   }
 }
 
-function onChange () {
+function onChange() {
   const event: PersistentEvent = {
     key: 'locale' // Changed storage key
     newValue: 'ru'
