@@ -7,10 +7,10 @@ A smart store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
 * **Small.** from 289 bytes (minified and brotlied).
-  Zero dependencies. It uses [Size Limit] to control size.
+* Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
-  `localStorage` can be switched to another storage.
+* `localStorage` can be switched to another storage.
 
 ```ts
 import { persistentAtom } from '@nanostores/persistent'
@@ -93,7 +93,7 @@ $cart.set([...$cart.get(), newProduct])
 $theme.set('dark')
 ```
 
-You can miss initial value argument. In this case, we will add `null` to store type.
+You can omit initial value argument. In this case, we will add `null` to store type.
 
 ```ts
 const $comments = persistentJSON<Comment[]>('comments')
@@ -155,7 +155,7 @@ export const $draft = persistentAtom('draft', [], {
   encode (value) {
     return JSON.stringify(value)
   },
-  decode (value ) {
+  decode (value) {
     try {
       return JSON.parse(value)
     } catch() {
@@ -194,14 +194,14 @@ function onChange (key, newValue) {
 
 // Must implement storage[key] = value, storage[key], and delete storage[key]
 const storage = new Proxy({}, {
-  set(target, name, value) {
+  set (target, name, value) {
     target[name] = value
     onChange(name, value)
   },
-  get(target, name) {
+  get (target, name) {
     return target[name]
   },
-  deleteProperty(target, name) {
+  deleteProperty (target, name) {
     delete target[name]
     onChange(name, undefined)
   }
@@ -223,8 +223,7 @@ const events = {
 setPersistentEngine(storage, events)
 ```
 
-You do not need to do anything for server-side rendering. We have build-in
-support.
+You do not need to do anything for server-side rendering. It's supported by default.
 
 You need to specify bodies of `events.addEventListener`
 and `events.removeEventListener` only for environments with browser tabs
