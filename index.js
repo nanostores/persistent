@@ -68,7 +68,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
 
   function restore(e) {
     if (e && !e.persisted) return
-    store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
+    store.set(name in storageEngine ? decode(storageEngine[name]) : initial)
   }
 
   onMount(store, () => {

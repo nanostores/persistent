@@ -1,6 +1,6 @@
 {
   "name": "@nanostores/persistent",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A store for Nano Stores state manager to keep data in localStorage",
   "keywords": [
     "nano",
@@ -47,14 +47,14 @@
   "devDependencies": {
     "@logux/eslint-config": "^57.0.1",
     "@size-limit/preset-small-lib": "^12.0.0",
-    "@types/node": "^25.1.0",
+    "@types/node": "^25.2.0",
     "actions-up": "^1.9.0",
     "better-node-test": "^0.8.3",
     "check-dts": "^0.9.0",
     "clean-publish": "^6.0.1",
     "eslint": "^9.39.2",
-    "globals": "^17.2.0",
-    "happy-dom": "^20.4.0",
+    "globals": "^17.3.0",
+    "happy-dom": "^20.5.0",
     "multiocular": "^0.8.2",
     "nanodelay": "^2.0.2",
     "nanostores": "^1.1.0",
