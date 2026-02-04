@@ -20,6 +20,7 @@
     "test:size": "size-limit",
     "test": "pnpm run /^test:/",
     "start": "vite ./test/demo",
+    "build": "vite build ./test/demo",
     "start:preview": "vite preview ./test/demo"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
