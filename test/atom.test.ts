@@ -238,14 +238,14 @@ describe('persistentAtom', () => {
 
     atom.subscribe(() => {})()
 
-    equal(count, 2)
+    equal(count, 1)
 
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    equal(count, 2)
+    equal(count, 1)
 
     atom.subscribe(() => {})()
 
-    equal(count, 3)
+    equal(count, 2)
   })
 })

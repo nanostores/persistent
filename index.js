@@ -42,6 +42,11 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   let decode = opts.decode || identity
 
   let store = atom(name in storageEngine ? decode(storageEngine[name]) : initial)
+  let isInit = false
+
+  Promise.resolve().then(() => {
+    isInit = true
+  })
 
   let set = store.set
   store.set = newValue => {
@@ -72,7 +77,9 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   onMount(store, () => {
-    restore()
+    if (isInit) {
+      restore()
+    }
     if (opts.listen !== false) {
       eventsEngine.addEventListener(name, listener, restore)
       return () => {
