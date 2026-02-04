@@ -67,7 +67,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   function restore() {
-    store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
+    store.set(name in storageEngine ? decode(storageEngine[name]) : initial)
   }
 
   onMount(store, () => {
