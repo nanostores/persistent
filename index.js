@@ -66,12 +66,13 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
     }
   }
 
-  function restore() {
+  function restore(e) {
+    if (!e.persisted) return
+
     store.set(storageEngine[name] ? decode(storageEngine[name]) : initial)
   }
 
   onMount(store, () => {
-    restore()
     if (opts.listen !== false) {
       eventsEngine.addEventListener(name, listener, restore)
       return () => {
