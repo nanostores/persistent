@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.2
+* Fixed handling broke JSON in `persistentJSON` (by @d8corp).
+
 ## 1.3.1
 * Fixed `persistentBoolean` restoring on `pageshow` (by @d8corp).
 

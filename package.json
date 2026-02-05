@@ -1,6 +1,6 @@
 {
   "name": "@nanostores/persistent",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "A store for Nano Stores state manager to keep data in localStorage",
   "keywords": [
     "nano",
