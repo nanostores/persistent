@@ -106,7 +106,13 @@ export function persistentBoolean(key, initial = false, opts = {}) {
 export function persistentJSON(key, initial = null, opts = {}) {
   return persistentAtom(key, initial, {
     ...opts,
-    decode: JSON.parse,
+    decode (value) {
+      try {
+        return JSON.parse(value)
+      } catch {
+        return initial
+      }
+    },
     encode: JSON.stringify,
   })
 }

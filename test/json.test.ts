@@ -17,46 +17,55 @@ afterEach(() => {
 
 describe('persistentJSON', () => {
   test('Should set null as default', () => {
-    let store1 = persistentJSON<boolean>('defaultJSON')
-    equal(store1.get(), null)
+    let store = persistentJSON<boolean>('defaultJSON')
+    equal(store.get(), null)
 
-    store1.set(true)
-    equal(store1.get(), true)
+    store.set(true)
+    equal(store.get(), true)
 
-    store1.set(false)
-    equal(store1.get(), false)
+    store.set(false)
+    equal(store.get(), false)
 
-    store1.set(null)
-    equal(store1.get(), null)
+    store.set(null)
+    equal(store.get(), null)
   })
 
   test('Should work with boolean', () => {
-    let store1 = persistentJSON('booleanJSON', false)
-    equal(store1.get(), false)
+    let store = persistentJSON('booleanJSON', false)
+    equal(store.get(), false)
 
-    store1.set(true)
-    equal(store1.get(), true)
+    store.set(true)
+    equal(store.get(), true)
     equal(localStorage.booleanJSON, 'true')
 
-    store1.set(false)
-    equal(store1.get(), false)
+    store.set(false)
+    equal(store.get(), false)
     equal(localStorage.booleanJSON, 'false')
 
     emitLocalStorage('booleanJSON', 'true')
-    equal(store1.get(), true)
+    equal(store.get(), true)
 
     emitLocalStorage('booleanJSON', 'false')
-    equal(store1.get(), false)
+    equal(store.get(), false)
   })
 
   test('Should work as array', () => {
-    let store2 = persistentJSON<string[]>('arrayJSON', [])
-    deepEqual(store2.get(), [])
+    let store = persistentJSON<string[]>('arrayJSON', [])
+    deepEqual(store.get(), [])
 
-    store2.set(['foo'])
-    deepEqual(store2.get(), ['foo'])
+    store.set(['foo'])
+    deepEqual(store.get(), ['foo'])
 
-    store2.set([])
-    deepEqual(store2.get(), [])
+    store.set([])
+    deepEqual(store.get(), [])
+  })
+
+  test('Should handle bad storage', () => {
+    localStorage.json = 'yes'
+
+    let init: string[] = []
+    let store = persistentJSON('json', init)
+
+    equal(store.get(), init)
   })
 })
