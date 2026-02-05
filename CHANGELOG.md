@@ -1,6 +1,9 @@
 # Change Log
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.3
+* Reduced decoding calls on no value changes (by @d8corp).
+
 ## 1.3.2
 * Fixed handling broke JSON in `persistentJSON` (by @d8corp).
 
