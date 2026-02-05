@@ -41,21 +41,20 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
 
-  let store = atom(name in storageEngine ? decode(storageEngine[name]) : initial)
-  let isInit = false
-
-  Promise.resolve().then(() => {
-    isInit = true
-  })
+  let prevStoreValue = storageEngine[name]
+  let store = atom(name in storageEngine ? decode(prevStoreValue) : initial)
 
   let set = store.set
   store.set = newValue => {
     let converted = encode(newValue)
+    prevStoreValue = converted
+
     if (typeof converted === 'undefined') {
       delete storageEngine[name]
     } else {
       storageEngine[name] = converted
     }
+
     set(newValue)
   }
 
@@ -72,14 +71,13 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   function restore(e) {
-    if (e && !e.persisted) return
+    if ((e && !e.persisted) || prevStoreValue === storageEngine[name]) return
     store.set(name in storageEngine ? decode(storageEngine[name]) : initial)
   }
 
   onMount(store, () => {
-    if (isInit) {
-      restore()
-    }
+    restore()
+
     if (opts.listen !== false) {
       eventsEngine.addEventListener(name, listener, restore)
       return () => {
