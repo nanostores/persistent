@@ -70,8 +70,8 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
     }
   }
 
-  function restore(e) {
-    if ((e && !e.persisted) || prevStoreValue === storageEngine[name]) return
+  function restore() {
+    if (prevStoreValue === storageEngine[name]) return
     store.set(name in storageEngine ? decode(storageEngine[name]) : initial)
   }
 
