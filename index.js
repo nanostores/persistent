@@ -41,13 +41,13 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
 
-  let prevStoreValue = storageEngine[name]
-  let store = atom(name in storageEngine ? decode(prevStoreValue) : initial)
+  let prevValue = storageEngine[name]
+  let store = atom(name in storageEngine ? decode(prevValue) : initial)
 
   let set = store.set
   store.set = newValue => {
     let converted = encode(newValue)
-    prevStoreValue = converted
+    prevValue = converted
 
     if (typeof converted === 'undefined') {
       delete storageEngine[name]
@@ -71,7 +71,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
   }
 
   function restore() {
-    if (prevStoreValue === storageEngine[name]) return
+    if (prevValue === storageEngine[name]) return
     store.set(name in storageEngine ? decode(storageEngine[name]) : initial)
   }
 
@@ -103,14 +103,14 @@ export function persistentBoolean(key, initial = false, opts = {}) {
 export function persistentJSON(key, initial = null, opts = {}) {
   return persistentAtom(key, initial, {
     ...opts,
-    decode (value) {
+    decode(value) {
       try {
         return JSON.parse(value)
       } catch {
         return initial
       }
     },
-    encode: JSON.stringify,
+    encode: JSON.stringify
   })
 }
 
