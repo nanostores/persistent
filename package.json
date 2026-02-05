@@ -19,9 +19,7 @@
     "test:types": "check-dts",
     "test:size": "size-limit",
     "test": "pnpm run /^test:/",
-    "start": "vite ./test/demo",
-    "build": "vite build ./test/demo",
-    "start:preview": "vite preview ./test/demo"
+    "start": "vite ./test/demo"
   },
   "author": "Andrey Sitnik <andrey@sitnik.ru>",
   "license": "MIT",
@@ -77,7 +75,7 @@
       "import": {
         "./index.js": "{ persistentAtom }"
       },
-      "limit": "306 B"
+      "limit": "296 B"
     },
     {
       "name": "Map",

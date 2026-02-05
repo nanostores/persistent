@@ -46,13 +46,12 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
 
   let set = store.set
   store.set = newValue => {
-    let converted = encode(newValue)
-    prevValue = converted
+    prevValue = encode(newValue)
 
-    if (typeof converted === 'undefined') {
+    if (typeof prevValue === 'undefined') {
       delete storageEngine[name]
     } else {
-      storageEngine[name] = converted
+      storageEngine[name] = prevValue
     }
 
     set(newValue)
