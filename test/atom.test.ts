@@ -221,4 +221,39 @@ describe('persistentAtom', () => {
     store2.set(true)
     equal(store2.get(), true)
   })
+
+  test('decode call count', async () => {
+    let count = 0
+    localStorage.a = '1'
+
+    atom = persistentAtom<string>('a', '2', {
+      decode: value => {
+        count++
+        return value
+      },
+      encode: value => value,
+    })
+
+    equal(count, 1)
+
+    atom.subscribe(() => {})()
+
+    equal(count, 1)
+
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    equal(count, 1)
+
+    atom.subscribe(() => {})()
+
+    equal(count, 1)
+
+    emitLocalStorage('a', '1')
+
+    equal(count, 2)
+
+    atom.subscribe(() => {})()
+
+    equal(count, 2)
+  })
 })
