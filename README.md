@@ -6,7 +6,7 @@
 A smart store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
-* **Small.** from 285 bytes (minified and brotlied).
+* **Small.** from 294 bytes (minified and brotlied).
   Zero dependencies. It uses [Size Limit] to control size.
 * It has good **TypeScript**.
 * Framework agnostic. It supports SSR.
