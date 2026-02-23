@@ -57,6 +57,7 @@ interface PersistentSimpleOptions {
    * Does not synchronize changes from other browser tabs
    */
   listen?: boolean
+  storage?: PersistentStore
 }
 
 export type PersistentOptions =

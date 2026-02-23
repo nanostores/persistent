@@ -38,20 +38,21 @@ export function setPersistentEngine(storage, events) {
 }
 
 export function persistentAtom(name, initial = undefined, opts = {}) {
+  let storage = opts.storage || storageEngine
   let encode = opts.encode || identity
   let decode = opts.decode || identity
 
-  let prevValue = storageEngine[name]
-  let store = atom(name in storageEngine ? decode(prevValue) : initial)
+  let prevValue = storage[name]
+  let store = atom(name in storage ? decode(prevValue) : initial)
 
   let set = store.set
   store.set = newValue => {
     prevValue = encode(newValue)
 
     if (typeof prevValue === 'undefined') {
-      delete storageEngine[name]
+      delete storage[name]
     } else {
-      storageEngine[name] = prevValue
+      storage[name] = prevValue
     }
 
     set(newValue)
@@ -64,14 +65,14 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
       } else {
         set(decode(e.newValue))
       }
-    } else if (!storageEngine[name]) {
+    } else if (!storage[name]) {
       set(initial)
     }
   }
 
   function restore() {
-    if (prevValue === storageEngine[name]) return
-    store.set(name in storageEngine ? decode(storageEngine[name]) : initial)
+    if (prevValue === storage[name]) return
+    store.set(name in storage ? decode(storage[name]) : initial)
   }
 
   onMount(store, () => {
@@ -114,6 +115,7 @@ export function persistentJSON(key, initial = null, opts = {}) {
 }
 
 export function persistentMap(prefix, initial = {}, opts = {}) {
+  let storage = opts.storage || storageEngine
   let encode = opts.encode || identity
   let decode = opts.decode || identity
 
@@ -125,7 +127,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
       if (opts.listen !== false && eventsEngine.perKey) {
         eventsEngine.removeEventListener(prefix + key, listener, restore)
       }
-      delete storageEngine[prefix + key]
+      delete storage[prefix + key]
     } else {
       if (
         opts.listen !== false &&
@@ -134,7 +136,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
       ) {
         eventsEngine.addEventListener(prefix + key, listener, restore)
       }
-      storageEngine[prefix + key] = encode(newValue)
+      storage[prefix + key] = encode(newValue)
     }
   }
 
@@ -170,9 +172,9 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
 
   function restore() {
     let data = { ...initial }
-    for (let key in storageEngine) {
+    for (let key in storage) {
       if (key.startsWith(prefix)) {
-        data[key.slice(prefix.length)] = decode(storageEngine[key])
+        data[key.slice(prefix.length)] = decode(storage[key])
       }
     }
     for (let key in data) {
