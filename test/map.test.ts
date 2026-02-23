@@ -153,10 +153,10 @@ describe('persistentMap', () => {
   })
 
   test('has test API', async () => {
+    useTestStorageEngine()
     let settings = persistentMap<{ lang: string }>('settings:', {
       lang: 'en'
     })
-    useTestStorageEngine()
 
     let events: string[] = []
     let unbind = settings.listen(value => {
