@@ -238,7 +238,7 @@ describe('persistentMap', () => {
     deepStrictEqual(Object.keys(listeners), ['a:', 'a:one'])
 
     storage['a:one'] = '1b'
-    listeners['a:one']({ key: 'a:one', newValue: '1b' })
+    listeners['a:one']!({ key: 'a:one', newValue: '1b' })
     deepStrictEqual(map.get(), { one: '1b' })
 
     storage['a:new'] = '1b'

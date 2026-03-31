@@ -5,7 +5,7 @@ import {
   setPersistentEngine
 } from '../index.js'
 
-const windowPersistentEvents = {
+let windowPersistentEvents = {
   addEventListener(key: string, listener: PersistentListener) {
     window.addEventListener('storage', listener as unknown as EventListener)
   },

@@ -3,71 +3,61 @@
   "version": "1.3.3",
   "description": "A store for Nano Stores state manager to keep data in localStorage",
   "keywords": [
+    "cross-tab",
+    "localStorage",
     "nano",
     "persistent",
-    "react",
     "preact",
-    "vue",
-    "svelte",
+    "react",
     "store",
-    "localStorage",
-    "cross-tab"
+    "svelte",
+    "vue"
   ],
-  "scripts": {
-    "test:lint": "eslint .",
-    "test:coverage": "pnpm bnt --coverage 100 --coverage-exclude 'test/*'",
-    "test:types": "check-dts",
-    "test:size": "size-limit",
-    "test": "pnpm run /^test:/",
-    "start": "vite ./test/demo"
-  },
-  "author": "Andrey Sitnik <andrey@sitnik.ru>",
   "license": "MIT",
+  "author": "Andrey Sitnik <andrey@sitnik.es>",
   "repository": "nanostores/persistent",
-  "sideEffects": false,
-  "type": "module",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": "./index.js",
-    "./package.json": "./package.json"
-  },
-  "engines": {
-    "node": "^20.0.0 || >=22.0.0"
-  },
   "funding": [
     {
       "type": "github",
       "url": "https://github.com/sponsors/ai"
     }
   ],
-  "peerDependencies": {
-    "nanostores": "^0.9.0 || ^0.10.0 || ^0.11.0 || ^1.0.0"
+  "type": "module",
+  "sideEffects": false,
+  "types": "./index.d.ts",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test:lint": "oxlint .",
+    "test:coverage": "pnpm bnt --coverage 100 --coverage-exclude 'test/*'",
+    "test:types": "check-dts",
+    "test:size": "size-limit",
+    "test": "pnpm run /^test:/",
+    "start": "vite ./test/demo"
   },
   "devDependencies": {
-    "@logux/eslint-config": "^57.0.2",
-    "@size-limit/preset-small-lib": "^12.0.0",
-    "@types/node": "^25.3.0",
+    "@logux/oxc-configs": "^0.2.2",
+    "@size-limit/preset-small-lib": "^12.0.1",
+    "@types/node": "^25.5.0",
     "actions-up": "^1.12.0",
-    "better-node-test": "^0.8.3",
-    "check-dts": "^0.9.0",
-    "clean-publish": "^6.0.1",
-    "eslint": "^10.0.2",
-    "globals": "^17.3.0",
-    "happy-dom": "^20.7.0",
+    "better-node-test": "^0.8.4",
+    "check-dts": "^1.0.0",
+    "clean-publish": "^6.0.5",
+    "globals": "^17.4.0",
+    "happy-dom": "^20.8.9",
     "multiocular": "^0.8.2",
     "nanodelay": "^2.0.2",
-    "nanostores": "^1.1.0",
-    "size-limit": "^12.0.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "nanostores": "^1.2.0",
+    "oxlint": "^1.58.0",
+    "oxlint-tsgolint": "^0.18.1",
+    "size-limit": "^12.0.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3"
   },
-  "prettier": {
-    "arrowParens": "avoid",
-    "jsxSingleQuote": false,
-    "quoteProps": "consistent",
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "none"
+  "peerDependencies": {
+    "nanostores": "^0.9.0 || ^0.10.0 || ^0.11.0 || ^1.0.0"
   },
   "size-limit": [
     {
@@ -85,6 +75,9 @@
       "limit": "435 B"
     }
   ],
+  "engines": {
+    "node": "^20.0.0 || >=22.0.0"
+  },
   "clean-publish": {
     "cleanDocs": true
   }

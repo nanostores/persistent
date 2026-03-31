@@ -10,9 +10,9 @@ import {
   persistentAtom,
   type PersistentListener,
   setPersistentEngine,
-  windowPersistentEvents
+  windowPersistentEvents,
+  persistentBoolean
 } from '../index.js'
-import { persistentBoolean } from '../index.js'
 import { emitLocalStorage } from './utils.ts'
 
 let atom: WritableAtom<string | undefined>
@@ -172,7 +172,7 @@ describe('persistentAtom', () => {
     deepStrictEqual(Object.keys(listeners), ['lang'])
 
     storage.lang = 'es'
-    listeners.lang({ key: 'lang', newValue: 'es' })
+    listeners.lang!({ key: 'lang', newValue: 'es' })
     equal(atom.get(), 'es')
 
     unbind()
@@ -231,7 +231,7 @@ describe('persistentAtom', () => {
         count++
         return value
       },
-      encode: value => value,
+      encode: value => value
     })
 
     equal(count, 1)

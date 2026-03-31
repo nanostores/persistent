@@ -1,4 +1,4 @@
-import { $atom, $map } from './index.js'
+import { $atom, $map } from './index.ts'
 
 let preAtom = document.querySelector<HTMLPreElement>('#atom')!
 let preMap = document.querySelector<HTMLPreElement>('#map')!
