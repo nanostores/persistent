@@ -34,6 +34,7 @@
     "test:coverage": "pnpm bnt --coverage 100 --coverage-exclude 'test/*'",
     "test:types": "check-dts",
     "test:size": "size-limit",
+    "test:build": "vite build ./test/demo",
     "test": "pnpm run /^test:/",
     "start": "vite ./test/demo"
   },
