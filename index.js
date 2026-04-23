@@ -37,7 +37,7 @@ export function setPersistentEngine(storage, events) {
   eventsEngine = events
 }
 
-export function persistentAtom(name, initial = undefined, opts = {}) {
+export function persistentAtom(name, initial, opts = {}) {
   let encode = opts.encode || identity
   let decode = opts.decode || identity
 
