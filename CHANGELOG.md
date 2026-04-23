@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.4
+
+- Fixed `persistentBoolean` cross tab synchronization (by @dettogatto).
+
 ## 1.3.3
 
 - Reduced decoding calls on no value changes (by @d8corp).
