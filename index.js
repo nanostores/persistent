@@ -64,7 +64,7 @@ export function persistentAtom(name, initial = undefined, opts = {}) {
       } else {
         set(decode(e.newValue))
       }
-    } else if (!storageEngine[name]) {
+    } else if (!(name in storageEngine)) {
       set(initial)
     }
   }
