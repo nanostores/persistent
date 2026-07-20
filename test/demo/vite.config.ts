@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     minify: false,
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         bfcachetest: resolve(__dirname, 'bfcachetest.html'),
         main: resolve(__dirname, 'index.html')
