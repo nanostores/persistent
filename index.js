@@ -175,9 +175,7 @@ export function persistentMap(prefix, initial = {}, opts = {}) {
         data[key.slice(prefix.length)] = decode(storageEngine[key])
       }
     }
-    for (let key in data) {
-      store.setKey(key, data[key])
-    }
+    store.set(data)
   }
 
   onMount(store, () => {
