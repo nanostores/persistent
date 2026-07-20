@@ -45,7 +45,6 @@
     "actions-up": "^1.14.1",
     "better-node-test": "^0.8.4",
     "check-dts": "^1.0.0",
-    "clean-publish": "^6.0.5",
     "globals": "^17.5.0",
     "happy-dom": "^20.9.0",
     "multiocular": "^0.8.3",

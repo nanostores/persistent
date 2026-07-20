@@ -26,9 +26,6 @@ importers:
       check-dts:
         specifier: ^1.0.0
         version: 1.0.0(typescript@6.0.3)
-      clean-publish:
-        specifier: ^6.0.5
-        version: 6.0.5
       globals:
         specifier: ^17.5.0
         version: 17.5.0
@@ -736,11 +733,6 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
-  clean-publish@6.0.5:
-    resolution: {integrity: sha512-Iqm/EDPQFLY0I8kktg61Nt8V/5fiXYNkNR5UsHcLKmj4vp7a0a7EGZmNEbN2Hg77frQlHNljT/MruK5Wr/Rtog==}
-    engines: {node: '>= 20.0.0'}
-    hasBin: true
-
   cookie@1.1.1:
     resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
     engines: {node: '>=18'}
@@ -998,10 +990,6 @@ packages:
   strip-ansi@6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
     engines: {node: '>=8'}
-
-  tinyexec@1.1.1:
-    resolution: {integrity: sha512-VKS/ZaQhhkKFMANmAOhhXVoIfBXblQxGX1myCQ2faQrfmobMftXeJPcZGp0gS07ocvGJWDLZGyOZDadDBqYIJg==}
-    engines: {node: '>=18'}
 
   tinyglobby@0.2.16:
     resolution: {integrity: sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==}
@@ -1496,13 +1484,6 @@ snapshots:
       tinyglobby: 0.2.16
       typescript: 6.0.3
 
-  clean-publish@6.0.5:
-    dependencies:
-      lilconfig: 3.1.3
-      picomatch: 4.0.4
-      tinyexec: 1.1.1
-      tinyglobby: 0.2.16
-
   cookie@1.1.1: {}
 
   detect-libc@2.1.2: {}
@@ -1796,8 +1777,6 @@ snapshots:
   strip-ansi@6.0.1:
     dependencies:
       ansi-regex: 5.0.1
-
-  tinyexec@1.1.1: {}
 
   tinyglobby@0.2.16:
     dependencies:
