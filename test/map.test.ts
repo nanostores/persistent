@@ -211,6 +211,30 @@ describe('persistentMap', () => {
     deepStrictEqual(storage, {})
   })
 
+  test('restores removed keys after page cache', () => {
+    let storage: Record<string, string> = {
+      'settings:one': '1',
+      'settings:stale': '2'
+    }
+    let restore = (): void => {}
+    setPersistentEngine(storage, {
+      addEventListener(key, listener, onRestore) {
+        restore = onRestore
+      },
+      removeEventListener() {}
+    })
+
+    map = persistentMap('settings:')
+    map.listen(() => {})
+    deepStrictEqual(map.get(), { one: '1', stale: '2' })
+
+    storage['settings:one'] = '1a'
+    delete storage['settings:stale']
+    restore()
+
+    deepStrictEqual(map.get(), { one: '1a' })
+  })
+
   test('supports per key engine', async () => {
     let storage: Record<string, string> = {}
     let listeners: Record<string, PersistentListener> = {}
