@@ -2,6 +2,10 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.3.5
+
+- Fix removed keys in persistent map restoration (by @rajanpanth).
+
 ## 1.3.4
 
 - Fixed `persistentBoolean` cross tab synchronization (by @dettogatto).
