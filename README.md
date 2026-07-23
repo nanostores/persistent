@@ -6,10 +6,10 @@
 A smart store for [Nano Stores] state manager to keep data in `localStorage`
 and synchronize changes between browser tabs.
 
-* **Small.** From 296 bytes (minified and brotlied).
+- **Small.** From 296 bytes (minified and brotlied).
   Zero dependencies. It uses [Size Limit] to control size.
-* It has good **TypeScript**.
-* Framework agnostic. It supports SSR.
+- It has good **TypeScript**.
+- Framework agnostic. It supports SSR.
   `localStorage` can be switched to another storage.
 
 ```ts
@@ -19,14 +19,13 @@ export const $locale = persistentAtom('locale', 'en')
 ```
 
 [Nano Stores]: https://github.com/nanostores/nanostores
-[Size Limit]: https://github.com/ai/size-limit
+[Size Limit]: https://github.com/ai/size-limit
 
 ---
 
-<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="" width="22" height="16" />  Made at <b><a href="https://evilmartians.com/devtools?utm_source=nanostores-persistent&utm_campaign=devtools-button&utm_medium=github">Evil Martians</a></b>, product consulting for <b>developer tools</b>.
+<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="" width="22" height="16" />  Nano ID is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>.
 
 ---
-
 
 ## Install
 
@@ -34,12 +33,10 @@ export const $locale = persistentAtom('locale', 'en')
 npm install nanostores @nanostores/persistent
 ```
 
-
 ## Usage
 
 See [Nano Stores docs](https://github.com/nanostores/nanostores#guide)
 about using the store and subscribing to store’s changes in UI frameworks.
-
 
 ### Primitive Store
 
@@ -51,7 +48,7 @@ import { persistentAtom } from '@nanostores/persistent'
 
 export const $shoppingCart = persistentAtom<Product[]>('cart', [], {
   encode: JSON.stringify,
-  decode: JSON.parse,
+  decode: JSON.parse
 })
 ```
 
@@ -75,7 +72,6 @@ import { persistentBoolean } from '@nanostores/persistent'
 
 export const $reduceMotion = persistentBoolean('reduce-motion')
 ```
-
 
 ### JSON Store
 
@@ -101,7 +97,6 @@ const $comments = persistentJSON<Comment[]>('comments')
 console.log($comments.get()?.map(i => i.userId)) // Safe access
 ```
 
-
 ### Map Store
 
 There is a special key-value map store. It will keep each key
@@ -111,7 +106,7 @@ in separated `localStorage` key.
 import { persistentMap } from '@nanostores/persistent'
 
 export type SettingsValue = {
-  sidebar: 'show' | 'hide',
+  sidebar: 'show' | 'hide'
   theme: 'dark' | 'light' | 'auto'
 }
 
@@ -129,7 +124,6 @@ You can change the key by `setKey` method:
 $settings.setKey('sidebar', 'hide')
 ```
 
-
 ### Sync between Browser Tabs
 
 By default, the store changes will be synchronized between browser tabs.
@@ -141,7 +135,6 @@ import { persistentAtom } from '@nanostores/persistent'
 
 export const $draft = persistentAtom('draft', '', { listen: false })
 ```
-
 
 ### Value Encoding
 
@@ -178,7 +171,6 @@ if (isServer) {
 }
 ```
 
-
 ### Persistent Engines
 
 You can switch `localStorage` to any other storage for all used stores.
@@ -193,19 +185,22 @@ function onChange(key, newValue) {
 }
 
 // Must implement storage[key] = value, storage[key], and delete storage[key]
-const storage = new Proxy({}, {
-  set(target, name, value) {
-    target[name] = value
-    onChange(name, value)
-  },
-  get(target, name) {
-    return target[name]
-  },
-  deleteProperty(target, name) {
-    delete target[name]
-    onChange(name, undefined)
+const storage = new Proxy(
+  {},
+  {
+    set(target, name, value) {
+      target[name] = value
+      onChange(name, value)
+    },
+    get(target, name) {
+      return target[name]
+    },
+    deleteProperty(target, name) {
+      delete target[name]
+      onChange(name, undefined)
+    }
   }
-})
+)
 
 // Must implement addEventListener and removeEventListener
 const events = {
@@ -257,7 +252,6 @@ function onChange() {
 }
 ```
 
-
 ### Tests
 
 There is a special API to replace `localStorage` to a fake storage engine
@@ -268,7 +262,7 @@ import {
   useTestStorageEngine,
   setTestStorageKey,
   cleanTestStorage,
-  getTestStorage,
+  getTestStorage
 } from '@nanostores/persistent'
 
 import { $settings } from './storage.js'
